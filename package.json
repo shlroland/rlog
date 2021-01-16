@@ -4,12 +4,16 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "website:dev": "lerna exec --scope website -- yarn dev"
+    "website:dev": "lerna exec --scope website -- yarn dev",
+    "website:start": "lerna exec --scope website -- yarn start"
   },
   "devDependencies": {
     "lerna": "^3.22.1"
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "typescript": "^4.1.3"
+  }
 }

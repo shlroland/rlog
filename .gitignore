@@ -10,7 +10,8 @@
 /coverage
 
 # next.js
-/.next/
+packages/**/.next
+packages/**/node_modules
 /out/
 
 # production
@@ -35,3 +36,5 @@ yarn-error.log*
 .vercel
 
 *.lock
+
+/.idea
