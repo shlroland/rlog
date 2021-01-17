@@ -3,5 +3,5 @@
 }
 
 .content-aside {
-  @apply hidden lg:block w-0 lg:w-3/12 absolute right-0;
+  @apply hidden py-0 px-5 lg:px-3 lg:block w-0 lg:w-3/12 absolute right-0;
 }

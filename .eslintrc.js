@@ -146,7 +146,7 @@ module.exports = {
     // 禁用一成不变的循环条件
     "no-unmodified-loop-condition": "error",
     // 禁用未声明的变量，除非它们在 /*global */ 注释中被提到
-    "no-undef": "error",
+    "no-undef": "off",
     // getter/setter必须承兑出现
     "accessor-pairs": "error",
     // 检查super调用是否合法

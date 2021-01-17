@@ -26,7 +26,7 @@ const ArticleCard = () => {
                 href="/hagnerd/setting-up-tailwind-with-create-react-app-4jd"
                 className="text-xs text-gray-600 hover:text-black"
               >
-                <time dateTime="2019-08-02T13:58:42.196Z">Aug 2 '19 </time>
+                <time dateTime="2019-08-02T13:58:42.196Z">Aug 2 19 </time>
               </a>
             </div>
           </div>
