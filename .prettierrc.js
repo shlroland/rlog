@@ -7,12 +7,13 @@ module.exports = {
   // 对象内保留空格
   jsxBracketSameLine: false,
   // jsx结尾>必须单独起一行
-  arrowParens: 'never',
+  arrowParens: 'avoid',
   // 箭头函数参数必须带括号
   trailingComma: 'es5',
   tabWidth: 2,
-  semi: true,
+  semi: false,
   // 每行结尾书写空格
   printWidth: 100,
   endOfLine: 'lf',
+
 }
