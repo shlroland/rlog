@@ -1,11 +1,19 @@
 .wrapper {
-  @apply relative top-0 w-full max-w-8xl mx-auto bg-white flex-none flex;
+  @apply relative top-0 w-full max-w-7xl mx-auto bg-white flex-none flex;
 }
 
 .logo {
-  @apply flex-none pl-4 sm:pl-6 xl:pl-8 flex items-center border-b border-gray-200 lg:border-b-0 lg:w-60 xl:w-72;
+  @apply flex-none pl-4 sm:pl-6 xl:pl-8 flex items-center lg:border-b-0;
 }
 
 .content {
-  @apply flex-auto border-b border-gray-200 h-18 flex items-center justify-between px-4 sm:px-6 lg:mx-6 lg:px-0 xl:mx-8;
+  @apply flex-auto h-18 flex items-center justify-between px-4 sm:px-6 lg:mx-6 lg:px-0 xl:mx-8;
+}
+
+.content-nav {
+  @apply flex-auto h-full flex;
+}
+
+.content-action {
+  @apply w-1/5 h-full sm:hidden md:flex;
 }
