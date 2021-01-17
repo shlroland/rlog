@@ -18,7 +18,9 @@
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "lerna": "^3.22.1",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "stylelint": "^13.8.0",
+    "stylelint-config-recommended": "^3.0.0"
   },
   "workspaces": [
     "packages/*"
