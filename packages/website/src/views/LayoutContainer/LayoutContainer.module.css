@@ -1,0 +1,7 @@
+.content-wrapper {
+  @apply w-full py-0 px-6 lg:px-4 lg:w-8/12;
+}
+
+.content-aside {
+  @apply w-0 lg:w-4/12 absolute right-0;
+}

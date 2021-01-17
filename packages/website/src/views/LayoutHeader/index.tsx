@@ -3,7 +3,7 @@ import styles from '@/views/LayoutHeader/LayoutHeader.module.css'
 
 const LayoutHeader: FC = () => {
   return (
-    <header className="w-full bg-white">
+    <header className="w-full bg-white shadow-lg">
       <div className={styles.wrapper}>
         <div className={styles.logo}>
           <a className="overflow-hidden w-auto">

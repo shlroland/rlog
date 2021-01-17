@@ -1,5 +1,12 @@
+import styles from './LayoutContainer.module.css'
+import ArticleList from '@/components/ArticleList/index'
+
 const LayoutContent = () => {
-  return <main></main>
+  return (
+    <div className={styles['content-wrapper']}>
+      <ArticleList />
+    </div>
+  )
 }
 
 export default LayoutContent
