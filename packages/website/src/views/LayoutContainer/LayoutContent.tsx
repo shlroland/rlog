@@ -1,12 +1,8 @@
 import styles from './LayoutContainer.module.css'
-import ArticleList from '@/components/ArticleList/index'
+import { FC } from 'react'
 
-const LayoutContent = () => {
-  return (
-    <div className={styles['content-wrapper']}>
-      <ArticleList />
-    </div>
-  )
+const LayoutContent: FC = ({ children }) => {
+  return <div className={styles['content-wrapper']}>{children}</div>
 }
 
 export default LayoutContent

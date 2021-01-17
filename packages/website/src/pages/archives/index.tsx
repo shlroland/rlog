@@ -1,15 +1,16 @@
+import { NextPage } from 'next'
 import styles from '@/styles/App.module.css'
 import LayoutContainer from '@/views/LayoutContainer/LayoutContainer'
-import ArticleList from '@/components/ArticleList/index'
 
-export default function Home() {
+const Archives: NextPage = () => {
   return (
     <>
+
       <main className={styles.wrapper}>
-        <LayoutContainer>
-          <ArticleList></ArticleList>
-        </LayoutContainer>
+        <LayoutContainer>123123</LayoutContainer>
       </main>
     </>
   )
 }
+
+export default Archives
