@@ -1,0 +1,3 @@
+.wrapper {
+  @apply relative top-0 w-full pt-8 max-w-7xl mx-auto flex-none flex;
+}

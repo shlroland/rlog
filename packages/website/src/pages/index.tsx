@@ -1,10 +1,5 @@
-// import styles from '@/styles/Home.module.css'
-import LayoutHeader from '@/views/LayoutHeader'
+import styles from '@/styles/App.module.css'
 
 export default function Home() {
-  return (
-    <>
-      <LayoutHeader />
-    </>
-  )
+  return <div className={styles.wrapper}></div>
 }
