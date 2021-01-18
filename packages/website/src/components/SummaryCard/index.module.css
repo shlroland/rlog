@@ -1,5 +1,5 @@
 .wrapper {
-  @apply px-0 py-4 bg-white text-center rounded-lg;
+  @apply px-0 py-4 bg-white text-center rounded-lg mb-5 shadow;
 }
 
 .icon-wrapper {

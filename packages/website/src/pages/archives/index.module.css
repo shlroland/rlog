@@ -1,0 +1,48 @@
+.list {
+  @apply p-4 shadow bg-white rounded;
+}
+
+.list + .list {
+  @apply mt-5;
+}
+
+.list > h2 {
+  @apply text-2xl mb-2;
+}
+
+.item {
+  @apply py-2 px-4;
+}
+
+.item + .item {
+  @apply mt-3;
+}
+
+.item > h3 {
+  @apply text-gray-400 text-lg;
+}
+
+.item > ul {
+  @apply pl-9 list-disc;
+}
+
+.item > ul > li {
+  padding: 0.5rem 0rem;
+  @apply relative;
+}
+
+.item > ul > li::marker {
+    @apply text-gray-400
+}
+
+.item a {
+  @apply h-full whitespace-nowrap overflow-hidden overflow-ellipsis;
+}
+
+.item .title {
+  @apply text-gray-600 font-medium text-base whitespace-nowrap overflow-hidden overflow-ellipsis;
+}
+
+.item .meta {
+  @apply text-gray-500 text-sm m-0 pr-4;
+}
