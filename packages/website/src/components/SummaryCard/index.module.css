@@ -1,0 +1,19 @@
+.wrapper {
+  @apply px-0 py-4 bg-white text-center rounded-lg;
+}
+
+.icon-wrapper {
+  @apply text-5xl text-center;
+}
+
+.icon-wrapper > svg {
+  @apply inline;
+}
+
+.title-wrapper {
+  @apply text-xl text-teal-500;
+}
+
+.total-text {
+  @apply text-lg  text-teal-500;
+}

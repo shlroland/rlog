@@ -29,16 +29,16 @@ const LayoutHeader: FC = () => {
         </div>
         <nav className={styles.content}>
           <ul className={styles['content-nav']}>
-            <li className={linkCls('/')}>
-              <Link href="/">
+            <Link href="/">
+              <li className={linkCls('/')}>
                 <a>首页</a>
-              </Link>
-            </li>
-            <li className={linkCls('/archives')}>
-              <Link href="/archives">
+              </li>
+            </Link>
+            <Link href="/archives">
+              <li className={linkCls('/archives')}>
                 <a>归档</a>
-              </Link>
-            </li>
+              </li>
+            </Link>
           </ul>
           <ul className={styles['content-action']}></ul>
         </nav>
