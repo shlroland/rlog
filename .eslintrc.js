@@ -345,6 +345,7 @@ module.exports = {
     // 不允许显式用any
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
     // 暂时不检查@ts-ignore，包依赖逻辑不好解决，暂时忽略
     "@typescript-eslint/ban-ts-comment": [
       "error",

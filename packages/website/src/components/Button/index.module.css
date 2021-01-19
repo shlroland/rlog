@@ -1,0 +1,80 @@
+.button {
+  @apply inline-block px-4 py-2 text-base font-medium leading-6 text-center text-black transition bg-white rounded shadow-sm hover:shadow hover:bg-gray-200 focus:outline-none;
+}
+
+.button.primary {
+  @apply bg-teal-500 hover:bg-teal-100 text-white;
+}
+
+.button.primary.plain {
+  @apply bg-transparent border-2 text-teal-500 hover:bg-teal-100 border-teal-500;
+}
+
+.button.secondary {
+  @apply bg-pink-500 hover:bg-pink-600 text-white;
+}
+
+.button.secondary.plain {
+  @apply bg-transparent border-2 text-pink-500 hover:bg-pink-100 border-pink-500;
+}
+
+.button.success {
+  @apply bg-green-500 hover:bg-green-600 text-white;
+}
+
+.button.success.plain {
+  @apply bg-transparent border-2 text-green-500 hover:bg-green-100 border-green-500;
+}
+
+.button.danger {
+  @apply bg-orange-500 hover:bg-orange-600 text-white;
+}
+
+.button.danger.plain {
+  @apply bg-transparent border-2 text-orange-500 hover:bg-orange-100 border-orange-500;
+}
+
+.button.warning {
+  @apply bg-yellow-500 hover:bg-yellow-600 text-white;
+}
+
+.button.warning.plain {
+  @apply bg-transparent border-2 text-yellow-500 hover:bg-yellow-100 border-yellow-500;
+}
+
+.button.info {
+  @apply bg-blue-500 hover:bg-blue-600 text-white;
+}
+
+.button.info.plain {
+  @apply bg-transparent border-2 text-blue-500 hover:bg-blue-100 border-blue-500;
+}
+
+.button.dark {
+  @apply bg-gray-700 hover:bg-gray-800 text-white;
+}
+
+.button.dark.plain {
+  @apply bg-transparent border-2 text-gray-500 hover:bg-gray-100 border-gray-500;
+}
+
+.button.shape-rounded {
+  @apply rounded-full;
+}
+
+.button.shape-circle {
+  @apply p-3 rounded-full;
+}
+
+.button.block {
+  display: block;
+  @apply w-full;
+}
+
+.button.small {
+  @apply px-3 leading-none;
+}
+
+.button.large {
+  @apply px-6 leading-7;
+}
