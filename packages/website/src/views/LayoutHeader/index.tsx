@@ -25,7 +25,7 @@ const LayoutHeader: FC = () => {
       <div className={styles.wrapper}>
         <div className={styles.logo}>
           <a className="overflow-hidden w-auto">
-            <img className="w-10 h-10" src={require('@/assets/images/logo.png')} alt="/" />
+            <img className="w-10 h-10" src={require('@/assets/images/logo2.svg')} alt="/" />
           </a>
         </div>
         <nav className={styles.content}>
