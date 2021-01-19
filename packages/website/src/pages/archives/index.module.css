@@ -1,5 +1,5 @@
 .list {
-  @apply p-4 shadow bg-white rounded;
+  @apply p-4 shadow bg-white rounded-lg;
 }
 
 .list + .list {

@@ -17,3 +17,7 @@
 .content-action {
   @apply w-1/5 h-full sm:hidden md:flex;
 }
+
+li.item:hover {
+  @apply bg-teal-50 text-teal-700;
+}

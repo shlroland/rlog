@@ -14,6 +14,7 @@ const LayoutHeader: FC = () => {
       return cls('h-full inline-flex items-center px-5 cursor-pointer', {
         'bg-teal-500': active,
         'text-white': active,
+        [styles.item]: true && !active,
       })
     },
     [pathname]
