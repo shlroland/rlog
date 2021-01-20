@@ -1,12 +1,16 @@
-import { FC, useCallback } from 'react'
+import { ElementRef, FC, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import cls from 'classnames'
 import styles from '@/views/LayoutHeader/LayoutHeader.module.css'
 import Button from '@/components/Button'
+import ModalLogin from '@/views/ModalLogin'
+
+type ModalLoginType = ElementRef<typeof ModalLogin>
 
 const LayoutHeader: FC = () => {
   const { pathname } = useRouter()
+  const loginModalRef = useRef<ModalLoginType>(null)
 
   const linkCls = useCallback(
     (path: string) => {
@@ -20,6 +24,10 @@ const LayoutHeader: FC = () => {
     },
     [pathname]
   )
+
+  function handleOpenLogin() {
+    loginModalRef.current!.open()
+  }
 
   return (
     <header className="w-full bg-white shadow-lg">
@@ -44,13 +52,14 @@ const LayoutHeader: FC = () => {
           </ul>
           <ul className={styles['content-action']}>
             <div className="flex items-center">
-              <Button type="primary" plain={true}>
+              <Button type="primary" plain={true} onClick={handleOpenLogin}>
                 登录
               </Button>
             </div>
           </ul>
         </nav>
       </div>
+      <ModalLogin ref={loginModalRef}></ModalLogin>
     </header>
   )
 }
