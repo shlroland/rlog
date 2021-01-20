@@ -52,7 +52,7 @@ const LayoutHeader: FC = () => {
           </ul>
           <ul className={styles['content-action']}>
             <div className="flex items-center">
-              <Button type="primary" plain={true} onClick={handleOpenLogin}>
+              <Button type="primary" size="small" plain={true} onClick={handleOpenLogin}>
                 登录
               </Button>
             </div>

@@ -15,7 +15,7 @@
 }
 
 .content-action {
-  @apply w-1/5 h-full sm:flex hidden justify-between;
+  @apply w-1/5 h-full flex  justify-between;
 }
 
 li.item:hover {
