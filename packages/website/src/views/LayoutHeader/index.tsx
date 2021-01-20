@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import cls from 'classnames'
 import styles from '@/views/LayoutHeader/LayoutHeader.module.css'
+import Button from '@/components/Button'
 
 const LayoutHeader: FC = () => {
   const { pathname } = useRouter()
@@ -41,7 +42,13 @@ const LayoutHeader: FC = () => {
               </li>
             </Link>
           </ul>
-          <ul className={styles['content-action']}></ul>
+          <ul className={styles['content-action']}>
+            <div className="flex items-center">
+              <Button type="primary" plain={true}>
+                登录
+              </Button>
+            </div>
+          </ul>
         </nav>
       </div>
     </header>

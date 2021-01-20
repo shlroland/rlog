@@ -3,7 +3,7 @@
 }
 
 .button.primary {
-  @apply bg-teal-500 hover:bg-teal-100 text-white;
+  @apply bg-teal-500 hover:bg-teal-600 text-white;
 }
 
 .button.primary.plain {
