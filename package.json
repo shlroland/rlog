@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "website:dev": "lerna exec --scope website -- yarn dev",
-    "website:start": "lerna exec --scope website -- yarn start"
+    "website:start": "lerna exec --scope website -- yarn start",
+    "server:start": "lerna exec --scope server -- yarn start"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.13.0",
