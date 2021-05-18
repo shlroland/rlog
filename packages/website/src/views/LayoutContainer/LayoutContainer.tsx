@@ -1,12 +1,16 @@
 import LayoutContent from './LayoutContent'
-import LayoutAsdie from './LayoutAside'
+import LayoutAside from './LayoutAside'
 import { FC } from 'react'
 
-const LayoutContainer: FC = ({ children }) => {
+interface LCProps {
+  asideCom?: JSX.Element
+}
+
+const LayoutContainer: FC<LCProps> = ({ children, asideCom }) => {
   return (
     <>
       <LayoutContent>{children}</LayoutContent>
-      <LayoutAsdie></LayoutAsdie>
+      <LayoutAside>{asideCom}</LayoutAside>
     </>
   )
 }

@@ -1,55 +1,29 @@
 import styles from './index.module.css'
+import Link from 'next/link'
 
 const ArticleCard = () => {
   return (
-    <article className="w-full shadow rounded-lg md:p-4 bg-white sm:py-3 py-4 px-2">
-      <div role="presentation">
-        <div className="m-2">
-          <div className="flex items-center">
-            <div className="mr-2">
-              <a href="/hagnerd">
-                <img
-                  className="rounded-full w-8"
-                  src="https://res.cloudinary.com/practicaldev/image/fetch/s---dcV6iX4--/c_fill,f_auto,fl_progressive,h_90,q_auto,w_90/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/112962/b1373942-b945-4d16-af76-c448e080d14a.jpeg"
-                  alt="hagnerd profile"
-                  loading="lazy"
-                />
-              </a>
-            </div>
-            <div>
-              <p>
-                <a href="/hagnerd" className="text text-gray-700 text-sm hover:text-black">
-                  Matt Hagner
-                </a>
-              </p>
-              <a
-                href="/hagnerd/setting-up-tailwind-with-create-react-app-4jd"
-                className="text-xs text-gray-600 hover:text-black"
-              >
-                <time dateTime="2019-08-02T13:58:42.196Z">Aug 2 19 </time>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div className="pl-12 md:pl-10 xs:pl-10">
-          <h2 className="text-2xl font-bold mb-2 hover:text-blue-600 leading-7">
-            <a
-              href="/hagnerd/setting-up-tailwind-with-create-react-app-4jd"
-              id="article-link-151230"
-            >
-              Setting up Tailwind With create-react-app
-            </a>
+    <Link href={`/post/[id]`} as={`/post/xxxxxx`}>
+      <article className="w-full bg-white rounded-lg shadow flex">
+        <img
+          className="w-1/3 object-cover rounded-tl-lg rounded-bl-lg"
+          src="https://wipi.oss-cn-shanghai.aliyuncs.com/2021-05-13/internet-emerge-econ_1200x675_hero_071317.jpeg"
+          alt="xxx"
+        />
+        <div className="py-4 pl-12 md:pl-10 xs:pl-10">
+          <h2 className="mb-2 text-2xl font-bold leading-7 transition hover:text-teal-600">
+            Setting up Tailwind With create-react-app
           </h2>
           <div className="mb-2">
-            <a href="/t/react" className="text-sm text-gray-600 p-1 hover:text-black">
+            <a href="/t/react" className="p-1 text-sm text-gray-600 hover:text-black">
               <span className="text-opacity-50">#</span>
               react
             </a>
-            <a href="/t/javascript" className="text-sm text-gray-600 p-1 hover:text-black">
+            <a href="/t/javascript" className="p-1 text-sm text-gray-600 hover:text-black">
               <span className="text-opacity-50">#</span>
               javascript
             </a>
-            <a href="/t/tailwind" className="text-sm text-gray-600 p-1 hover:text-black">
+            <a href="/t/tailwind" className="p-1 text-sm text-gray-600 hover:text-black">
               <span className="text-opacity-50">#</span>
               tailwind
             </a>
@@ -58,11 +32,11 @@ const ArticleCard = () => {
             …base; @<mark>tailwind</mark> components; @<mark>tailwind</mark> utilities; These are{' '}
             <mark>Tailwind</mark> directives...What is <mark>Tailwind</mark>?…
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <div className="flex">
               <a
                 href="/hagnerd/setting-up-tailwind-with-create-react-app-4jd"
-                className="py-1 pl-1 pr-2 text-gray-600 text-sm rounded hover:bg-gray-100 hover:text-black"
+                className="py-1 pl-1 pr-2 text-sm text-gray-600 rounded hover:bg-gray-100 hover:text-black"
               >
                 <svg
                   className="inline fill-current"
@@ -76,7 +50,7 @@ const ArticleCard = () => {
               </a>
               <a
                 href="/hagnerd/setting-up-tailwind-with-create-react-app-4jd#comments"
-                className="py-1 pl-1 pr-2 text-gray-600 text-sm rounded hover:bg-gray-100 hover:text-black"
+                className="py-1 pl-1 pr-2 text-sm text-gray-600 rounded hover:bg-gray-100 hover:text-black"
               >
                 <svg
                   className="inline fill-current"
@@ -94,8 +68,8 @@ const ArticleCard = () => {
             </div>
           </div>
         </div>
-      </div>
-    </article>
+      </article>
+    </Link>
   )
 }
 

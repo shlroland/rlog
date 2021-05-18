@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import cls from 'classnames'
 import styles from '@/views/LayoutHeader/LayoutHeader.module.css'
-import Button from '@/components/Button'
+// import Button from '@/components/Button'
 import ModalLogin from '@/views/ModalLogin'
 
 type ModalLoginType = ElementRef<typeof ModalLogin>
@@ -25,15 +25,15 @@ const LayoutHeader: FC = () => {
     [pathname]
   )
 
-  function handleOpenLogin() {
-    loginModalRef.current!.open()
-  }
+  // function handleOpenLogin() {
+  //   loginModalRef.current!.open()
+  // }
 
   return (
     <header className="w-full bg-white shadow-lg">
       <div className={styles.wrapper}>
         <div className={styles.logo}>
-          <a className="overflow-hidden w-auto">
+          <a className="w-auto overflow-hidden">
             <img className="w-10 h-10" src={require('@/assets/images/logo2.svg')} alt="/" />
           </a>
         </div>
@@ -50,13 +50,13 @@ const LayoutHeader: FC = () => {
               </li>
             </Link>
           </ul>
-          <ul className={styles['content-action']}>
+          {/* <ul className={styles['content-action']}>
             <div className="flex items-center">
               <Button type="primary" size="small" plain={true} onClick={handleOpenLogin}>
                 登录
               </Button>
             </div>
-          </ul>
+          </ul> */}
         </nav>
       </div>
       <ModalLogin ref={loginModalRef}></ModalLogin>
