@@ -6,6 +6,8 @@ export interface LoginRefProps {
   open: () => void
 }
 
+Modal.setAppElement('body')
+
 const ModalLogin = forwardRef((props, ref: Ref<LoginRefProps>) => {
   const [showModal, setShowModal] = useState(false)
 
@@ -31,19 +33,13 @@ const ModalLogin = forwardRef((props, ref: Ref<LoginRefProps>) => {
   return (
     <Modal
       isOpen={showModal}
-      onRequestClose={handleCloseModal}
       contentLabel="login"
       shouldCloseOnOverlayClick={false}
       className={modalCls}
       overlayClassName={styles.overlay}
     >
-      <div className="py-12 px-6 w-full">
-        <img
-          className="mx-auto h-8 w-auto"
-          src={require('@/assets/images/tailwindui-logo.svg')}
-          alt=""
-        />
-        <p className="mt-6 text-sm text-center text-gray-900">Log in to your account</p>
+      <div className="w-full px-6 py-12">
+        <img className="w-auto h-10 mx-auto" src={require('@/assets/images/logo2.svg')} alt="" />
         <form className="mt-5" action="https://tailwindui.com/login" method="POST">
           <input type="hidden" name="_token" value="NSe3lVKUyYn8FLLyUJS4QPtH8Ei7xHL7JMaHtsTv" />{' '}
           <input type="hidden" name="remember" value="true" />
@@ -53,17 +49,17 @@ const ModalLogin = forwardRef((props, ref: Ref<LoginRefProps>) => {
                 aria-label="Email address"
                 name="email"
                 type="email"
-                className="border-gray-300 placeholder-gray-500 appearance-none rounded-none relative block w-full px-3 py-2 border text-gray-900 rounded-t-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm"
+                className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm"
                 placeholder="Email address"
                 value=""
               />
             </div>
-            <div className="-mt-px relative">
+            <div className="relative -mt-px">
               <input
                 aria-label="Password"
                 name="password"
                 type="password"
-                className="border-gray-300 placeholder-gray-500 appearance-none rounded-none relative block w-full px-3 py-2 border text-gray-900 rounded-b-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm"
+                className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm"
                 placeholder="Password"
               />
             </div>
@@ -71,28 +67,19 @@ const ModalLogin = forwardRef((props, ref: Ref<LoginRefProps>) => {
           <div className="mt-5">
             <button
               type="submit"
-              className="relative block w-full py-2 px-3 border border-transparent rounded-md text-white font-semibold bg-gray-800 hover:bg-gray-700 focus:bg-gray-900 focus:outline-none focus:shadow-outline sm:text-sm"
+              className="relative block w-full px-3 py-2 font-semibold text-white bg-gray-800 border border-transparent rounded-md hover:bg-gray-700 focus:bg-gray-900 focus:outline-none focus:shadow-outline sm:text-sm"
             >
-              <span className="absolute left-0 inset-y pl-3">
-                <svg className="h-5 w-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </span>
-              Log in
+              登录
             </button>
           </div>
         </form>
         <div className="mt-6">
           <div className="mt-6">
             <a
-              href="/pricing"
-              className="block w-full text-center py-2 px-3 border border-gray-300 rounded-md text-gray-900 font-medium hover:border-gray-400 focus:outline-none focus:border-gray-400 sm:text-sm"
+              onClick={handleCloseModal}
+              className="block w-full px-3 py-2 font-medium text-center text-gray-900 border border-gray-300 rounded-md cursor-pointer hover:border-gray-400 focus:outline-none focus:border-gray-400 sm:text-sm"
             >
-              Purchase a license
+              取消登录
             </a>
           </div>
         </div>
