@@ -27,15 +27,13 @@ const ArchiveItem: FC<ArchiveItemProps> = ({ month }) => {
 
 const Archives: NextPage = () => {
   return (
-    <>
-      <LayoutContainer>
-        <SummaryCard Icon={MdArchive} title="归档" total={12} />
-        <div className={styles.list}>
-          <h2>2020</h2>
-          <ArchiveItem month={'Jan'} />
-        </div>
-      </LayoutContainer>
-    </>
+    <LayoutContainer>
+      <SummaryCard Icon={MdArchive} title="归档" total={12} />
+      <div className={styles.list}>
+        <h2>2020</h2>
+        <ArchiveItem month={'Jan'} />
+      </div>
+    </LayoutContainer>
   )
 }
 
