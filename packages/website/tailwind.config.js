@@ -199,13 +199,6 @@ module.exports = {
             'blockquote > p:first-of-type::before': {
               content: '""',
             },
-            'pre': {
-              backgroundColor: '-',
-              color: theme('colors.white'),
-              borderRadius: 0,
-              marginTop: 0,
-              marginBottom: 0,
-            },
             'table': {
               fontSize: theme('fontSize.sm')[0],
               lineHeight: theme('fontSize.sm')[1].lineHeight,

@@ -1,11 +1,13 @@
-import { FC } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import * as path from 'path'
 import * as fs from 'fs'
-import matter from 'gray-matter'
-import remark from 'remark'
-import html from 'remark-html'
+import * as matter from 'gray-matter'
+import * as remark from 'remark'
+import * as html from 'remark-html'
 import LayoutContainer from '@/views/LayoutContainer/LayoutContainer'
+import 'highlight.js/styles/shades-of-purple.css'
+import highlight from 'highlight.js'
 
 interface PostProps {
   data: Record<string, any>
@@ -13,11 +15,23 @@ interface PostProps {
 }
 
 const Post: FC<PostProps> = ({ content }) => {
+  const mdRef = useRef<HTMLElement>()
+
+  // 高亮
+  useEffect(() => {
+    if (!mdRef.current) {
+      return
+    }
+    const blocks = mdRef.current.querySelectorAll('pre code')
+    blocks.forEach(block => {
+      highlight.highlightBlock(block as HTMLElement)
+    })
+  })
+
   return (
     <LayoutContainer>
       <div className="w-full bg-white rounded-lg shadow p-8">
-        {/*<div className="bg-blend-darken h-16 prose"></div>*/}
-        <article className="prose " dangerouslySetInnerHTML={{ __html: content }} />
+        <article ref={mdRef} className="prose " dangerouslySetInnerHTML={{ __html: content }} />
       </div>
     </LayoutContainer>
   )
