@@ -3,7 +3,11 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  purge: [],
+  purge: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    './views/**/*.{js,ts,jsx,tsx}',
+  ],
   darkMode: false, // or 'media' or 'class'
   theme: {
     colors: {
@@ -134,6 +138,9 @@ module.exports = {
       typography: theme => ({
         DEFAULT: {
           css: {
+            'img': {
+              margin: 'auto',
+            },
             'maxWidth': 'none',
             'color': theme('colors.gray.500'),
             '> :first-child': { marginTop: '-' },
@@ -191,13 +198,6 @@ module.exports = {
             },
             'blockquote > p:first-of-type::before': {
               content: '""',
-            },
-            'pre': {
-              backgroundColor: '-',
-              color: theme('colors.white'),
-              borderRadius: 0,
-              marginTop: 0,
-              marginBottom: 0,
             },
             'table': {
               fontSize: theme('fontSize.sm')[0],
@@ -284,5 +284,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 }

@@ -44,7 +44,7 @@ module.exports = {
     // 禁止条件表达式中出现赋值操作符
     "no-cond-assign": "error",
     // 禁用 console
-    "no-console": "error",
+    "no-console": "warn",
     // 禁止在条件中使用常量表达式
     "no-constant-condition": "error",
     // 禁止在正则表达式中使用控制字符
@@ -192,7 +192,7 @@ module.exports = {
     // 要求使用 Error 对象作为 Promise 拒绝的原因
     "prefer-promise-reject-errors": "error",
     // 禁止使用不带 await 表达式的 async 函数
-    "require-await": "error",
+    "require-await": "off",
     // 禁止混合常规变量声明和 require 调用
     "no-mixed-requires": "error",
     // 禁止在 import 和 export 和解构赋值时将引用重命名为相同的名字(Fixable)
