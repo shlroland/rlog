@@ -1,6 +1,5 @@
 import { NextPage } from 'next'
 import { MdArchive } from 'react-icons/md'
-import styleApp from '@/styles/App.module.css'
 import styles from './index.module.css'
 import LayoutContainer from '@/views/LayoutContainer/LayoutContainer'
 import SummaryCard from '@/components/SummaryCard'
@@ -29,15 +28,13 @@ const ArchiveItem: FC<ArchiveItemProps> = ({ month }) => {
 const Archives: NextPage = () => {
   return (
     <>
-      <main className={styleApp.wrapper}>
-        <LayoutContainer>
-          <SummaryCard Icon={MdArchive} title="归档" total={12} />
-          <div className={styles.list}>
-            <h2>2020</h2>
-            <ArchiveItem month={'Jan'} />
-          </div>
-        </LayoutContainer>
-      </main>
+      <LayoutContainer>
+        <SummaryCard Icon={MdArchive} title="归档" total={12} />
+        <div className={styles.list}>
+          <h2>2020</h2>
+          <ArchiveItem month={'Jan'} />
+        </div>
+      </LayoutContainer>
     </>
   )
 }
