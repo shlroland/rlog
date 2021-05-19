@@ -37,8 +37,11 @@ const Post: FC<PostProps> = ({ content }) => {
   )
 }
 
-export const getStaticProps: GetStaticProps<{}, { id: string }> = async ({ params }) => {
-  const { id } = params
+export const getStaticProps: GetStaticProps<
+  { data: any; content: string },
+  { id: string }
+> = async ({ params }) => {
+  const { id } = params as { id: string }
   const filePath = path.resolve(process.cwd(), '_posts', `${id}.md`)
   const fileContent = fs.readFileSync(filePath, 'utf8')
   const { data, content } = matter(fileContent)
