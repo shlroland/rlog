@@ -138,6 +138,9 @@ module.exports = {
       typography: theme => ({
         DEFAULT: {
           css: {
+            'img': {
+              margin: 'auto',
+            },
             'maxWidth': 'none',
             'color': theme('colors.gray.500'),
             '> :first-child': { marginTop: '-' },

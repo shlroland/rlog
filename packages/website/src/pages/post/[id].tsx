@@ -5,6 +5,7 @@ import * as fs from 'fs'
 import matter from 'gray-matter'
 import remark from 'remark'
 import html from 'remark-html'
+import LayoutContainer from '@/views/LayoutContainer/LayoutContainer'
 
 interface PostProps {
   data: Record<string, any>
@@ -12,7 +13,14 @@ interface PostProps {
 }
 
 const Post: FC<PostProps> = ({ content }) => {
-  return <article className="prose lg:prose-xl" dangerouslySetInnerHTML={{ __html: content }}></article>
+  return (
+    <LayoutContainer>
+      <div className="w-full bg-white rounded-lg shadow p-8">
+        {/*<div className="bg-blend-darken h-16 prose"></div>*/}
+        <article className="prose " dangerouslySetInnerHTML={{ __html: content }} />
+      </div>
+    </LayoutContainer>
+  )
 }
 
 export const getStaticProps: GetStaticProps<{}, { id: string }> = async ({ params }) => {
