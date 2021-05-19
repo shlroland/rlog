@@ -6,6 +6,7 @@
   "scripts": {
     "website:dev": "lerna exec --scope website -- yarn dev",
     "website:start": "lerna exec --scope website -- yarn start",
+    "website:build": "lerna exec --scope website -- yarn build",
     "server:start": "lerna exec --scope server -- yarn start"
   },
   "devDependencies": {
