@@ -2,9 +2,9 @@ import { FC, useEffect, useRef } from 'react'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import * as path from 'path'
 import * as fs from 'fs'
-import * as matter from 'gray-matter'
-import * as remark from 'remark'
-import * as html from 'remark-html'
+import matter from 'gray-matter'
+import remark from 'remark'
+import html from 'remark-html'
 import LayoutContainer from '@/views/LayoutContainer/LayoutContainer'
 import 'highlight.js/styles/shades-of-purple.css'
 import highlight from 'highlight.js'
@@ -15,7 +15,7 @@ interface PostProps {
 }
 
 const Post: FC<PostProps> = ({ content }) => {
-  const mdRef = useRef<HTMLElement>()
+  const mdRef = useRef<HTMLElement | null>(null)
 
   // 高亮
   useEffect(() => {
@@ -30,7 +30,7 @@ const Post: FC<PostProps> = ({ content }) => {
 
   return (
     <LayoutContainer>
-      <div className="w-full bg-white rounded-lg shadow p-8">
+      <div className="w-full p-8 bg-white rounded-lg shadow">
         <article ref={mdRef} className="prose " dangerouslySetInnerHTML={{ __html: content }} />
       </div>
     </LayoutContainer>
