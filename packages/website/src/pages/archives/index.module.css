@@ -1,5 +1,5 @@
 .list {
-  @apply p-4 shadow bg-white rounded-lg;
+  @apply p-4 bg-white rounded-lg shadow;
 }
 
 .list + .list {
@@ -7,11 +7,11 @@
 }
 
 .list > h2 {
-  @apply text-2xl mb-2;
+  @apply mb-2 text-2xl;
 }
 
 .item {
-  @apply py-2 px-4;
+  @apply px-4 py-2;
 }
 
 .item + .item {
@@ -19,30 +19,31 @@
 }
 
 .item > h3 {
-  @apply text-gray-400 text-lg;
+  @apply text-lg text-gray-400;
 }
 
 .item > ul {
-  @apply pl-9 list-disc;
+  @apply list-disc pl-9;
 }
 
 .item > ul > li {
-  padding: 0.5rem 0rem;
+  padding: 0.5rem 0;
+
   @apply relative;
 }
 
-.item > ul > li::marker {
-    @apply text-gray-400
+.item > ul > li::marker { 
+  @apply text-gray-400 
 }
 
 .item a {
-  @apply h-full whitespace-nowrap overflow-hidden overflow-ellipsis;
+  @apply h-full overflow-hidden whitespace-nowrap overflow-ellipsis;
 }
 
 .item .title {
-  @apply text-gray-600 font-medium text-base whitespace-nowrap overflow-hidden overflow-ellipsis;
+  @apply overflow-hidden text-base font-medium text-gray-600 whitespace-nowrap overflow-ellipsis;
 }
 
 .item .meta {
-  @apply text-gray-500 text-sm m-0 pr-4;
+  @apply pr-4 m-0 text-sm text-gray-500;
 }
