@@ -37,8 +37,6 @@ yarn-error.log*
 
 *.lock
 
-/.idea
-
 # roadhog-api-doc ignore
 packages/admin/src/utils/request-temp.js
 _roadhog-api-doc
