@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm test
+lerna run --concurrency 1 --stream lint-staged --since HEAD --exclude-dependents

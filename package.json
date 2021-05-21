@@ -26,6 +26,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "husky": "^6.0.0",
     "lerna": "^3.22.1",
+    "lint-staged": ">=10",
     "prettier": "^2.3.0",
     "stylelint": "^13.13.1",
     "stylelint-config-recommended": "^3.0.0",
