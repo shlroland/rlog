@@ -20,7 +20,6 @@ module.exports = {
     "plugin:import/typescript",
     "plugin:import/react",
     "prettier",
-    "prettier/@typescript-eslint",
     "plugin:prettier/recommended"
   ],
   rules: {
