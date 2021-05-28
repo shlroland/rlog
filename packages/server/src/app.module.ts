@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
+// import { GraphqlModule } from './graphql/graphql.module';
 
 @Module({
   imports: [AuthModule],
-  providers: [AppService, AuthService],
+  providers: [AuthService],
 })
 export class AppModule {}
