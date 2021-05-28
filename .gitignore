@@ -53,5 +53,7 @@ screenshot
 .firebase
 .eslintcache
 
+/.idea
+
 build
 
