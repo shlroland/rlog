@@ -1,0 +1,29 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PostItemModel {
+  _id: ID!
+  posterUrl: String!
+  title: String!
+  summary: String!
+  content: String!
+  tags: [String!]!
+  lastModifiedDate: DateTime!
+  like: Float!
+  pv: Float!
+  isPublic: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  prev: PostItemModel
+  next: PostItemModel
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  getPostById(id: ID!): PostItemModel!
+}
