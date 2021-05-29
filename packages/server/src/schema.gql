@@ -27,3 +27,17 @@ scalar DateTime
 type Query {
   getPostById(id: ID!): PostItemModel!
 }
+
+type Mutation {
+  createPost(input: CreatePostInput!): PostItemModel!
+}
+
+input CreatePostInput {
+  posterUrl: String!
+  title: String!
+  summary: String!
+  content: String!
+  tags: [String!]!
+  lastModifiedDate: DateTime!
+  isPublic: Boolean
+}
