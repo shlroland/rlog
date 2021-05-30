@@ -6,8 +6,9 @@ import { GraphqlModule } from './graphql/graphql.module'
 import { PostsModule } from './posts/posts.module'
 import { DatabaseModule } from './database/database.module'
 import { UserModule } from './user/user.module'
-import { APP_PIPE } from '@nestjs/core'
-import { GraphQlValidationPipe } from './pipes/graphql-validation.pipe'
+import { APP_FILTER, APP_PIPE } from '@nestjs/core'
+import { GraphQlValidationPipe } from './utils/pipes/graphql-validation.pipe'
+import { GraphQLExceptionFilter } from './utils/filters/graqhql-exception.filter'
 @Module({
   imports: [
     AuthModule,
@@ -18,6 +19,10 @@ import { GraphQlValidationPipe } from './pipes/graphql-validation.pipe'
     UserModule,
   ],
   providers: [
+    {
+      provide: APP_FILTER,
+      useClass: GraphQLExceptionFilter,
+    },
     {
       provide: APP_PIPE,
       useClass: GraphQlValidationPipe,
