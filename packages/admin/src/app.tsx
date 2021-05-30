@@ -8,6 +8,8 @@ import Footer from '@/components/Footer';
 import type { ResponseError } from 'umi-request';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+import { ApolloProvider } from '@apollo/client';
+import { client } from '@/graphql/apploClient';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -100,6 +102,7 @@ export const request: RequestConfig = {
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState }) => {
   return {
+    childrenRender: (children) => <ApolloProvider client={client}>{children}</ApolloProvider>,
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
