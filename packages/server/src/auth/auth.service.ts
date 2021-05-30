@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { AuthenticationError, ForbiddenError } from 'apollo-server-express'
+import { User } from 'src/user/schemas/user.schema'
 import { UserService } from 'src/user/user.service'
 import { LoginInput } from './dtos/login.input'
 import { RegisterInput } from './dtos/register.input'
+import { isEmail } from 'class-validator'
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class AuthService {
@@ -12,18 +15,42 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  private async validdateUser(email: string, password: string) {
-    const user = await this.userService.findOneByEmail(email)
+  private async generateJWT(res: User) {
+    const { username, email, ...rest } = res.toObject()
+    const payload = { username, email, sub: rest._id }
+    return { authorization: this.jwtService.sign(payload), ...rest }
+  }
+
+  private async validdateUser(username: string, password: string) {
+    let user: User
+    if (isEmail(username)) {
+      user = await this.userService.findOneByEmail(username)
+    } else {
+      user = await this.userService.findOneByUsername(username)
+    }
+
     if (user) {
       return user
     }
+
+    if (user && this.isValidPassword(password, user.password)) {
+      return user
+    }
+
     throw new AuthenticationError(
       'Your username and password do not match. Please try again!',
     )
   }
 
-  public async login(input: LoginInput) {
-    const {} = input
+  private isValidPassword(plainPwd: string, encryptedPwd: string): boolean {
+    return bcrypt.compareSync(plainPwd, encryptedPwd)
+  }
+
+  public async login(loginInput: LoginInput) {
+    const { username, password } = loginInput
+
+    const res = await this.validdateUser(username, password)
+    return this.generateJWT(res)
   }
 
   public async register(registerInput: RegisterInput) {

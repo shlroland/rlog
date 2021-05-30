@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config'
 import * as path from 'path'
+import * as bcrypt from 'bcrypt'
 import { isProd } from './env'
 
 export const getEnvFilePath = () => {
@@ -24,3 +25,7 @@ export const getMongoUri = (configService: ConfigService) => {
 
   return isProd() ? `${prefix}${auth}${connection}` : `${prefix}${connection}`
 }
+
+export const SALT_WORK_FACTOR = 10
+export const encryptPassword = (password: string) =>
+  bcrypt.hashSync(password, SALT_WORK_FACTOR)
