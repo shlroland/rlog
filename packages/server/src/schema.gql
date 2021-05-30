@@ -3,10 +3,11 @@
 # ------------------------------------------------------
 
 type UserModel {
-  _id: ID!
+  id: ID!
   username: String!
   email: String!
   password: String!
+  authorization: String!
 }
 
 type PostItemModel {
@@ -39,7 +40,6 @@ type Query {
 input LoginInput {
   username: String!
   password: String!
-  token: String!
 }
 
 type Mutation {
