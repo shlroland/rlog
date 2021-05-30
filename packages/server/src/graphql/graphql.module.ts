@@ -9,7 +9,6 @@ import { join } from 'path'
       imports: [ConfigModule],
       inject: [ConfigService],
       async useFactory(...rest) {
-        console.log(rest, join(process.cwd(), 'src/schema.gql'))
         return {
           // typePaths: ['./**/*.gql'],
           context: ({ req, res }) => ({ req, res }),

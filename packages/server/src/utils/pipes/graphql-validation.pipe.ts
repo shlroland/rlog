@@ -11,7 +11,6 @@ export class GraphQlValidationPipe<T> implements PipeTransform<T> {
     }
     const object = plainToClass(metatype, value)
     const errors = await validate(object)
-    console.log(errors)
     if (errors.length > 0) {
       const message = errors
         .map((validationError) => Object.values(validationError.constraints))
