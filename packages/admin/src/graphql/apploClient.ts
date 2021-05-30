@@ -6,9 +6,8 @@ import { persistCache, LocalStorageWrapper } from 'apollo3-cache-persist';
 
 // const isDev = process.env.NODE_ENV === 'development';
 const cache = new InMemoryCache();
-
 const httpLink = new BatchHttpLink({
-  uri: process.env.REACT_APP_GRAPHQL_URL,
+  uri: REACT_APP_GRAPHQL_URL,
 });
 
 const authLink = setContext((...rest) => {
