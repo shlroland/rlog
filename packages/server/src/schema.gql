@@ -43,7 +43,14 @@ input LoginInput {
 }
 
 type Mutation {
+  register(input: RegisterInput!): UserModel!
   createPost(input: CreatePostInput!): PostItemModel!
+}
+
+input RegisterInput {
+  email: String!
+  username: String!
+  password: String!
 }
 
 input CreatePostInput {

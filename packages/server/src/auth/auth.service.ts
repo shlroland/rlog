@@ -40,6 +40,7 @@ export class AuthService {
       )
     } else {
       const res = await this.userService.create({ ...registerInput })
+      return res
     }
   }
 }
