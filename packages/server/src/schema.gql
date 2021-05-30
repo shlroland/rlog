@@ -33,18 +33,18 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Query {
-  login(input: LoginInput!): UserModel!
   getPostById(id: ID!): PostItemModel!
+}
+
+type Mutation {
+  login(input: LoginInput!): UserModel!
+  register(input: RegisterInput!): UserModel!
+  createPost(input: CreatePostInput!): PostItemModel!
 }
 
 input LoginInput {
   username: String!
   password: String!
-}
-
-type Mutation {
-  register(input: RegisterInput!): UserModel!
-  createPost(input: CreatePostInput!): PostItemModel!
 }
 
 input RegisterInput {
