@@ -31,5 +31,4 @@ export class Post extends Document {
   isPublic: boolean
 }
 
-export type PostDocument = Post & Document
 export const PostSchema = SchemaFactory.createForClass(Post)
