@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, concat } from '@apollo/client';
+import { ApolloClient, InMemoryCache, from } from '@apollo/client';
 import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
@@ -32,7 +32,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 export const client = new ApolloClient({
   cache,
-  link: concat(httpLink, authLink).concat(errorLink),
+  link: from([errorLink, authLink, httpLink]),
   defaultOptions: {
     watchQuery: {
       fetchPolicy: 'cache-and-network',
