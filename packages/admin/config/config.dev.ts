@@ -15,4 +15,7 @@ export default defineConfig({
   webpack5: {
     // lazyCompilation: {},
   },
+  define: {
+    REACT_APP_GRAPHQL_URL: 'http://localhost:8023/graphql',
+  },
 });
