@@ -31,6 +31,7 @@
     "@nestjs/platform-express": "^7.5.1",
     "@types/mongoose": "^5.10.5",
     "apollo-server-express": "^2.25.0",
+    "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "cross-env": "^7.0.3",
     "graphql": "^15.5.0",

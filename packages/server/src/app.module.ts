@@ -6,6 +6,8 @@ import { GraphqlModule } from './graphql/graphql.module'
 import { PostsModule } from './posts/posts.module'
 import { DatabaseModule } from './database/database.module'
 import { UserModule } from './user/user.module'
+import { APP_PIPE } from '@nestjs/core'
+import { GraphQlValidationPipe } from './pipes/graphql-validation.pipe'
 @Module({
   imports: [
     AuthModule,
@@ -14,6 +16,12 @@ import { UserModule } from './user/user.module'
     PostsModule,
     DatabaseModule,
     UserModule,
+  ],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useClass: GraphQlValidationPipe,
+    },
   ],
 })
 export class AppModule {}
