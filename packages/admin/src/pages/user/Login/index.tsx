@@ -9,12 +9,13 @@ import {
 import { Alert, Space, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
-import { useIntl, Link, history, FormattedMessage, SelectLang, useModel } from 'umi';
-import Footer from '@/components/Footer';
-import { login } from '@/services/ant-design-pro/api';
+import { useIntl, Link, FormattedMessage, SelectLang } from 'umi';
+// import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
-
+import { useMutation } from '@apollo/client';
 import styles from './index.less';
+import { LOGIN } from './typeDefs';
+import { omit } from 'lodash';
 
 const LoginMessage: React.FC<{
   content: string;
@@ -30,51 +31,59 @@ const LoginMessage: React.FC<{
 );
 
 /** 此方法会跳转到 redirect 参数所在的位置 */
-const goto = () => {
-  if (!history) return;
-  setTimeout(() => {
-    const { query } = history.location;
-    const { redirect } = query as { redirect: string };
-    history.push(redirect || '/');
-  }, 10);
-};
+// const goto = () => {
+//   if (!history) return;
+//   setTimeout(() => {
+//     const { query } = history.location;
+//     const { redirect } = query as { redirect: string };
+//     history.push(redirect || '/');
+//   }, 10);
+// };
 
 const Login: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [userLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
-  const { initialState, setInitialState } = useModel('@@initialState');
+  // const { initialState, setInitialState } = useModel('@@initialState');
 
   const intl = useIntl();
 
-  const fetchUserInfo = async () => {
-    const userInfo = await initialState?.fetchUserInfo?.();
-    if (userInfo) {
-      setInitialState({
-        ...initialState,
-        currentUser: userInfo,
-      });
-    }
-  };
+  // const fetchUserInfo = async () => {
+  //   const userInfo = await initialState?.fetchUserInfo?.();
+  //   if (userInfo) {
+  //     setInitialState({
+  //       ...initialState,
+  //       currentUser: userInfo,
+  //     });
+  //   }
+  // };
+
+  const [loginMutate] = useMutation(LOGIN);
 
   const handleSubmit = async (values: API.LoginParams) => {
     setSubmitting(true);
     try {
       // 登录
-      const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
-        const defaultloginSuccessMessage = intl.formatMessage({
-          id: 'pages.login.success',
-          defaultMessage: '登录成功！',
-        });
-        message.success(defaultloginSuccessMessage);
-        await fetchUserInfo();
-        goto();
-        return;
-      }
+      const result = await loginMutate({
+        variables: { input: omit({ ...values }, ['autoLogin']) },
+      });
+      console.log(result);
+      // const msg = await login({ ...values, type });
+
+      // if (msg.status === 'ok') {
+      //   const defaultloginSuccessMessage = intl.formatMessage({
+      //     id: 'pages.login.success',
+      //     defaultMessage: '登录成功！',
+      //   });
+      //   message.success(defaultloginSuccessMessage);
+      //   // await fetchUserInfo();
+      //   // goto();
+      //   return;
+      // }
       // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      // setUserLoginState(msg);
     } catch (error) {
+      console.log(error);
       const defaultloginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
         defaultMessage: '登录失败，请重试！',
@@ -308,7 +317,6 @@ const Login: React.FC = () => {
           </Space>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
