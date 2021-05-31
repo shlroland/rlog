@@ -17,3 +17,17 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const REGISTER = gql`
+  mutation Register($input: RegisterInput!) {
+    register(input: $input) {
+      id
+    }
+  }
+`;
+
+export interface RegisterData {
+  register: {
+    id: string;
+  };
+}

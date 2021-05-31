@@ -1,12 +1,12 @@
 import ProForm, { ProFormText } from '@ant-design/pro-form';
 import type { FC } from 'react';
 import { useState } from 'react';
-import { useIntl, FormattedMessage } from 'umi';
-import { LOGIN } from './typeDefs';
+import { useIntl, FormattedMessage, Link } from 'umi';
+import { LOGIN } from '../typeDefs';
 import { useMutation } from '@apollo/client';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { message, Alert } from 'antd';
-import styles from './index.less';
+import styles from '../components/index.less';
 import Container from '../components/Container';
 
 const LoginMessage: React.FC<{
@@ -160,13 +160,14 @@ const LoginForm: FC = () => {
             overflow: 'hidden',
           }}
         >
-          <a
+          <Link
+            to="/user/register"
             style={{
               float: 'left',
             }}
           >
             <span>注册账号</span>
-          </a>
+          </Link>
           <a
             style={{
               float: 'right',
@@ -183,9 +184,6 @@ const LoginForm: FC = () => {
     <WeiboCircleOutlined className={styles.icon} />
   </Space> */}
     </Container>
-    // <>
-
-    // </>
   );
 };
 
