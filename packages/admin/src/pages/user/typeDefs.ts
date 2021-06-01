@@ -11,12 +11,20 @@ export const USER_FRAGMENT = gql`
 `;
 
 export const LOGIN = gql`
-  mutation Login($input: LoginInput!) {
+  query Login($input: LoginInput!) {
     login(input: $input) {
       authorization
+      userId
     }
   }
 `;
+
+export interface LoginData {
+  login: {
+    authorization: string;
+    userId: string;
+  };
+}
 
 export const REGISTER = gql`
   mutation Register($input: RegisterInput!) {

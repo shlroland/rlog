@@ -1,13 +1,15 @@
 import ProForm, { ProFormText } from '@ant-design/pro-form';
 import type { FC } from 'react';
 import { useState } from 'react';
-import { useIntl, FormattedMessage, Link } from 'umi';
+import { useIntl, FormattedMessage, Link, useModel, history } from 'umi';
+import type { LoginData } from '../typeDefs';
 import { LOGIN } from '../typeDefs';
-import { useMutation } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { message, Alert } from 'antd';
 import styles from '../components/index.less';
 import Container from '../components/Container';
+import { saveToken, saveUserId } from '@/utils/storage';
 
 const LoginMessage: React.FC<{
   content: string;
@@ -23,55 +25,43 @@ const LoginMessage: React.FC<{
 );
 
 /** 此方法会跳转到 redirect 参数所在的位置 */
-// const goto = () => {
-//   if (!history) return;
-//   setTimeout(() => {
-//     const { query } = history.location;
-//     const { redirect } = query as { redirect: string };
-//     history.push(redirect || '/');
-//   }, 10);
-// };
+const goto = () => {
+  if (!history) return;
+  setTimeout(() => {
+    const { query } = history.location;
+    const { redirect } = query as { redirect: string };
+    history.push(redirect || '/');
+  }, 10);
+};
 
 const LoginForm: FC = () => {
   const intl = useIntl();
-  const [submitting, setSubmitting] = useState(false);
   const [userLoginState] = useState<API.LoginResult>({});
-  const [loginMutate] = useMutation(LOGIN);
-  const { status } = userLoginState;
+  const { initialState, setInitialState } = useModel('@@initialState');
 
-  const handleSubmit = async (values: API.LoginParams) => {
-    setSubmitting(true);
-    try {
-      // 登录
-      const result = await loginMutate({
-        variables: { input: { ...values } },
-      });
-      console.log(result);
-      // const msg = await login({ ...values, type });
-
-      // if (msg.status === 'ok') {
-      //   const defaultloginSuccessMessage = intl.formatMessage({
-      //     id: 'pages.login.success',
-      //     defaultMessage: '登录成功！',
-      //   });
-      //   message.success(defaultloginSuccessMessage);
-      //   // await fetchUserInfo();
-      //   // goto();
-      //   return;
-      // }
-      // 如果失败去设置用户错误信息
-      // setUserLoginState(msg);
-    } catch (error) {
-      console.log(error);
+  const [loginMutate, { loading }] = useLazyQuery<LoginData>(LOGIN, {
+    errorPolicy: 'none',
+    fetchPolicy: 'no-cache',
+    onError() {
       const defaultloginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
         defaultMessage: '登录失败，请重试！',
       });
 
       message.error(defaultloginFailureMessage);
-    }
-    setSubmitting(false);
-  };
+    },
+    onCompleted({ login }) {
+      const { authorization, userId } = login;
+      saveToken(authorization);
+      saveUserId(userId);
+      setInitialState({
+        ...initialState,
+        currentUser: userId,
+      });
+      goto();
+    },
+  });
+  const { status } = userLoginState;
 
   return (
     <Container>
@@ -88,15 +78,17 @@ const LoginForm: FC = () => {
           },
           render: (_, dom) => dom.pop(),
           submitButtonProps: {
-            loading: submitting,
+            loading,
             size: 'large',
             style: {
               width: '100%',
             },
           },
         }}
-        onFinish={async (values) => {
-          handleSubmit(values as API.LoginParams);
+        onFinish={async (values: API.LoginParams) => {
+          await loginMutate({
+            variables: { input: { ...values } },
+          });
         }}
       >
         {status === 'error' && (
