@@ -10,7 +10,8 @@ import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import { ApolloProvider } from '@apollo/client';
 import { client } from '@/graphql/apploClient';
 import { getUserId } from './utils/storage';
-import { UserInfo, USER_INFO } from './typeDefs';
+import type { UserInfo } from './typeDefs';
+import { USER_INFO } from './typeDefs';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -141,6 +142,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         ]
       : [],
     menuHeaderRender: undefined,
+    iconfontUrl: '//at.alicdn.com/t/font_2586167_hph2kie7ilm.js',
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     ...initialState?.settings,

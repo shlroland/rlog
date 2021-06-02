@@ -48,6 +48,12 @@
     component: './TableList',
   },
   {
+    name: '文章管理',
+    icon: 'icon-blog',
+    path: '/post',
+    component: './Post',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
