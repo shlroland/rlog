@@ -6,7 +6,7 @@ export function saveToken(token: string) {
 }
 
 export function getToken() {
-  return JSON.parse(TOKEN_KEY);
+  return localStorage.getItem(TOKEN_KEY);
 }
 
 export function deleteToken() {
@@ -18,7 +18,7 @@ export function saveUserId(token: string) {
 }
 
 export function getUserId() {
-  return JSON.parse(USER_ID);
+  return localStorage.getItem(USER_ID);
 }
 
 export function deleteUserId() {

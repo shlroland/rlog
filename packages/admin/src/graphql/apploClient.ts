@@ -1,3 +1,4 @@
+import { getToken } from '@/utils/storage';
 import { ApolloClient, InMemoryCache, from } from '@apollo/client';
 import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { setContext } from '@apollo/client/link/context';
@@ -10,8 +11,10 @@ const httpLink = new BatchHttpLink({
   uri: REACT_APP_GRAPHQL_URL,
 });
 
-const authLink = setContext((...rest) => {
-  console.log(rest);
+const authLink = setContext(() => {
+  const token = getToken();
+  console.log(token);
+  // console.log(_, headers, token);
   return {};
 });
 

@@ -34,6 +34,7 @@ scalar DateTime
 
 type Query {
   login(input: LoginInput!): UserModel!
+  getUserInfo(userId: String!): UserModel!
   getPostById(id: ID!): PostItemModel!
 }
 

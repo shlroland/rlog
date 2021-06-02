@@ -6,10 +6,11 @@ import { getIntl, getLocale, history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import type { ResponseError } from 'umi-request';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import { ApolloProvider } from '@apollo/client';
 import { client } from '@/graphql/apploClient';
+import { getUserId } from './utils/storage';
+import { UserInfo, USER_INFO } from './typeDefs';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -25,14 +26,22 @@ export const initialStateConfig = {
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  currentUser?: any;
+  fetchUserInfo?: () => Promise<any | undefined>;
 }> {
   const fetchUserInfo = async () => {
     try {
-      const currentUser = await queryCurrentUser();
-      return currentUser;
+      const userId = getUserId();
+      if (!userId) throw Error('不存在当前用户');
+      const {
+        data: { getUserInfo },
+      } = await client.query<UserInfo>({
+        query: USER_INFO,
+        variables: { userId },
+      });
+      return getUserInfo;
     } catch (error) {
+      console.log(error);
       history.push(loginPath);
     }
     return undefined;
