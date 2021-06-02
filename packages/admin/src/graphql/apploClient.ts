@@ -11,11 +11,14 @@ const httpLink = new BatchHttpLink({
   uri: REACT_APP_GRAPHQL_URL,
 });
 
-const authLink = setContext(() => {
+const authLink = setContext((_, { headers }) => {
   const token = getToken();
-  console.log(token);
-  // console.log(_, headers, token);
-  return {};
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
