@@ -48,7 +48,7 @@
     component: './TableList',
   },
   {
-    name: '文章管理',
+    name: 'post',
     icon: 'icon-blog',
     path: '/post',
     component: './Post',
