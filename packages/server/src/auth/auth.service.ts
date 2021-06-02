@@ -33,11 +33,6 @@ export class AuthService {
     } else {
       user = await this.userService.findOneByUsername(username)
     }
-
-    if (user) {
-      return user
-    }
-
     if (user && this.isValidPassword(password, user.password)) {
       return user
     }
