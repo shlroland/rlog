@@ -1,7 +1,7 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Input, Drawer } from 'antd';
+import { Button, message, Drawer, Tag } from 'antd';
 import React, { useState, useRef } from 'react';
-import { useIntl, FormattedMessage } from 'umi';
+import { useIntl, FormattedMessage, Link } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
@@ -11,6 +11,7 @@ import ProDescriptions from '@ant-design/pro-descriptions';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
 import { rule, addRule, updateRule, removeRule } from '@/services/ant-design-pro/api';
+import { getRandomColor } from '@/utils/colors';
 
 /**
  * 添加节点
@@ -94,14 +95,9 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.RuleListItem>[] = [
     {
-      title: (
-        <FormattedMessage
-          id="pages.searchTable.updateForm.ruleName.nameLabel"
-          defaultMessage="规则名称"
-        />
-      ),
+      title: '标题',
       dataIndex: 'name',
-      tip: '规则名称是唯一的 key',
+      fixed: 'left',
       render: (dom, entity) => {
         return (
           <a
@@ -116,77 +112,125 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleDesc" defaultMessage="描述" />,
-      dataIndex: 'desc',
-      valueType: 'textarea',
-    },
-    {
-      title: <FormattedMessage id="pages.searchTable.titleCallNo" defaultMessage="服务调用次数" />,
-      dataIndex: 'callNo',
-      sorter: true,
-      hideInForm: true,
-      renderText: (val: string) =>
-        `${val}${intl.formatMessage({
-          id: 'pages.searchTable.tenThousand',
-          defaultMessage: ' 万 ',
-        })}`,
-    },
-    {
-      title: <FormattedMessage id="pages.searchTable.titleStatus" defaultMessage="状态" />,
+      title: '状态',
       dataIndex: 'status',
-      hideInForm: true,
+      width: 120,
       valueEnum: {
-        0: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.default" defaultMessage="关闭" />
-          ),
-          status: 'Default',
-        },
-        1: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.running" defaultMessage="运行中" />
-          ),
+        draft: {
+          text: '草稿',
           status: 'Processing',
         },
-        2: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.online" defaultMessage="已上线" />
-          ),
+        released: {
+          text: '已发布',
           status: 'Success',
         },
-        3: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.abnormal" defaultMessage="异常" />
-          ),
+        hidden: {
+          text: '已隐藏',
           status: 'Error',
         },
       },
     },
     {
-      title: (
-        <FormattedMessage id="pages.searchTable.titleUpdatedAt" defaultMessage="上次调度时间" />
-      ),
-      sorter: true,
-      dataIndex: 'updatedAt',
-      valueType: 'dateTime',
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
-        const status = form.getFieldValue('status');
-        if (`${status}` === '0') {
-          return false;
-        }
-        if (`${status}` === '3') {
-          return (
-            <Input
-              {...rest}
-              placeholder={intl.formatMessage({
-                id: 'pages.searchTable.exception',
-                defaultMessage: '请输入异常原因！',
-              })}
-            />
-          );
-        }
-        return defaultRender(item);
+      title: '分类',
+      key: 'category',
+      dataIndex: 'category',
+      width: 100,
+      render: (category) =>
+        category ? <Tag color={getRandomColor(category as string)}>{category}</Tag> : null,
+    },
+    {
+      title: '标签',
+      key: 'tags',
+      dataIndex: 'tags',
+      width: 200,
+      render() {
+        return (
+          <div>
+            {/* {tags
+              ? tags.map((tag) => {
+                  return <Tag>{tag}</Tag>;
+                })
+              : null} */}
+          </div>
+        );
       },
+    },
+    {
+      title: '阅读量',
+      dataIndex: 'views',
+      width: 120,
+    },
+    {
+      title: '喜欢数',
+      dataIndex: 'likes',
+      key: 'likes',
+      width: 120,
+    },
+    // {
+    //   title: <FormattedMessage id="pages.searchTable.titleCallNo" defaultMessage="服务调用次数" />,
+    //   dataIndex: 'callNo',
+    //   sorter: true,
+    //   hideInForm: true,
+    //   renderText: (val: string) =>
+    //     `${val}${intl.formatMessage({
+    //       id: 'pages.searchTable.tenThousand',
+    //       defaultMessage: ' 万 ',
+    //     })}`,
+    // },
+    // {
+    //   title: <FormattedMessage id="pages.searchTable.titleStatus" defaultMessage="状态" />,
+    //   dataIndex: 'status',
+    //   hideInForm: true,
+    //   valueEnum: {
+    //     0: {
+    //       text: (
+    //         <FormattedMessage id="pages.searchTable.nameStatus.default" defaultMessage="关闭" />
+    //       ),
+    //       status: 'Default',
+    //     },
+    //     1: {
+    //       text: (
+    //         <FormattedMessage id="pages.searchTable.nameStatus.running" defaultMessage="运行中" />
+    //       ),
+    //       status: 'Processing',
+    //     },
+    //     2: {
+    //       text: (
+    //         <FormattedMessage id="pages.searchTable.nameStatus.online" defaultMessage="已上线" />
+    //       ),
+    //       status: 'Success',
+    //     },
+    //     3: {
+    //       text: (
+    //         <FormattedMessage id="pages.searchTable.nameStatus.abnormal" defaultMessage="异常" />
+    //       ),
+    //       status: 'Error',
+    //     },
+    //   },
+    // },
+    {
+      title: '发布时间',
+      sorter: true,
+      dataIndex: 'createTime',
+      valueType: 'dateTime',
+      // renderFormItem: (item, { defaultRender, ...rest }, form) => {
+      //   const status = form.getFieldValue('status');
+      //   if (`${status}` === '0') {
+      //     return false;
+      //   }
+      //   if (`${status}` === '3') {
+      //     return (
+      //       <Input
+      //         {...rest}
+      //         placeholder={intl.formatMessage({
+      //           id: 'pages.searchTable.exception',
+      //           defaultMessage: '请输入异常原因！',
+      //         })}
+      //       />
+      //     );
+      //   }
+      //   return defaultRender(item);
+      // },
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
@@ -222,14 +266,10 @@ const TableList: React.FC = () => {
           labelWidth: 120,
         }}
         toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleModalVisible(true);
-            }}
-          >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="新建" />
+          <Button type="primary" key="primary">
+            <Link to="/editor" target="_blank">
+              <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="新建" />
+            </Link>
           </Button>,
         ]}
         request={rule}
