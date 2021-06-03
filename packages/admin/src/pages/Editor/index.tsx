@@ -6,15 +6,29 @@ import Vditor from 'vditor';
 import './index.scss';
 import { createFromIconfontCN, SaveTwoTone } from '@ant-design/icons';
 import { ICONFONT_URL } from '@/utils/utils';
+import { toolbar } from './editorConfig';
+import { useRef } from 'react';
 
 const Iconfont = createFromIconfontCN({
   scriptUrl: [ICONFONT_URL],
 });
 
 const ArticleEditor: FC = () => {
+  const vditorRef = useRef<HTMLDivElement>(null);
+
+  const fullScreenFn = () => {
+    if (vditorRef.current) {
+      vditorRef.current.requestFullscreen();
+    }
+  };
+
   useEffect(() => {
-    const vditor = new Vditor('vditor', {
+    const vditor = new Vditor(vditorRef.current!, {
       width: '80%',
+      cache: {
+        id: 'vditor',
+      },
+      toolbar: [...toolbar(fullScreenFn)],
     });
     console.log(vditor);
   }, []);
@@ -36,7 +50,7 @@ const ArticleEditor: FC = () => {
           </div>
         </div>
       </header>
-      <div id="vditor"></div>
+      <div id="vditor" ref={vditorRef}></div>
     </div>
   );
 };
