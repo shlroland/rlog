@@ -12,6 +12,7 @@ import { client } from '@/graphql/apploClient';
 import { getUserId } from './utils/storage';
 import type { UserInfo } from './typeDefs';
 import { USER_INFO } from './typeDefs';
+import { ICONFONT_URL } from './utils/utils';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -142,7 +143,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         ]
       : [],
     menuHeaderRender: undefined,
-    iconfontUrl: '//at.alicdn.com/t/font_2586167_hph2kie7ilm.js',
+    iconfontUrl: ICONFONT_URL,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     ...initialState?.settings,
