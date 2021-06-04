@@ -1,14 +1,15 @@
 import type { FC } from 'react';
+import { useRef } from 'react';
+import { useFullSreenFn } from './useFullScreenFn';
 import Logo from '@/assets/images/logo2.svg';
 import { Button, Space } from 'antd';
 import { useEffect } from 'react';
 import Vditor from 'vditor';
-import './index.scss';
 import { createFromIconfontCN, SaveTwoTone } from '@ant-design/icons';
 import { ICONFONT_URL } from '@/utils/utils';
 import { toolbar } from './editorConfig';
-import { useRef } from 'react';
-import { useFullSreenFn } from './useFullScreenFn';
+import SettingDrawer from './SettingDrawer';
+import './index.scss';
 
 const Iconfont = createFromIconfontCN({
   scriptUrl: [ICONFONT_URL],
@@ -16,19 +17,22 @@ const Iconfont = createFromIconfontCN({
 
 const ArticleEditor: FC = () => {
   const vditorRef = useRef<HTMLDivElement>(null);
+  const vditor = useRef<Vditor>();
 
   const [toggleFullScreen] = useFullSreenFn(vditorRef);
 
   useEffect(() => {
-    const vditor = new Vditor(vditorRef.current!, {
+    vditor.current = new Vditor(vditorRef.current!, {
       width: '80%',
       cache: {
         id: 'vditor',
       },
+      counter: {
+        enable: true,
+      },
       toolbar: [...toolbar(toggleFullScreen)],
     });
-    console.log(vditor);
-  }, []);
+  }, [toggleFullScreen]);
 
   return (
     <div className="editor-page">
@@ -40,6 +44,7 @@ const ArticleEditor: FC = () => {
           <div className="editor-page--header__buttons">
             <Space>
               <Button icon={<SaveTwoTone />}>保存草稿</Button>
+              <SettingDrawer />
               <Button type="primary" icon={<Iconfont type="icon-fabu" />}>
                 发布
               </Button>
