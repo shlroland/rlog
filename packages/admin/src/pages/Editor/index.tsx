@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useRef } from 'react';
 import { useFullSreenFn } from './useFullScreenFn';
 import Logo from '@/assets/images/logo2.svg';
-import { Button, Space } from 'antd';
+import { Button, Input, Space } from 'antd';
 import { useEffect } from 'react';
 import Vditor from 'vditor';
 import { createFromIconfontCN, SaveTwoTone } from '@ant-design/icons';
@@ -40,6 +40,9 @@ const ArticleEditor: FC = () => {
         <div className="editor-page--header__body">
           <div className="editor-page--header__logo">
             <img src={Logo} alt="" height={45} style={{ verticalAlign: 'middle' }} />
+          </div>
+          <div className="editor-page--header__title">
+            <Input placeholder="请输入文章标题" bordered={false} />
           </div>
           <div className="editor-page--header__buttons">
             <Space>

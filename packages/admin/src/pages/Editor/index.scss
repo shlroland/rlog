@@ -21,6 +21,7 @@
       background 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955);
   }
   &--header__body {
+    display: flex;
     width: 80%;
     max-width: 1440px;
     height: 100%;
@@ -30,12 +31,18 @@
   &--header__logo {
     display: inline-flex;
     align-items: center;
+    float: left;
     height: 60px;
     line-height: 60px;
   }
 
-  &--header__buttons {
-    float: right;
+  &--header__title {
+    flex: 1;
+    .ant-input {
+      height: 60px;
+      font-size: 32px;
+      line-height: 60px;
+    }
   }
 
   #vditor {
