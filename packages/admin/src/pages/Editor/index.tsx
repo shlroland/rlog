@@ -8,6 +8,7 @@ import { createFromIconfontCN, SaveTwoTone } from '@ant-design/icons';
 import { ICONFONT_URL } from '@/utils/utils';
 import { toolbar } from './editorConfig';
 import { useRef } from 'react';
+import { useFullSreenFn } from './useFullScreenFn';
 
 const Iconfont = createFromIconfontCN({
   scriptUrl: [ICONFONT_URL],
@@ -16,11 +17,7 @@ const Iconfont = createFromIconfontCN({
 const ArticleEditor: FC = () => {
   const vditorRef = useRef<HTMLDivElement>(null);
 
-  const fullScreenFn = () => {
-    if (vditorRef.current) {
-      vditorRef.current.requestFullscreen();
-    }
-  };
+  const [toggleFullScreen] = useFullSreenFn(vditorRef);
 
   useEffect(() => {
     const vditor = new Vditor(vditorRef.current!, {
@@ -28,7 +25,7 @@ const ArticleEditor: FC = () => {
       cache: {
         id: 'vditor',
       },
-      toolbar: [...toolbar(fullScreenFn)],
+      toolbar: [...toolbar(toggleFullScreen)],
     });
     console.log(vditor);
   }, []);
