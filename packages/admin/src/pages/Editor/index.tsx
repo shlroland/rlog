@@ -8,24 +8,59 @@ import Vditor from 'vditor';
 import { createFromIconfontCN, SaveTwoTone } from '@ant-design/icons';
 import { ICONFONT_URL } from '@/utils/utils';
 import { toolbar } from './editorConfig';
+import type { FormRefMethods } from './SettingDrawer';
 import SettingDrawer from './SettingDrawer';
+import { useCallback } from 'react';
+import { useState } from 'react';
 import './index.scss';
 
 const Iconfont = createFromIconfontCN({
   scriptUrl: [ICONFONT_URL],
 });
 
+export const initialSettingState = {
+  excerpt: '',
+  isRecommended: false,
+  isCommentable: false,
+  category: '',
+  tags: [],
+};
+
+enum ARTICLE_STATUS {
+  DRAFT = 'draft',
+  RELEASED = 'released',
+  HIDDEN = 'hidden',
+}
+
 const ArticleEditor: FC = () => {
   const vditorRef = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<FormRefMethods>(null);
   const vditor = useRef<Vditor>();
 
+  const [title, setTitle] = useState('');
+
   const [toggleFullScreen] = useFullSreenFn(vditorRef);
+
+  const handleSubmit = useCallback(async () => {
+    if (drawerRef.current) {
+      try {
+        const results = await drawerRef.current.validate();
+        const content = vditor.current?.getValue();
+        const html = vditor.current?.getHTML();
+        const params = { ...results, title, content, html, articleStatus: ARTICLE_STATUS.RELEASED };
+        console.log(params);
+      } catch (error) {
+        drawerRef.current.setDrawerVisit(true);
+      }
+    }
+  }, [title]);
 
   useEffect(() => {
     vditor.current = new Vditor(vditorRef.current!, {
       width: '80%',
       cache: {
         id: 'vditor',
+        enable: false,
       },
       counter: {
         enable: true,
@@ -42,13 +77,23 @@ const ArticleEditor: FC = () => {
             <img src={Logo} alt="" height={45} style={{ verticalAlign: 'middle' }} />
           </div>
           <div className="editor-page--header__title">
-            <Input placeholder="请输入文章标题" bordered={false} />
+            <Input
+              placeholder="请输入文章标题"
+              bordered={false}
+              onChange={(event) => {
+                setTitle(event.target.value);
+              }}
+            />
           </div>
           <div className="editor-page--header__buttons">
             <Space>
               <Button icon={<SaveTwoTone />}>保存草稿</Button>
-              <SettingDrawer />
-              <Button type="primary" icon={<Iconfont type="icon-fabu" />}>
+              <SettingDrawer ref={drawerRef} />
+              <Button
+                type="primary"
+                icon={<Iconfont type="icon-fabu" />}
+                onClick={() => handleSubmit()}
+              >
                 发布
               </Button>
             </Space>
