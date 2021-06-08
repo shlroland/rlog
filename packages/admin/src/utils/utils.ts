@@ -21,3 +21,11 @@ export const isAntDesignProOrDev = (): boolean => {
 };
 
 export const ICONFONT_URL = '//at.alicdn.com/t/font_2586167_l9my9ou079s.js';
+
+export const extractPostId = () => {
+  const id = window.location.pathname.split('/').pop();
+  if (id === 'editor') {
+    return '';
+  }
+  return id;
+};

@@ -6,7 +6,7 @@ import { Button, Input, Space } from 'antd';
 import { useEffect } from 'react';
 import Vditor from 'vditor';
 import { createFromIconfontCN, SaveTwoTone } from '@ant-design/icons';
-import { ICONFONT_URL } from '@/utils/utils';
+import { extractPostId, ICONFONT_URL } from '@/utils/utils';
 import { toolbar } from './editorConfig';
 import type { FormRefMethods } from './SettingDrawer';
 import SettingDrawer from './SettingDrawer';
@@ -42,6 +42,8 @@ const ArticleEditor: FC = () => {
   const drawerRef = useRef<FormRefMethods>(null);
   const vditor = useRef<Vditor>();
 
+  const [id, setId] = useState(extractPostId());
+
   const [title, setTitle] = useState('');
 
   const [toggleFullScreen] = useFullSreenFn(vditorRef);
@@ -56,7 +58,10 @@ const ArticleEditor: FC = () => {
         saveDraft: { _id, updatedAt },
       } = data;
       setUpdatedTime(moment(updatedAt).format(TIME_FORMAT));
-      console.log(_id, updatedAt);
+      if (!id) {
+        window.history.replaceState(null, '', `editor/${_id}`);
+        setId(_id);
+      }
     },
   });
 
@@ -93,6 +98,7 @@ const ArticleEditor: FC = () => {
     const { results, content, html } = await generateParams(false);
     const params: Partial<PostItem> = {
       ...results,
+      _id: id,
       title,
       content,
       html,
@@ -103,7 +109,7 @@ const ArticleEditor: FC = () => {
         input: params,
       },
     });
-  }, [draft, title]);
+  }, [draft, id, title]);
 
   useEffect(() => {
     vditor.current = new Vditor(vditorRef.current!, {
@@ -137,7 +143,9 @@ const ArticleEditor: FC = () => {
           </div>
           <div className="editor-page--header__buttons">
             <Space>
-              {updatedTime ? <span>于{updatedTime}保存草稿</span> : null}
+              {updatedTime ? (
+                <span className="editor-page--header__draft">于{updatedTime}保存草稿</span>
+              ) : null}
               <Button icon={<SaveTwoTone />} onClick={() => handleDraft()}>
                 保存草稿
               </Button>
