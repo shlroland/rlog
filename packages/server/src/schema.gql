@@ -12,19 +12,17 @@ type UserModel {
 
 type PostItemModel {
   _id: ID!
-  posterUrl: String!
-  title: String!
-  summary: String!
-  content: String!
+  excerpt: String!
+  isRecommended: Boolean!
+  isCommentable: Boolean!
+  category: String!
   tags: [String!]!
-  lastModifiedDate: DateTime!
-  like: Float!
-  pv: Float!
-  isPublic: Boolean!
+  title: String!
+  content: String!
+  html: String!
+  articleStatus: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  prev: PostItemModel
-  next: PostItemModel
 }
 
 """
@@ -55,11 +53,13 @@ input RegisterInput {
 }
 
 input CreatePostInput {
-  posterUrl: String!
-  title: String!
-  summary: String!
-  content: String!
+  excerpt: String!
+  isRecommended: Boolean!
+  isCommentable: Boolean!
+  category: String!
   tags: [String!]!
-  lastModifiedDate: DateTime!
-  isPublic: Boolean
+  title: String!
+  content: String!
+  html: String!
+  articleStatus: String!
 }

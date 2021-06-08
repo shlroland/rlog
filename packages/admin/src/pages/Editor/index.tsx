@@ -13,6 +13,8 @@ import SettingDrawer from './SettingDrawer';
 import { useCallback } from 'react';
 import { useState } from 'react';
 import './index.scss';
+import { useMutation } from '@apollo/client';
+import { CREATE_POST } from './typeDefs';
 
 const Iconfont = createFromIconfontCN({
   scriptUrl: [ICONFONT_URL],
@@ -41,6 +43,8 @@ const ArticleEditor: FC = () => {
 
   const [toggleFullScreen] = useFullSreenFn(vditorRef);
 
+  const [createPost, { loading: isCreatingPost }] = useMutation(CREATE_POST);
+
   const handleSubmit = useCallback(async () => {
     if (drawerRef.current) {
       try {
@@ -48,12 +52,16 @@ const ArticleEditor: FC = () => {
         const content = vditor.current?.getValue();
         const html = vditor.current?.getHTML();
         const params = { ...results, title, content, html, articleStatus: ARTICLE_STATUS.RELEASED };
-        console.log(params);
+        await createPost({
+          variables: {
+            input: params,
+          },
+        });
       } catch (error) {
         drawerRef.current.setDrawerVisit(true);
       }
     }
-  }, [title]);
+  }, [createPost, title]);
 
   useEffect(() => {
     vditor.current = new Vditor(vditorRef.current!, {
@@ -92,6 +100,7 @@ const ArticleEditor: FC = () => {
               <Button
                 type="primary"
                 icon={<Iconfont type="icon-fabu" />}
+                loading={isCreatingPost}
                 onClick={() => handleSubmit()}
               >
                 发布

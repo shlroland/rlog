@@ -16,7 +16,10 @@ export class PostsService {
   }
 
   public async create(postInput: CreatePostInput) {
-    console.log(postInput)
-    return this.postModel.create(postInput)
+    const createdAt = new Date()
+    const updatedAt = new Date()
+    return this.postModel.create(
+      Object.assign(postInput, { createdAt, updatedAt }),
+    )
   }
 }

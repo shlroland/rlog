@@ -6,18 +6,10 @@ import ProForm, {
   ProFormTextArea,
 } from '@ant-design/pro-form';
 import type { FormInstance } from 'antd';
-import { Button, message } from 'antd';
+import { Button } from 'antd';
 import { useState, forwardRef, useImperativeHandle } from 'react';
 import { useRef } from 'react';
 import { initialSettingState } from '..';
-
-const waitTime = (time: number = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
 
 type FormRefType<T = Record<string, any>> =
   | (FormInstance & {
@@ -60,14 +52,6 @@ const SettingDrawer = forwardRef<FormRefMethods, Record<string, unknown>>((_prop
       }}
       initialValues={initialSettingState}
       onVisibleChange={setDrawerVisit}
-      onFinish={async (values) => {
-        await waitTime(2000);
-        console.log(values.name);
-        console.log(formRef.current);
-        message.success('提交成功');
-        // 不返回不会关闭弹框
-        return true;
-      }}
     >
       <ProFormTextArea
         name="excerpt"

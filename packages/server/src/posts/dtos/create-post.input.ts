@@ -1,13 +1,47 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsArray, IsDate, IsNotEmpty, IsString, IsUrl } from 'class-validator'
+import {
+  ArrayNotEmpty,
+  IsArray,
+  IsBoolean,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator'
+// import { IsObjectId } from 'class-validator-mongo-object-id';
 
+enum ARTICLE_STATUS {
+  DRAFT = 'draft',
+  RELEASED = 'released',
+  HIDDEN = 'hidden',
+}
 @InputType()
 export class CreatePostInput {
   @Field()
   @IsString()
-  @IsUrl()
   @IsNotEmpty()
-  public readonly posterUrl: string
+  public readonly excerpt: string
+
+  @Field()
+  @IsBoolean()
+  @IsNotEmpty()
+  public readonly isRecommended: boolean
+
+  @Field()
+  @IsBoolean()
+  @IsNotEmpty()
+  public readonly isCommentable: boolean
+
+  @Field()
+  // @Is()
+  @IsString()
+  @IsNotEmpty()
+  public readonly category: string
+
+  @Field(() => [String])
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsNotEmpty()
+  public readonly tags: string
 
   @Field()
   @IsString()
@@ -17,23 +51,16 @@ export class CreatePostInput {
   @Field()
   @IsString()
   @IsNotEmpty()
-  public readonly summary: string
+  public readonly content: string
 
   @Field()
   @IsString()
   @IsNotEmpty()
-  public readonly content: string
-
-  @Field(() => [String])
-  @IsArray()
-  @IsNotEmpty()
-  public readonly tags: string[]
+  public readonly html: string
 
   @Field()
-  @IsDate()
+  @IsString()
+  @IsEnum(ARTICLE_STATUS)
   @IsNotEmpty()
-  public readonly lastModifiedDate: Date
-
-  @Field({ nullable: true })
-  public readonly isPublic?: boolean
+  public readonly articleStatus: string
 }

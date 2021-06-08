@@ -57,6 +57,7 @@
     "@umijs/route-utils": "^1.0.36",
     "antd": "^4.14.0",
     "apollo3-cache-persist": "^0.9.1",
+    "class-validator-mongo-object-id": "^1.2.0",
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",
     "moment": "^2.25.3",

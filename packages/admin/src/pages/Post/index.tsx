@@ -211,7 +211,7 @@ const TableList: React.FC = () => {
     {
       title: '发布时间',
       sorter: true,
-      dataIndex: 'createTime',
+      dataIndex: 'createdAt',
       valueType: 'dateTime',
       // renderFormItem: (item, { defaultRender, ...rest }, form) => {
       //   const status = form.getFieldValue('status');
