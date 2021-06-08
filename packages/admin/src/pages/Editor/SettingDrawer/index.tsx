@@ -19,7 +19,7 @@ type FormRefType<T = Record<string, any>> =
 
 export type FormRefMethods = {
   setDrawerVisit: React.Dispatch<React.SetStateAction<boolean>>;
-  validate: () => Promise<any>;
+  formRef: FormRefType;
 };
 
 const SettingDrawer = forwardRef<FormRefMethods, Record<string, unknown>>((_props, ref) => {
@@ -28,10 +28,12 @@ const SettingDrawer = forwardRef<FormRefMethods, Record<string, unknown>>((_prop
 
   useImperativeHandle(ref, () => ({
     setDrawerVisit,
-    async validate() {
-      const result = await formRef.current?.validateFields();
-      return result;
-    },
+    formRef: formRef.current,
+    // async validate() {
+    //   const result = await formRef.current?.validateFields();
+    //   return result;
+    // },
+    // getFieldsValue: formRef.current?.getFieldsValue,
   }));
   return (
     <DrawerForm

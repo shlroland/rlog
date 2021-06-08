@@ -1,8 +1,9 @@
 import { Args, Resolver, ID, Query, Mutation } from '@nestjs/graphql'
 import { CreatePostInput } from './dtos/create-post.input'
+import { DraftPostInput } from './dtos/draft-post.input'
 import { PostItemModel } from './models/post.model'
 import { PostsService } from './posts.service'
-
+import * as mongoose from 'mongoose'
 @Resolver()
 export class PostsResolver {
   constructor(private readonly postsService: PostsService) {}
@@ -16,7 +17,16 @@ export class PostsResolver {
   }
 
   @Mutation(() => PostItemModel)
-  public async createPost(@Args('input') input: CreatePostInput) {
+  public async release(@Args('input') input: CreatePostInput) {
     return this.postsService.create(input)
+  }
+
+  @Mutation(() => PostItemModel)
+  public async saveDraft(@Args('input') input: DraftPostInput) {
+    if (!input._id) {
+      const _id = mongoose.Types.ObjectId().toString()
+      Object.assign(input, { _id })
+    }
+    return this.postsService.draft(input)
   }
 }

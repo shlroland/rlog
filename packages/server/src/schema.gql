@@ -43,7 +43,8 @@ input LoginInput {
 
 type Mutation {
   register(input: RegisterInput!): UserModel!
-  createPost(input: CreatePostInput!): PostItemModel!
+  release(input: CreatePostInput!): PostItemModel!
+  saveDraft(input: DraftPostInput!): PostItemModel!
 }
 
 input RegisterInput {
@@ -62,4 +63,17 @@ input CreatePostInput {
   content: String!
   html: String!
   articleStatus: String!
+}
+
+input DraftPostInput {
+  _id: String
+  excerpt: String
+  isRecommended: Boolean!
+  isCommentable: Boolean!
+  category: String
+  tags: [String!]
+  title: String
+  content: String
+  html: String
+  articleStatus: String
 }

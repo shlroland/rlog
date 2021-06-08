@@ -14,7 +14,7 @@ import { useCallback } from 'react';
 import { useState } from 'react';
 import './index.scss';
 import { useMutation } from '@apollo/client';
-import { CREATE_POST } from './typeDefs';
+import { DRAFT as DRAFT_GQL, RELEASE } from './typeDefs';
 
 const Iconfont = createFromIconfontCN({
   scriptUrl: [ICONFONT_URL],
@@ -43,16 +43,29 @@ const ArticleEditor: FC = () => {
 
   const [toggleFullScreen] = useFullSreenFn(vditorRef);
 
-  const [createPost, { loading: isCreatingPost }] = useMutation(CREATE_POST);
+  const [release, { loading: isReleasing }] = useMutation(RELEASE);
+
+  const [draft] = useMutation(DRAFT_GQL);
+
+  const generateParams = async (isValidate = true) => {
+    const content = vditor.current?.getValue();
+    const html = vditor.current?.getHTML();
+    const results = isValidate
+      ? await drawerRef.current?.formRef?.validateFields()
+      : await drawerRef.current?.formRef?.getFieldsValue(true);
+    return {
+      results,
+      content,
+      html,
+    };
+  };
 
   const handleSubmit = useCallback(async () => {
     if (drawerRef.current) {
       try {
-        const results = await drawerRef.current.validate();
-        const content = vditor.current?.getValue();
-        const html = vditor.current?.getHTML();
+        const { results, content, html } = await generateParams();
         const params = { ...results, title, content, html, articleStatus: ARTICLE_STATUS.RELEASED };
-        await createPost({
+        await release({
           variables: {
             input: params,
           },
@@ -61,7 +74,24 @@ const ArticleEditor: FC = () => {
         drawerRef.current.setDrawerVisit(true);
       }
     }
-  }, [createPost, title]);
+  }, [release, title]);
+
+  const handleDraft = useCallback(async () => {
+    const { results, content, html } = await generateParams(false);
+    const params = {
+      ...results,
+      title,
+      content,
+      html,
+      articleStatus: ARTICLE_STATUS.DRAFT,
+    };
+    console.log(params);
+    await draft({
+      variables: {
+        input: params,
+      },
+    });
+  }, [draft, title]);
 
   useEffect(() => {
     vditor.current = new Vditor(vditorRef.current!, {
@@ -95,12 +125,14 @@ const ArticleEditor: FC = () => {
           </div>
           <div className="editor-page--header__buttons">
             <Space>
-              <Button icon={<SaveTwoTone />}>保存草稿</Button>
+              <Button icon={<SaveTwoTone />} onClick={() => handleDraft()}>
+                保存草稿
+              </Button>
               <SettingDrawer ref={drawerRef} />
               <Button
                 type="primary"
                 icon={<Iconfont type="icon-fabu" />}
-                loading={isCreatingPost}
+                loading={isReleasing}
                 onClick={() => handleSubmit()}
               >
                 发布

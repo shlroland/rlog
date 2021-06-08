@@ -61,6 +61,11 @@ const routes: IRoute[] = [
     layout: false,
   },
   {
+    path: '/editor/:id',
+    component: './Editor',
+    layout: false,
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

@@ -17,11 +17,20 @@ const POST_FRAGMENT = gql`
   }
 `;
 
-export const CREATE_POST = gql`
-  mutation CreatePost($input: CreatePostInput!) {
-    createPost(input: $input) {
+export const RELEASE = gql`
+  mutation Release($input: CreatePostInput!) {
+    release(input: $input) {
       ...PostFragment
     }
   }
   ${POST_FRAGMENT}
+`;
+
+export const DRAFT = gql`
+  mutation Draft($input: DraftPostInput!) {
+    saveDraft(input: $input) {
+      _id
+      updatedAt
+    }
+  }
 `;
