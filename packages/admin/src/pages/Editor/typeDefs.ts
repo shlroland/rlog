@@ -17,6 +17,25 @@ const POST_FRAGMENT = gql`
   }
 `;
 
+export interface PostItem {
+  _id: string;
+  excerpt: string;
+  isRecommended: boolean;
+  isCommentable: boolean;
+  category: string;
+  tags: string[];
+  title: string;
+  content: string;
+  html: string;
+  articleStatus: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface DraftPostItem {
+  input: Partial<PostItem>;
+}
+
 export const RELEASE = gql`
   mutation Release($input: CreatePostInput!) {
     release(input: $input) {
@@ -34,3 +53,7 @@ export const DRAFT = gql`
     }
   }
 `;
+
+export interface DraftResult {
+  saveDraft: { _id: string; updatedAt: string };
+}

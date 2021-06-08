@@ -14,7 +14,10 @@ import { useCallback } from 'react';
 import { useState } from 'react';
 import './index.scss';
 import { useMutation } from '@apollo/client';
+import type { DraftPostItem, DraftResult, PostItem } from './typeDefs';
 import { DRAFT as DRAFT_GQL, RELEASE } from './typeDefs';
+import moment from 'moment';
+import { TIME_FORMAT } from '@/utils/constant';
 
 const Iconfont = createFromIconfontCN({
   scriptUrl: [ICONFONT_URL],
@@ -43,9 +46,19 @@ const ArticleEditor: FC = () => {
 
   const [toggleFullScreen] = useFullSreenFn(vditorRef);
 
+  const [updatedTime, setUpdatedTime] = useState<string>('');
+
   const [release, { loading: isReleasing }] = useMutation(RELEASE);
 
-  const [draft] = useMutation(DRAFT_GQL);
+  const [draft] = useMutation<DraftResult, DraftPostItem>(DRAFT_GQL, {
+    onCompleted(data) {
+      const {
+        saveDraft: { _id, updatedAt },
+      } = data;
+      setUpdatedTime(moment(updatedAt).format(TIME_FORMAT));
+      console.log(_id, updatedAt);
+    },
+  });
 
   const generateParams = async (isValidate = true) => {
     const content = vditor.current?.getValue();
@@ -78,14 +91,13 @@ const ArticleEditor: FC = () => {
 
   const handleDraft = useCallback(async () => {
     const { results, content, html } = await generateParams(false);
-    const params = {
+    const params: Partial<PostItem> = {
       ...results,
       title,
       content,
       html,
       articleStatus: ARTICLE_STATUS.DRAFT,
     };
-    console.log(params);
     await draft({
       variables: {
         input: params,
@@ -125,6 +137,7 @@ const ArticleEditor: FC = () => {
           </div>
           <div className="editor-page--header__buttons">
             <Space>
+              {updatedTime ? <span>于{updatedTime}保存草稿</span> : null}
               <Button icon={<SaveTwoTone />} onClick={() => handleDraft()}>
                 保存草稿
               </Button>
