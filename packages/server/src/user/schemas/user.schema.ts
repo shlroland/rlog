@@ -16,7 +16,7 @@ export class User extends Document {
 
 export type UserDocument = User & Document
 export const UserSchema = SchemaFactory.createForClass(User)
-UserSchema.pre('save', function(next: HookNextFunction) {
+UserSchema.pre('save', function (next: HookNextFunction) {
   this.password = encryptPassword(this.password)
   next()
 })
