@@ -160,7 +160,6 @@ const TableList: React.FC = () => {
       title: '标签',
       key: 'tags',
       dataIndex: 'tags',
-      width: 200,
       render() {
         return (
           <div>
@@ -216,8 +215,34 @@ const TableList: React.FC = () => {
     //   },
     // },
     {
+      title: '更新时间',
+      sorter: true,
+      width: 200,
+      dataIndex: 'updatedAt',
+      valueType: 'dateTime',
+      // renderFormItem: (item, { defaultRender, ...rest }, form) => {
+      //   const status = form.getFieldValue('status');
+      //   if (`${status}` === '0') {
+      //     return false;
+      //   }
+      //   if (`${status}` === '3') {
+      //     return (
+      //       <Input
+      //         {...rest}
+      //         placeholder={intl.formatMessage({
+      //           id: 'pages.searchTable.exception',
+      //           defaultMessage: '请输入异常原因！',
+      //         })}
+      //       />
+      //     );
+      //   }
+      //   return defaultRender(item);
+      // },
+    },
+    {
       title: '发布时间',
       sorter: true,
+      width: 200,
       dataIndex: 'createdAt',
       valueType: 'dateTime',
       // renderFormItem: (item, { defaultRender, ...rest }, form) => {
@@ -241,6 +266,7 @@ const TableList: React.FC = () => {
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      width: 200,
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
