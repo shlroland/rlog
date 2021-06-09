@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useRef } from 'react';
 import { useFullSreenFn } from './useFullScreenFn';
 import Logo from '@/assets/images/logo2.svg';
-import { Button, Input, Space } from 'antd';
+import { Button, Input, message, Space } from 'antd';
 import { useEffect } from 'react';
 import Vditor from 'vditor';
 import { createFromIconfontCN, SaveTwoTone } from '@ant-design/icons';
@@ -43,7 +43,12 @@ const ArticleEditor: FC = () => {
 
   const [updatedTime, setUpdatedTime] = useState<string>('');
 
-  const [release, { loading: isReleasing }] = useMutation<ReleaseResult, ReleaseInput>(RELEASE);
+  const [release, { loading: isReleasing }] = useMutation<ReleaseResult, ReleaseInput>(RELEASE, {
+    onCompleted() {
+      message.success('发布成功');
+      window.clearInterval(draftTimer.current);
+    },
+  });
 
   const [draft, { loading: isSaving }] = useMutation<DraftResult, DraftInput>(DRAFT_GQL, {
     onCompleted(data) {
@@ -55,6 +60,9 @@ const ArticleEditor: FC = () => {
         window.history.replaceState(null, '', `editor/${_id}`);
         setId(_id);
       }
+      window.clearInterval(draftTimer.current);
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      handleDraftTimer();
     },
   });
 
@@ -111,6 +119,12 @@ const ArticleEditor: FC = () => {
     });
   }, [draft, id, title]);
 
+  const handleDraftTimer = useCallback(() => {
+    draftTimer.current = window.setInterval(() => {
+      handleDraft();
+    }, 60000);
+  }, [handleDraft]);
+
   useEffect(() => {
     if (!vditor.current) {
       vditor.current = new Vditor(vditorRef.current!, {
@@ -128,16 +142,22 @@ const ArticleEditor: FC = () => {
         },
       });
     }
-  }, [handleDraft, toggleFullScreen]);
+
+    return () => {
+      if (vditor.current) {
+        vditor.current?.destroy();
+      }
+    };
+    // 这里只需要初始化一次就行，不需要有依赖
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    draftTimer.current = window.setInterval(() => {
-      handleDraft();
-    }, 60000);
+    handleDraftTimer();
     return () => {
       window.clearInterval(draftTimer.current);
     };
-  }, [handleDraft]);
+  }, [handleDraftTimer]);
 
   return (
     <div className="editor-page">
