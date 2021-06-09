@@ -13,17 +13,18 @@ export const getEnvFilePath = () => {
 }
 
 export const getMongoUri = (configService: ConfigService) => {
+  const prefix = configService.get('DATABASE_PREFIX') || 'mongodb://'
   const host = configService.get('DATABASE_HOST')
-  const port = configService.get('DATABASE_PORT')
   const userName = configService.get('DATABASE_USER')
   const userPwd = configService.get('DATABASE_PWD')
   const collection = configService.get('DATABASE_COLLECTION')
-
-  const prefix = 'mongodb://'
+  let port = configService.get('DATABASE_PORT')
+  let params = configService.get('DATABASE_PARAMS')
   const auth = `${userName}:${userPwd}@`
-  const connection = `${host}:${port}/${collection}`
-
-  return isProd() ? `${prefix}${auth}${connection}` : `${prefix}${connection}`
+  port = port ? `:${port}` : ''
+  params = params ? `?${params}` : ''
+  const connection = `${host}${port}/${collection}${params}`
+  return `${prefix}${auth}${connection}`
 }
 
 export const SALT_WORK_FACTOR = 10

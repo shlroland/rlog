@@ -26,14 +26,14 @@ export class AuthService {
     }
   }
 
-  private async validdateUser(username: string, password: string) {
+  private async validateUser(username: string, password: string) {
     let user: User
     if (isEmail(username)) {
       user = await this.userService.findOneByEmail(username)
     } else {
       user = await this.userService.findOneByUsername(username)
     }
-    if (user && this.isValidPassword(password, user.password)) {
+    if (user && AuthService.isValidPassword(password, user.password)) {
       return user
     }
 
@@ -42,14 +42,17 @@ export class AuthService {
     )
   }
 
-  private isValidPassword(plainPwd: string, encryptedPwd: string): boolean {
+  private static isValidPassword(
+    plainPwd: string,
+    encryptedPwd: string,
+  ): boolean {
     return bcrypt.compareSync(plainPwd, encryptedPwd)
   }
 
   public async login(loginInput: LoginInput) {
     const { username, password } = loginInput
 
-    const res = await this.validdateUser(username, password)
+    const res = await this.validateUser(username, password)
     return this.generateJWT(res)
   }
 
@@ -57,6 +60,7 @@ export class AuthService {
     const { email, username } = registerInput
     const curUserByEmail = await this.userService.findOneByEmail(email)
     const curUserByUsername = await this.userService.findOneByUsername(username)
+    const createdAt = new Date()
     if (curUserByEmail) {
       throw new ForbiddenError(
         'Email has already been used, Please enter another one.',
@@ -66,8 +70,14 @@ export class AuthService {
         'Username has already been used, Please enter another one.',
       )
     } else {
-      const res = await this.userService.create({ ...registerInput })
-      return res
+      const result = await this.userService.create({
+        ...registerInput,
+        createdAt,
+      })
+      return this.userService.findOneAndUpdate(
+        { _id: result._id },
+        { userId: result._id },
+      )
     }
   }
 }

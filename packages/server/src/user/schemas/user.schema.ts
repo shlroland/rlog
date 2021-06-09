@@ -1,9 +1,13 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Document, HookNextFunction } from 'mongoose'
+import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Document, HookNextFunction, Types } from 'mongoose'
+import type { ObjectId } from 'mongoose'
 import { encryptPassword } from 'src/utils'
 
 @Schema()
 export class User extends Document {
+  @Prop(raw({ type: Types.ObjectId }))
+  userId: string | ObjectId
+
   @Prop({ required: true })
   email: string
 
@@ -12,6 +16,9 @@ export class User extends Document {
 
   @Prop({ required: true })
   password: string
+
+  @Prop({ required: true })
+  createdAt: Date
 }
 
 export type UserDocument = User & Document
