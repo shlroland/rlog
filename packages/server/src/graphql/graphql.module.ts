@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
 import { join } from 'path'
+import { isDev } from 'src/utils/env'
 
 @Module({
   imports: [
     GraphQLModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      async useFactory(...rest) {
+      async useFactory() {
         return {
-          // typePaths: ['./**/*.gql'],
+          debug: isDev(),
+          playground: isDev(),
           context: ({ req, res }) => ({ req, res }),
           autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
         }

@@ -3,32 +3,38 @@ import { Document } from 'mongoose'
 
 @Schema()
 export class Post extends Document {
-  @Prop()
-  posterUrl: string
+  @Prop({ required: true })
+  excerpt: string
 
   @Prop({ required: true })
-  title: string
+  isRecommended: boolean
 
   @Prop({ required: true })
-  summary: string
+  isCommentable: boolean
 
   @Prop({ required: true })
-  content: string
+  category: string
 
   @Prop({ type: [String], required: true })
   tags: string[]
 
   @Prop({ required: true })
-  lastModifiedDate: Date
+  title: string
 
-  @Prop({ required: true, default: 0 })
-  like: number
+  @Prop({ required: true })
+  content: string
 
-  @Prop({ required: true, default: 0 })
-  pv: number
+  @Prop({ required: true })
+  html: string
 
-  @Prop({ required: true, default: true })
-  isPublic: boolean
+  @Prop({ required: true })
+  articleStatus: string
+
+  @Prop()
+  createdAt: Date
+
+  @Prop()
+  updatedAt: Date
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post)

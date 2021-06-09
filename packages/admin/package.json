@@ -17,7 +17,7 @@
     "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src && npm run lint:style",
     "lint:js": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src",
     "lint:prettier": "prettier --check \"src/**/*\" --end-of-line auto",
-    "lint:style": "stylelint --fix \"src/**/*.less\" --syntax less",
+    "lint:style": "stylelint --fix **/*.{less,scss}",
     "openapi": "umi openapi",
     "precommit": "lint-staged",
     "prettier": "prettier -c --write \"src/**/*\"",
@@ -34,7 +34,7 @@
     "tsc": "tsc --noEmit"
   },
   "lint-staged": {
-    "**/*.less": "stylelint --syntax less",
+    "**/*.{less,scss}": "stylelint --fix **/*.{less,scss}",
     "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
     "**/*.{js,jsx,tsx,ts,less,md,json}": [
       "prettier --write"
@@ -57,6 +57,7 @@
     "@umijs/route-utils": "^1.0.36",
     "antd": "^4.14.0",
     "apollo3-cache-persist": "^0.9.1",
+    "class-validator-mongo-object-id": "^1.2.0",
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",
     "moment": "^2.25.3",
@@ -65,8 +66,10 @@
     "react-dev-inspector": "^1.1.1",
     "react-dom": "^17.0.0",
     "react-helmet-async": "^1.0.4",
+    "react-use": "^17.2.4",
     "umi": "^3.4.0",
-    "umi-request": "^1.0.8"
+    "umi-request": "^1.0.8",
+    "vditor": "^3.8.5"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^2.0.2",
@@ -81,6 +84,7 @@
     "@umijs/fabric": "^2.5.2",
     "@umijs/plugin-blocks": "^2.0.5",
     "@umijs/plugin-esbuild": "^1.0.1",
+    "@umijs/plugin-sass": "^1.1.1",
     "@umijs/preset-ant-design-pro": "^1.2.0",
     "@umijs/preset-dumi": "^1.1.7",
     "@umijs/preset-react": "^1.7.4",
@@ -96,7 +100,8 @@
     "jsdom-global": "^3.0.2",
     "lint-staged": "^10.0.0",
     "mockjs": "^1.0.1-beta3",
-    "puppeteer-core": "^8.0.0"
+    "puppeteer-core": "^8.0.0",
+    "sass-loader": "^12.0.0"
   },
   "engines": {
     "node": ">=10.0.0"

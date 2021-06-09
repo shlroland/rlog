@@ -20,4 +20,9 @@ export class UserService {
   public async findOneByUsername(username: string): Promise<User> {
     return this.userModel.findOne({ username })
   }
+  public async findOneById(id: string) {
+    const { _id, ...rest } = (await this.userModel.findById(id)).toObject()
+
+    return { userId: _id, ...rest }
+  }
 }

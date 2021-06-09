@@ -11,6 +11,7 @@
     "website:start": "lerna exec --scope website -- yarn start",
     "server:start": "lerna exec --scope server -- yarn start",
     "server:dev": "lerna exec --scope server -- yarn start:dev",
+    "server:debug": "lerna exec --scope server -- yarn start:debug",
     "admin:dev": "lerna exec --scope admin -- yarn dev",
     "admin:pre": "lerna exec --scope admin -- yarn start:pre",
     "prepare": "husky install"

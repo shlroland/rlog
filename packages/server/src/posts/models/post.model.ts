@@ -6,41 +6,35 @@ export class PostItemModel {
   public readonly _id: string
 
   @Field()
-  public readonly posterUrl: string
+  public readonly excerpt: string
 
   @Field()
-  public readonly title: string
+  public readonly isRecommended: boolean
 
   @Field()
-  public readonly summary: string
+  public readonly isCommentable: boolean
 
   @Field()
-  public readonly content: string
+  public readonly category: string
 
   @Field(() => [String])
   public readonly tags: string[]
 
   @Field()
-  public readonly lastModifiedDate: Date
+  public readonly title: string
 
   @Field()
-  public readonly like: number
+  public readonly content: string
 
   @Field()
-  public readonly pv: number
+  public readonly html: string
 
   @Field()
-  public readonly isPublic: boolean
+  public readonly articleStatus: string
 
-  @Field()
+  @Field({ nullable: true })
   public readonly createdAt: Date
 
   @Field()
   public readonly updatedAt: Date
-
-  @Field(() => PostItemModel, { nullable: true })
-  public readonly prev: PostItemModel | null
-
-  @Field(() => PostItemModel, { nullable: true })
-  public readonly next: PostItemModel | null
 }

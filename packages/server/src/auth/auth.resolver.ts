@@ -8,7 +8,7 @@ import { RegisterInput } from './dtos/register.input'
 export class AuthResolver {
   constructor(private authService: AuthService) {}
 
-  @Mutation(() => UserModel)
+  @Query(() => UserModel)
   public async login(@Args('input') input: LoginInput) {
     return this.authService.login(input)
   }

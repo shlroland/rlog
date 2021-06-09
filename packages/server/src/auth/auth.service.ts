@@ -6,6 +6,7 @@ import { UserService } from 'src/user/user.service'
 import { LoginInput } from './dtos/login.input'
 import { RegisterInput } from './dtos/register.input'
 import { isEmail } from 'class-validator'
+import { omit } from 'lodash'
 import * as bcrypt from 'bcrypt'
 
 @Injectable()
@@ -16,9 +17,13 @@ export class AuthService {
   ) {}
 
   private async generateJWT(res: User) {
-    const { username, email, ...rest } = res.toObject()
-    const payload = { username, email, sub: rest._id }
-    return { authorization: this.jwtService.sign(payload), ...rest }
+    const { username, email, _id, ...rest } = res.toObject()
+    const payload = { username, email, sub: _id }
+    return {
+      authorization: this.jwtService.sign(payload),
+      userId: _id,
+      ...omit(rest, ['password']),
+    }
   }
 
   private async validdateUser(username: string, password: string) {
@@ -28,11 +33,6 @@ export class AuthService {
     } else {
       user = await this.userService.findOneByUsername(username)
     }
-
-    if (user) {
-      return user
-    }
-
     if (user && this.isValidPassword(password, user.password)) {
       return user
     }

@@ -1,7 +1,9 @@
+import { getToken } from '@/utils/storage';
 import { ApolloClient, InMemoryCache, from } from '@apollo/client';
 import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
+import { message as AntMessage, notification } from 'antd';
 import { persistCache, LocalStorageWrapper } from 'apollo3-cache-persist';
 
 // const isDev = process.env.NODE_ENV === 'development';
@@ -10,17 +12,38 @@ const httpLink = new BatchHttpLink({
   uri: REACT_APP_GRAPHQL_URL,
 });
 
-const authLink = setContext((...rest) => {
-  console.log(rest);
-  return {};
+const authLink = setContext((_, { headers }) => {
+  const token = getToken();
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
-    graphQLErrors.map(({ message, locations, path }) =>
-      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
-    );
-  if (networkError) console.log(`[Network error]: ${networkError}`);
+    graphQLErrors.forEach(({ message, locations, path }) => {
+      notification.error({
+        message: `[GraphQL error]: Message: ${message}`,
+        description: (
+          <>
+            <div>
+              Location:{' '}
+              {locations &&
+                locations.map(sourceLocation => (
+                  <span>
+                    line: {sourceLocation.line},column {sourceLocation.column}
+                  </span>
+                ))}
+            </div>
+            <div> Path: {path}</div>
+          </>
+        ),
+      });
+    });
+  if (networkError) AntMessage.error(`[Network error]: ${networkError}`);
 });
 
 (async function handlePersistCache() {

@@ -1,27 +1,20 @@
-import { Field, InputType } from '@nestjs/graphql'
+import { InputType, Field } from '@nestjs/graphql'
 import {
-  ArrayNotEmpty,
-  IsArray,
-  IsBoolean,
-  IsEnum,
-  IsNotEmpty,
   IsString,
+  IsBoolean,
+  IsNotEmpty,
+  IsArray,
+  IsEnum,
 } from 'class-validator'
-
-export enum ARTICLE_STATUS {
-  DRAFT = 'draft',
-  RELEASED = 'released',
-  HIDDEN = 'hidden',
-}
+import { ARTICLE_STATUS } from './create-post.input'
 
 @InputType()
-export class CreatePostInput {
+export class DraftPostInput {
   @Field({ nullable: true })
   public readonly _id: string
 
-  @Field()
+  @Field({ nullable: true })
   @IsString()
-  @IsNotEmpty()
   public readonly excerpt: string
 
   @Field()
@@ -34,36 +27,29 @@ export class CreatePostInput {
   @IsNotEmpty()
   public readonly isCommentable: boolean
 
-  @Field()
+  @Field({ nullable: true })
   // @Is()
   @IsString()
-  @IsNotEmpty()
   public readonly category: string
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   @IsArray()
-  @ArrayNotEmpty()
-  @IsNotEmpty()
   public readonly tags: string[]
 
-  @Field()
+  @Field({ nullable: true })
   @IsString()
-  @IsNotEmpty()
   public readonly title: string
 
-  @Field()
+  @Field({ nullable: true })
   @IsString()
-  @IsNotEmpty()
   public readonly content: string
 
-  @Field()
+  @Field({ nullable: true })
   @IsString()
-  @IsNotEmpty()
   public readonly html: string
 
-  @Field()
+  @Field({ nullable: true })
   @IsString()
   @IsEnum(ARTICLE_STATUS)
-  @IsNotEmpty()
   public readonly articleStatus: string
 }

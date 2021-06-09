@@ -1,4 +1,6 @@
-﻿export default [
+﻿import { IRoute } from 'umi';
+
+const routes: IRoute[] = [
   {
     path: '/user',
     layout: false,
@@ -10,6 +12,11 @@
             name: 'login',
             path: '/user/login',
             component: './user/Login',
+          },
+          {
+            name: 'register',
+            path: '/user/register',
+            component: './user/Register',
           },
         ],
       },
@@ -43,6 +50,22 @@
     component: './TableList',
   },
   {
+    name: 'post',
+    icon: 'icon-blog',
+    path: '/post',
+    component: './Post',
+  },
+  {
+    path: '/editor',
+    component: './Editor',
+    layout: false,
+  },
+  {
+    path: '/editor/:id',
+    component: './Editor',
+    layout: false,
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
@@ -50,3 +73,5 @@
     component: './404',
   },
 ];
+
+export default routes;

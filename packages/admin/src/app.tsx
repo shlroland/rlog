@@ -6,13 +6,17 @@ import { getIntl, getLocale, history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import type { ResponseError } from 'umi-request';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import { ApolloProvider } from '@apollo/client';
 import { client } from '@/graphql/apploClient';
+import { getUserId } from './utils/storage';
+import type { UserInfo } from './typeDefs';
+import { USER_INFO } from './typeDefs';
+import { ICONFONT_URL } from './utils/utils';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
+const registerPath = '/user/register';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
@@ -24,14 +28,22 @@ export const initialStateConfig = {
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  currentUser?: any;
+  fetchUserInfo?: () => Promise<any | undefined>;
 }> {
   const fetchUserInfo = async () => {
     try {
-      const currentUser = await queryCurrentUser();
-      return currentUser;
+      const userId = getUserId();
+      if (!userId) throw Error('不存在当前用户');
+      const {
+        data: { getUserInfo },
+      } = await client.query<UserInfo>({
+        query: USER_INFO,
+        variables: { userId },
+      });
+      return getUserInfo;
     } catch (error) {
+      console.log(error);
       history.push(loginPath);
     }
     return undefined;
@@ -105,14 +117,15 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     childrenRender: (children) => <ApolloProvider client={client}>{children}</ApolloProvider>,
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
-    waterMarkProps: {
-      content: initialState?.currentUser?.name,
-    },
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
+      if (
+        !initialState?.currentUser &&
+        location.pathname !== loginPath &&
+        location.pathname !== registerPath
+      ) {
         history.push(loginPath);
       }
     },
@@ -130,6 +143,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
         ]
       : [],
     menuHeaderRender: undefined,
+    iconfontUrl: ICONFONT_URL,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     ...initialState?.settings,
