@@ -41,6 +41,7 @@ const ArticleEditor: FC = () => {
   const vditorRef = useRef<HTMLDivElement>(null);
   const drawerRef = useRef<FormRefMethods>(null);
   const vditor = useRef<Vditor>();
+  const draftTimer = useRef<number>(0);
 
   const [id, setId] = useState(extractPostId());
 
@@ -122,8 +123,20 @@ const ArticleEditor: FC = () => {
         enable: true,
       },
       toolbar: [...toolbar(toggleFullScreen)],
+      blur() {
+        handleDraft();
+      },
     });
-  }, [toggleFullScreen]);
+  }, [handleDraft, toggleFullScreen]);
+
+  useEffect(() => {
+    draftTimer.current = window.setInterval(() => {
+      handleDraft();
+    }, 60000);
+    return () => {
+      window.clearInterval(draftTimer.current);
+    };
+  }, [handleDraft]);
 
   return (
     <div className="editor-page">
