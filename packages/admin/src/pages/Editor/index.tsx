@@ -61,6 +61,8 @@ const ArticleEditor: FC = () => {
       setUpdatedTime(moment(updatedAt).format(TIME_FORMAT));
       if (!id) {
         window.history.replaceState(null, '', `editor/${_id}`);
+        // window.location.href = `${window.location.origin}/editor/${_id}`;
+        // console.log(window.location);
         setId(_id);
       }
     },
@@ -113,20 +115,22 @@ const ArticleEditor: FC = () => {
   }, [draft, id, title]);
 
   useEffect(() => {
-    vditor.current = new Vditor(vditorRef.current!, {
-      width: '80%',
-      cache: {
-        id: 'vditor',
-        enable: false,
-      },
-      counter: {
-        enable: true,
-      },
-      toolbar: [...toolbar(toggleFullScreen)],
-      blur() {
-        handleDraft();
-      },
-    });
+    if (!vditor.current) {
+      vditor.current = new Vditor(vditorRef.current!, {
+        width: '80%',
+        cache: {
+          id: 'vditor',
+          enable: false,
+        },
+        counter: {
+          enable: true,
+        },
+        toolbar: [...toolbar(toggleFullScreen)],
+        blur() {
+          handleDraft();
+        },
+      });
+    }
   }, [handleDraft, toggleFullScreen]);
 
   useEffect(() => {
