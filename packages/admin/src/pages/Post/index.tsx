@@ -1,60 +1,58 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Drawer, Tag } from 'antd';
+import { Button, message, Tag } from 'antd';
 import React, { useState, useRef } from 'react';
 import { useIntl, FormattedMessage, Link } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import ProDescriptions from '@ant-design/pro-descriptions';
-import type { FormValueType } from './components/UpdateForm';
-import UpdateForm from './components/UpdateForm';
-import { rule, addRule, updateRule, removeRule } from '@/services/ant-design-pro/api';
+import { removeRule } from '@/services/ant-design-pro/api';
 import { getRandomColor } from '@/utils/colors';
+import { useQuery } from '@apollo/client';
+import type { PostListResult, PostListVar } from './typeDefs';
+import { POST_LIST } from './typeDefs';
 
 /**
  * 添加节点
  *
  * @param fields
  */
-const handleAdd = async (fields: API.RuleListItem) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addRule({ ...fields });
-    hide();
-    message.success('添加成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('添加失败请重试！');
-    return false;
-  }
-};
+// const handleAdd = async (fields: API.RuleListItem) => {
+//   const hide = message.loading('正在添加');
+//   try {
+//     await addRule({ ...fields });
+//     hide();
+//     message.success('添加成功');
+//     return true;
+//   } catch (error) {
+//     hide();
+//     message.error('添加失败请重试！');
+//     return false;
+//   }
+// };
 
 /**
  * 更新节点
  *
  * @param fields
  */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('正在配置');
-  try {
-    await updateRule({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
-    });
-    hide();
+// const handleUpdate = async (fields: FormValueType) => {
+//   const hide = message.loading('正在配置');
+//   try {
+//     await updateRule({
+//       name: fields.name,
+//       desc: fields.desc,
+//       key: fields.key,
+//     });
+//     hide();
 
-    message.success('配置成功');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('配置失败请重试！');
-    return false;
-  }
-};
+//     message.success('配置成功');
+//     return true;
+//   } catch (error) {
+//     hide();
+//     message.error('配置失败请重试！');
+//     return false;
+//   }
+// };
 
 /**
  * 删除节点
@@ -80,23 +78,43 @@ const handleRemove = async (selectedRows: API.RuleListItem[]) => {
 
 const TableList: React.FC = () => {
   /** 新建窗口的弹窗 */
-  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+  // const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   /** 分布更新窗口的弹窗 */
-  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
+  const [, handleUpdateModalVisible] = useState<boolean>(false);
 
-  const [showDetail, setShowDetail] = useState<boolean>(false);
+  const [, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
-  const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
+  const [, setCurrentRow] = useState();
+  const [selectedRowsState, setSelectedRows] = useState([]);
+
+  const [pageState, setPageState] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
+
+  const { data, loading } = useQuery<PostListResult, PostListVar>(POST_LIST, {
+    variables: {
+      input: {
+        current: pageState.current,
+        pageSize: pageState.pageSize,
+      },
+    },
+    onCompleted({ getPosts: { current, pageSize, total } }) {
+      setPageState((preState) => {
+        return { ...preState, current, pageSize, total };
+      });
+    },
+  });
 
   /** 国际化配置 */
   const intl = useIntl();
 
-  const columns: ProColumns<API.RuleListItem>[] = [
+  const columns: ProColumns[] = [
     {
       title: '标题',
-      dataIndex: 'name',
+      dataIndex: 'title',
       fixed: 'left',
       render: (dom, entity) => {
         return (
@@ -113,7 +131,7 @@ const TableList: React.FC = () => {
     },
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'articleStatus',
       width: 120,
       valueEnum: {
         draft: {
@@ -154,17 +172,6 @@ const TableList: React.FC = () => {
           </div>
         );
       },
-    },
-    {
-      title: '阅读量',
-      dataIndex: 'views',
-      width: 120,
-    },
-    {
-      title: '喜欢数',
-      dataIndex: 'likes',
-      key: 'likes',
-      width: 120,
     },
     // {
     //   title: <FormattedMessage id="pages.searchTable.titleCallNo" defaultMessage="服务调用次数" />,
@@ -255,16 +262,23 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.RuleListItem, API.PageParams>
+      <ProTable
         headerTitle={intl.formatMessage({
           id: 'pages.searchTable.title',
           defaultMessage: '查询表格',
         })}
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="_id"
         search={{
           labelWidth: 120,
         }}
+        loading={loading}
+        pagination={{
+          current: pageState.current,
+          pageSize: pageState.pageSize,
+          total: pageState.total,
+        }}
+        dataSource={data?.getPosts.items}
         toolBarRender={() => [
           <Button type="primary" key="primary">
             <Link to="/editor" target="_blank">
@@ -272,13 +286,12 @@ const TableList: React.FC = () => {
             </Link>
           </Button>,
         ]}
-        request={rule}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
-        }}
+        // rowSelection={{
+        //   onChange: (_, selectedRows) => {
+        //     setSelectedRows(selectedRows);
+        //   },
+        // }}
       />
       {selectedRowsState?.length > 0 && (
         <FooterToolbar
@@ -288,14 +301,14 @@ const TableList: React.FC = () => {
               <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
               <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
               &nbsp;&nbsp;
-              <span>
+              {/* <span>
                 <FormattedMessage
                   id="pages.searchTable.totalServiceCalls"
                   defaultMessage="服务调用次数总计"
                 />{' '}
                 {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)}{' '}
                 <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
-              </span>
+              </span> */}
             </div>
           }
         >
@@ -313,7 +326,7 @@ const TableList: React.FC = () => {
           </Button>
         </FooterToolbar>
       )}
-      <ModalForm
+      {/* <ModalForm
         title={intl.formatMessage({
           id: 'pages.searchTable.createForm.newRule',
           defaultMessage: '新建规则',
@@ -347,8 +360,8 @@ const TableList: React.FC = () => {
           name="name"
         />
         <ProFormTextArea width="md" name="desc" />
-      </ModalForm>
-      <UpdateForm
+      </ModalForm> */}
+      {/* <UpdateForm
         onSubmit={async (value) => {
           const success = await handleUpdate(value);
           if (success) {
@@ -365,9 +378,9 @@ const TableList: React.FC = () => {
         }}
         updateModalVisible={updateModalVisible}
         values={currentRow || {}}
-      />
+      /> */}
 
-      <Drawer
+      {/* <Drawer
         width={600}
         visible={showDetail}
         onClose={() => {
@@ -389,7 +402,7 @@ const TableList: React.FC = () => {
             columns={columns as ProDescriptionsItemProps<API.RuleListItem>[]}
           />
         )}
-      </Drawer>
+      </Drawer> */}
     </PageContainer>
   );
 };

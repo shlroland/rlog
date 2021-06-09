@@ -6,11 +6,17 @@ import { PostsService } from './posts.service'
 import * as mongoose from 'mongoose'
 import { UseGuards } from '@nestjs/common'
 import { GqlAuthGuard } from 'src/utils/guard/gqlAuth.guard'
+import { PaginationInput } from './dtos/pagination-post.input'
+import { PaginationPostItem } from './models/pagination.model'
 @Resolver()
 export class PostsResolver {
   constructor(private readonly postsService: PostsService) {}
 
-  // public async
+  @Query(() => PaginationPostItem)
+  // @UseGuards(GqlAuthGuard)
+  public async getPosts(@Args('input') input: PaginationInput) {
+    return this.postsService.findByPagination(input)
+  }
 
   @Query(() => PostItemModel)
   public async getPostById(@Args({ name: 'id', type: () => ID }) id: string) {

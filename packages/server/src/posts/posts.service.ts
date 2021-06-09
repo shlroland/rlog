@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { CreatePostInput } from './dtos/create-post.input'
 import { DraftPostInput } from './dtos/draft-post.input'
+import { PaginationInput } from './dtos/pagination-post.input'
 import { Post } from './schemas/post.schema'
 
 @Injectable()
@@ -29,6 +30,24 @@ export class PostsService {
     const updatedAt = new Date()
     Object.assign(rest, { updatedAt })
     return this.findByIdAndUpsert(_id, rest)
+  }
+
+  public async findByPagination(input: PaginationInput) {
+    const { current, pageSize } = input
+
+    const total = await this.getTotalCount()
+    const items = await this.postModel
+      .find({})
+      .sort({ createdAt: -1 })
+      .skip((current - 1) * pageSize)
+      .limit(pageSize)
+
+    return {
+      total,
+      current,
+      pageSize,
+      items,
+    }
   }
 
   private async findByIdAndUpsert<T>(id: string, input: T) {

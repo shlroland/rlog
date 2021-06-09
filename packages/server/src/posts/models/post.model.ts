@@ -32,18 +32,9 @@ export class PostItemModel {
   @Field()
   public readonly articleStatus: string
 
-  // @Field()
-  // public readonly isPublic: boolean
-
-  @Field()
+  @Field({ nullable: true })
   public readonly createdAt: Date
 
   @Field()
   public readonly updatedAt: Date
-
-  // @Field(() => PostItemModel, { nullable: true })
-  // public readonly prev: PostItemModel | null
-
-  // @Field(() => PostItemModel, { nullable: true })
-  // public readonly next: PostItemModel | null
 }

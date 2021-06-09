@@ -1,44 +1,12 @@
 import { gql } from '@apollo/client';
-
-const POST_FRAGMENT = gql`
-  fragment PostFragment on PostItemModel {
-    _id
-    excerpt
-    isRecommended
-    isCommentable
-    category
-    tags
-    title
-    content
-    html
-    articleStatus
-    createdAt
-    updatedAt
-  }
-`;
-
-export interface PostItem {
-  _id: string;
-  excerpt: string;
-  isRecommended: boolean;
-  isCommentable: boolean;
-  category: string;
-  tags: string[];
-  title: string;
-  content: string;
-  html: string;
-  articleStatus: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import type { PostItem } from '../Post/typeDefs';
 
 export const RELEASE = gql`
   mutation Release($input: CreatePostInput!) {
     release(input: $input) {
-      ...PostFragment
+      _id
     }
   }
-  ${POST_FRAGMENT}
 `;
 export interface ReleaseInput {
   input: PostItem;
@@ -62,7 +30,3 @@ export interface DraftInput {
 export interface DraftResult {
   saveDraft: { _id: string; updatedAt: string };
 }
-
-// export const POST_LIST = gql`
-//   query
-// `;

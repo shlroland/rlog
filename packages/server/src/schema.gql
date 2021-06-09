@@ -21,7 +21,7 @@ type PostItemModel {
   content: String!
   html: String!
   articleStatus: String!
-  createdAt: DateTime!
+  createdAt: DateTime
   updatedAt: DateTime!
 }
 
@@ -30,15 +30,28 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type PaginationPostItem {
+  total: Int!
+  current: Int!
+  pageSize: Int!
+  items: [PostItemModel!]!
+}
+
 type Query {
   login(input: LoginInput!): UserModel!
   getUserInfo(userId: String!): UserModel!
+  getPosts(input: PaginationInput!): PaginationPostItem!
   getPostById(id: ID!): PostItemModel!
 }
 
 input LoginInput {
   username: String!
   password: String!
+}
+
+input PaginationInput {
+  current: Float!
+  pageSize: Float!
 }
 
 type Mutation {

@@ -14,20 +14,16 @@ import { useCallback } from 'react';
 import { useState } from 'react';
 import './index.scss';
 import { useMutation } from '@apollo/client';
-import type { DraftInput, DraftResult, PostItem, ReleaseInput, ReleaseResult } from './typeDefs';
+import type { DraftInput, DraftResult, ReleaseInput, ReleaseResult } from './typeDefs';
 import { DRAFT as DRAFT_GQL, RELEASE } from './typeDefs';
 import moment from 'moment';
 import { TIME_FORMAT } from '@/utils/constant';
+import type { PostItem } from '../Post/typeDefs';
+import { ARTICLE_STATUS } from '../Post/typeDefs';
 
 const Iconfont = createFromIconfontCN({
   scriptUrl: [ICONFONT_URL],
 });
-
-enum ARTICLE_STATUS {
-  DRAFT = 'draft',
-  RELEASED = 'released',
-  HIDDEN = 'hidden',
-}
 
 const ArticleEditor: FC = () => {
   const vditorRef = useRef<HTMLDivElement>(null);
