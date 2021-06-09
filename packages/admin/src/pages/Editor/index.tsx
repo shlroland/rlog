@@ -14,7 +14,7 @@ import { useCallback } from 'react';
 import { useState } from 'react';
 import './index.scss';
 import { useMutation } from '@apollo/client';
-import type { DraftPostItem, DraftResult, PostItem } from './typeDefs';
+import type { DraftInput, DraftResult, PostItem, ReleaseInput, ReleaseResult } from './typeDefs';
 import { DRAFT as DRAFT_GQL, RELEASE } from './typeDefs';
 import moment from 'moment';
 import { TIME_FORMAT } from '@/utils/constant';
@@ -22,14 +22,6 @@ import { TIME_FORMAT } from '@/utils/constant';
 const Iconfont = createFromIconfontCN({
   scriptUrl: [ICONFONT_URL],
 });
-
-export const initialSettingState = {
-  excerpt: '',
-  isRecommended: false,
-  isCommentable: false,
-  category: '',
-  tags: [],
-};
 
 enum ARTICLE_STATUS {
   DRAFT = 'draft',
@@ -51,9 +43,9 @@ const ArticleEditor: FC = () => {
 
   const [updatedTime, setUpdatedTime] = useState<string>('');
 
-  const [release, { loading: isReleasing }] = useMutation(RELEASE);
+  const [release, { loading: isReleasing }] = useMutation<ReleaseResult, ReleaseInput>(RELEASE);
 
-  const [draft] = useMutation<DraftResult, DraftPostItem>(DRAFT_GQL, {
+  const [draft, { loading: isSaving }] = useMutation<DraftResult, DraftInput>(DRAFT_GQL, {
     onCompleted(data) {
       const {
         saveDraft: { _id, updatedAt },
@@ -61,8 +53,6 @@ const ArticleEditor: FC = () => {
       setUpdatedTime(moment(updatedAt).format(TIME_FORMAT));
       if (!id) {
         window.history.replaceState(null, '', `editor/${_id}`);
-        // window.location.href = `${window.location.origin}/editor/${_id}`;
-        // console.log(window.location);
         setId(_id);
       }
     },
@@ -85,7 +75,14 @@ const ArticleEditor: FC = () => {
     if (drawerRef.current) {
       try {
         const { results, content, html } = await generateParams();
-        const params = { ...results, title, content, html, articleStatus: ARTICLE_STATUS.RELEASED };
+        const params: PostItem = {
+          ...results,
+          title,
+          content,
+          html,
+          articleStatus: ARTICLE_STATUS.RELEASED,
+          _id: id,
+        };
         await release({
           variables: {
             input: params,
@@ -95,7 +92,7 @@ const ArticleEditor: FC = () => {
         drawerRef.current.setDrawerVisit(true);
       }
     }
-  }, [release, title]);
+  }, [id, release, title]);
 
   const handleDraft = useCallback(async () => {
     const { results, content, html } = await generateParams(false);
@@ -126,7 +123,7 @@ const ArticleEditor: FC = () => {
           enable: true,
         },
         toolbar: [...toolbar(toggleFullScreen)],
-        blur() {
+        input() {
           handleDraft();
         },
       });
@@ -163,14 +160,18 @@ const ArticleEditor: FC = () => {
               {updatedTime ? (
                 <span className="editor-page--header__draft">于{updatedTime}保存草稿</span>
               ) : null}
-              <Button icon={<SaveTwoTone />} onClick={() => handleDraft()}>
+              <Button
+                icon={<SaveTwoTone />}
+                loading={isReleasing || isSaving}
+                onClick={() => handleDraft()}
+              >
                 保存草稿
               </Button>
               <SettingDrawer ref={drawerRef} />
               <Button
                 type="primary"
                 icon={<Iconfont type="icon-fabu" />}
-                loading={isReleasing}
+                loading={isReleasing || isSaving}
                 onClick={() => handleSubmit()}
               >
                 发布

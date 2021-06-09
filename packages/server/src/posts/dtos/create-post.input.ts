@@ -16,6 +16,9 @@ export enum ARTICLE_STATUS {
 
 @InputType()
 export class CreatePostInput {
+  @Field({ nullable: true })
+  public readonly _id: string
+
   @Field()
   @IsString()
   @IsNotEmpty()

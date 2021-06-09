@@ -9,11 +9,26 @@ import type { FormInstance } from 'antd';
 import { Button } from 'antd';
 import { useState, forwardRef, useImperativeHandle } from 'react';
 import { useRef } from 'react';
-import { initialSettingState } from '..';
 
-type FormRefType<T = Record<string, any>> =
+interface InitialSettingStateProp {
+  excerpt: string;
+  isRecommended: boolean;
+  isCommentable: boolean;
+  category: string;
+  tags: string[];
+}
+
+export const initialSettingState = {
+  excerpt: '',
+  isRecommended: false,
+  isCommentable: false,
+  category: '',
+  tags: [],
+};
+
+type FormRefType =
   | (FormInstance & {
-      getFieldsFormatValue?: () => T;
+      getFieldsFormatValue?: () => InitialSettingStateProp;
     })
   | undefined;
 
@@ -29,14 +44,9 @@ const SettingDrawer = forwardRef<FormRefMethods, Record<string, unknown>>((_prop
   useImperativeHandle(ref, () => ({
     setDrawerVisit,
     formRef: formRef.current,
-    // async validate() {
-    //   const result = await formRef.current?.validateFields();
-    //   return result;
-    // },
-    // getFieldsValue: formRef.current?.getFieldsValue,
   }));
   return (
-    <DrawerForm
+    <DrawerForm<InitialSettingStateProp>
       width={500}
       title="文章设置"
       formRef={formRef}

@@ -54,6 +54,7 @@ input RegisterInput {
 }
 
 input CreatePostInput {
+  _id: String
   excerpt: String!
   isRecommended: Boolean!
   isCommentable: Boolean!

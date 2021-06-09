@@ -32,10 +32,6 @@ export interface PostItem {
   updatedAt: Date;
 }
 
-export interface DraftPostItem {
-  input: Partial<PostItem>;
-}
-
 export const RELEASE = gql`
   mutation Release($input: CreatePostInput!) {
     release(input: $input) {
@@ -44,6 +40,12 @@ export const RELEASE = gql`
   }
   ${POST_FRAGMENT}
 `;
+export interface ReleaseInput {
+  input: PostItem;
+}
+export interface ReleaseResult {
+  release: PostItem;
+}
 
 export const DRAFT = gql`
   mutation Draft($input: DraftPostInput!) {
@@ -54,6 +56,13 @@ export const DRAFT = gql`
   }
 `;
 
+export interface DraftInput {
+  input: Partial<PostItem>;
+}
 export interface DraftResult {
   saveDraft: { _id: string; updatedAt: string };
 }
+
+// export const POST_LIST = gql`
+//   query
+// `;

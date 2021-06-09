@@ -7,13 +7,11 @@ import {
   IsEnum,
 } from 'class-validator'
 import { ARTICLE_STATUS } from './create-post.input'
-import { IsObjectId } from 'class-validator-mongo-object-id'
 
 @InputType()
 export class DraftPostInput {
   @Field({ nullable: true })
-  //   @IsObjectId()
-  public readonly _id?: string
+  public readonly _id: string
 
   @Field({ nullable: true })
   @IsString()

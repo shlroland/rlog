@@ -16,21 +16,25 @@ export class PostsService {
     return this.postModel.countDocuments()
   }
 
-  public async create(postInput: CreatePostInput) {
+  public async release(postInput: CreatePostInput) {
     const createdAt = new Date()
     const updatedAt = new Date()
-    return this.postModel.create(
-      Object.assign(postInput, { createdAt, updatedAt }),
-    )
+    const { _id, ...rest } = postInput
+    Object.assign(rest, { updatedAt, createdAt })
+    return this.findByIdAndUpsert(_id, rest)
   }
 
   public async draft(draftInput: DraftPostInput) {
     const { _id, ...rest } = draftInput
     const updatedAt = new Date()
-    return this.postModel.findByIdAndUpdate(
-      _id,
-      Object.assign(rest, { updatedAt }),
-      { upsert: true, new: true },
-    )
+    Object.assign(rest, { updatedAt })
+    return this.findByIdAndUpsert(_id, rest)
+  }
+
+  private async findByIdAndUpsert<T>(id: string, input: T) {
+    return this.postModel.findByIdAndUpdate(id, input, {
+      upsert: true,
+      new: true,
+    })
   }
 }
