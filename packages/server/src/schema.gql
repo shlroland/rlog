@@ -52,6 +52,8 @@ input LoginInput {
 input PaginationInput {
   current: Float!
   pageSize: Float!
+  title: String
+  articleStatus: String
 }
 
 type Mutation {

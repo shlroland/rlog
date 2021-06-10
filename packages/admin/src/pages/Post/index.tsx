@@ -129,7 +129,7 @@ const TableList: React.FC = () => {
       render: (dom, entity) => {
         return (
           <Link to={`/editor/${entity._id}`} target="_blank">
-            {dom}
+            {dom || '无标题'}
           </Link>
         );
       },
@@ -225,6 +225,7 @@ const TableList: React.FC = () => {
       width: 200,
       dataIndex: 'updatedAt',
       valueType: 'dateTime',
+      hideInForm: true,
       // renderFormItem: (item, { defaultRender, ...rest }, form) => {
       //   const status = form.getFieldValue('status');
       //   if (`${status}` === '0') {
@@ -324,6 +325,22 @@ const TableList: React.FC = () => {
           </Button>,
         ]}
         columns={columns}
+        options={{
+          reload() {
+            fetchListMore({
+              variables: {
+                input: { current: pageState.current, pageSize: pageState.pageSize },
+              },
+            });
+          },
+        }}
+        onSubmit={(params) => {
+          fetchListMore({
+            variables: {
+              input: { current: pageState.current, pageSize: pageState.pageSize, ...params },
+            },
+          });
+        }}
       />
       {/* <ModalForm
         title={intl.formatMessage({

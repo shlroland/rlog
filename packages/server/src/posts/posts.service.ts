@@ -33,11 +33,15 @@ export class PostsService {
   }
 
   public async findByPagination(input: PaginationInput) {
-    const { current, pageSize } = input
+    const { current, pageSize, title, articleStatus } = input
 
     const total = await this.getTotalCount()
+    const params = {}
+    title && Reflect.set(params, 'title', { $regex: title, $options: 'i' })
+    articleStatus && Reflect.set(params, 'articleStatus', articleStatus)
+    console.log(params)
     const items = await this.postModel
-      .find({})
+      .find(params)
       .sort({ createdAt: -1 })
       .skip((current - 1) * pageSize)
       .limit(pageSize)
