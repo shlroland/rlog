@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { forwardRef } from 'react';
 import { useRef } from 'react';
 import { useFullSreenFn } from './useFullScreenFn';
 import Logo from '@/assets/images/logo2.svg';
@@ -21,20 +22,48 @@ import moment from 'moment';
 import { TIME_FORMAT } from '@/utils/constant';
 import type { PostItem } from '../Post/typeDefs';
 import { ARTICLE_STATUS } from '../Post/typeDefs';
+import { omit } from 'lodash';
+import { useImperativeHandle } from 'react';
 
 const Iconfont = createFromIconfontCN({
   scriptUrl: [ICONFONT_URL],
 });
 
+interface TitleComMethods {
+  getTitle: () => string;
+  setTitle: (title: string) => void;
+}
+
+const TitleCom = forwardRef<TitleComMethods, Record<string, unknown>>((_props, ref) => {
+  const [title, setTitle] = useState('');
+
+  useImperativeHandle(ref, () => ({
+    getTitle: () => title,
+    setTitle(propTitle) {
+      setTitle(propTitle);
+    },
+  }));
+
+  return (
+    <Input
+      placeholder="请输入文章标题"
+      bordered={false}
+      value={title}
+      onChange={(event) => {
+        setTitle(event.target.value);
+      }}
+    />
+  );
+});
+
 const ArticleEditor: FC = () => {
   const vditorRef = useRef<HTMLDivElement>(null);
   const drawerRef = useRef<FormRefMethods>(null);
+  const titleRef = useRef<TitleComMethods>(null);
   const vditor = useRef<Vditor>();
   const draftTimer = useRef<number>(0);
 
   const id = useRef(extractPostId());
-
-  const [title, setTitle] = useState('');
 
   const [toggleFullScreen] = useFullSreenFn(vditorRef);
 
@@ -66,9 +95,11 @@ const ArticleEditor: FC = () => {
   const [getPost] = useLazyQuery<{ getPostById: PostItem }, { id: string }>(DETAIL, {
     onCompleted({ getPostById }) {
       const { title: ReTitle, content, ...rest } = getPostById;
-      setTitle(ReTitle);
+      titleRef.current?.setTitle(ReTitle);
       vditor.current?.setValue(content);
-      drawerRef.current?.formRef?.setFieldsValue(rest);
+      drawerRef.current?.formRef?.setFieldsValue(
+        omit(rest, ['__typename', 'updatedAt', 'createdAt']),
+      );
     },
   });
 
@@ -91,7 +122,7 @@ const ArticleEditor: FC = () => {
         const { results, content, html } = await generateParams();
         const params: PostItem = {
           ...results,
-          title,
+          title: titleRef.current?.getTitle(),
           content,
           html,
           articleStatus: ARTICLE_STATUS.RELEASED,
@@ -106,14 +137,14 @@ const ArticleEditor: FC = () => {
         drawerRef.current.setDrawerVisit(true);
       }
     }
-  }, [release, title]);
+  }, [release]);
 
   const handleDraft = useCallback(async () => {
     const { results, content, html } = await generateParams(false);
     const params: Partial<PostItem> = {
       ...results,
       _id: id.current,
-      title,
+      title: titleRef.current?.getTitle(),
       content,
       html,
       articleStatus: ARTICLE_STATUS.DRAFT,
@@ -123,7 +154,7 @@ const ArticleEditor: FC = () => {
         input: params,
       },
     });
-  }, [draft, title]);
+  }, [draft]);
 
   const handleDraftTimer = useCallback(() => {
     draftTimer.current = window.setInterval(() => {
@@ -170,10 +201,6 @@ const ArticleEditor: FC = () => {
     };
   }, [handleDraftTimer]);
 
-  // useEffect(() => {
-
-  // }, [getPost]);
-
   return (
     <div className="editor-page">
       <header className="editor-page--header__wrapper">
@@ -182,14 +209,7 @@ const ArticleEditor: FC = () => {
             <img src={Logo} alt="" height={45} style={{ verticalAlign: 'middle' }} />
           </div>
           <div className="editor-page--header__title">
-            <Input
-              placeholder="请输入文章标题"
-              bordered={false}
-              value={title}
-              onChange={(event) => {
-                setTitle(event.target.value);
-              }}
-            />
+            <TitleCom ref={titleRef} />
           </div>
           <div className="editor-page--header__buttons">
             <Space>
