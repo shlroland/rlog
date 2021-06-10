@@ -13,7 +13,7 @@ import { omit } from 'lodash';
 const RegisterForm: FC = () => {
   const [register, { loading }] = useMutation<RegisterData>(REGISTER, {
     onCompleted(data) {
-      if (data.register.id) {
+      if (data.register.userId) {
         message.success('注册成功', 1);
         history.goBack();
       }

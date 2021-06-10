@@ -31,7 +31,8 @@ const ArticleEditor: FC = () => {
   const vditor = useRef<Vditor>();
   const draftTimer = useRef<number>(0);
 
-  const [id, setId] = useState(extractPostId());
+  // const [id, setId] = useState(extractPostId());
+  const id = useRef(extractPostId());
 
   const [title, setTitle] = useState('');
 
@@ -52,9 +53,9 @@ const ArticleEditor: FC = () => {
         saveDraft: { _id, updatedAt },
       } = data;
       setUpdatedTime(moment(updatedAt).format(TIME_FORMAT));
-      if (!id) {
+      if (!id.current) {
         window.history.replaceState(null, '', `editor/${_id}`);
-        setId(_id);
+        id.current = _id;
       }
       window.clearInterval(draftTimer.current);
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -85,7 +86,7 @@ const ArticleEditor: FC = () => {
           content,
           html,
           articleStatus: ARTICLE_STATUS.RELEASED,
-          _id: id,
+          _id: id.current,
         };
         await release({
           variables: {
@@ -96,13 +97,13 @@ const ArticleEditor: FC = () => {
         drawerRef.current.setDrawerVisit(true);
       }
     }
-  }, [id, release, title]);
+  }, [release, title]);
 
   const handleDraft = useCallback(async () => {
     const { results, content, html } = await generateParams(false);
     const params: Partial<PostItem> = {
       ...results,
-      _id: id,
+      _id: id.current,
       title,
       content,
       html,
@@ -113,7 +114,7 @@ const ArticleEditor: FC = () => {
         input: params,
       },
     });
-  }, [draft, id, title]);
+  }, [draft, title]);
 
   const handleDraftTimer = useCallback(() => {
     draftTimer.current = window.setInterval(() => {
@@ -133,9 +134,7 @@ const ArticleEditor: FC = () => {
           enable: true,
         },
         toolbar: [...toolbar(toggleFullScreen)],
-        input() {
-          handleDraft();
-        },
+        input: handleDraft,
       });
     }
 
@@ -144,9 +143,7 @@ const ArticleEditor: FC = () => {
         vditor.current?.destroy();
       }
     };
-    // 这里只需要初始化一次就行，不需要有依赖
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleDraft, toggleFullScreen]);
 
   useEffect(() => {
     handleDraftTimer();
