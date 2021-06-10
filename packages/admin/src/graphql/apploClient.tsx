@@ -7,7 +7,25 @@ import { message as AntMessage, notification } from 'antd';
 import { persistCache, LocalStorageWrapper } from 'apollo3-cache-persist';
 
 // const isDev = process.env.NODE_ENV === 'development';
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+  // typePolicies: {
+  //   Query: {
+  //     fields: {
+  //       getPosts: {
+  //         // Don't cache separate results based on
+  //         // any of this field's arguments.
+  //         keyArgs: false,
+  //         // Concatenate the incoming list items with
+  //         // the existing list items.
+  //         merge(existing,incoming) {
+  //           console.log(existing?.items, incoming.items);
+  //           return incoming;
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
+});
 const httpLink = new BatchHttpLink({
   uri: REACT_APP_GRAPHQL_URL,
 });
@@ -32,7 +50,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
             <div>
               Location:{' '}
               {locations &&
-                locations.map(sourceLocation => (
+                locations.map((sourceLocation) => (
                   <span>
                     line: {sourceLocation.line},column {sourceLocation.column}
                   </span>

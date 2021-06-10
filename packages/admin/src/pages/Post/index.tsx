@@ -88,7 +88,8 @@ const TableList: React.FC = () => {
   const {
     data,
     loading,
-    fetchMore: fetchListMore,
+    // fetchMore: fetchListMore,
+    refetch,
   } = useQuery<PostListResult, PostListVar>(POST_LIST, {
     variables: {
       input: {
@@ -108,12 +109,7 @@ const TableList: React.FC = () => {
     {
       onCompleted() {
         message.success('删除成功');
-        fetchListMore({
-          variables: {
-            current: pageState.current,
-            pageSize: pageState.pageSize,
-          },
-        });
+        refetch();
       },
     },
   );
@@ -327,18 +323,12 @@ const TableList: React.FC = () => {
         columns={columns}
         options={{
           reload() {
-            fetchListMore({
-              variables: {
-                input: { current: pageState.current, pageSize: pageState.pageSize },
-              },
-            });
+            refetch();
           },
         }}
         onSubmit={(params) => {
-          fetchListMore({
-            variables: {
-              input: { current: pageState.current, pageSize: pageState.pageSize, ...params },
-            },
+          refetch({
+            input: { current: pageState.current, pageSize: pageState.pageSize, ...params },
           });
         }}
       />

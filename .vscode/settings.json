@@ -5,5 +5,6 @@
   "typescript.tsdk": "/Users/shenhaoliang/Desktop/project/rlog/node_modules/typescript/lib",
   "css.validate": false,
   "less.validate": false,
-  "scss.validate": false
+  "scss.validate": false,
+  "debug.node.autoAttach": "on"
 }
