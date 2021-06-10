@@ -54,6 +54,10 @@ export class PostsService {
     return this.postModel.findById(id)
   }
 
+  public async deleteOneById(id: string) {
+    return this.postModel.findByIdAndDelete(id)
+  }
+
   private async findByIdAndUpsert<T>(id: string, input: T) {
     return this.postModel.findByIdAndUpdate(id, input, {
       upsert: true,

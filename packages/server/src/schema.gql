@@ -58,6 +58,7 @@ type Mutation {
   register(input: RegisterInput!): UserModel!
   release(input: CreatePostInput!): PostItemModel!
   saveDraft(input: DraftPostInput!): PostItemModel!
+  deletePostById(id: ID!): PostItemModel!
 }
 
 input RegisterInput {

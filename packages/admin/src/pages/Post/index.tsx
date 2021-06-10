@@ -1,14 +1,14 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Tag } from 'antd';
+import { Button, message, Popconfirm, Tag } from 'antd';
 import React, { useState, useRef } from 'react';
 import { useIntl, FormattedMessage, Link } from 'umi';
-import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { removeRule } from '@/services/ant-design-pro/api';
 import { getRandomColor } from '@/utils/colors';
-import { useQuery } from '@apollo/client';
-import type { PostItem, PostListResult, PostListVar } from './typeDefs';
+import { useMutation, useQuery } from '@apollo/client';
+import type { DeletePostResult, PostItem, PostListResult, PostListVar } from './typeDefs';
+import { DELETE_ONE_POST } from './typeDefs';
 import { POST_LIST } from './typeDefs';
 
 /**
@@ -59,26 +59,25 @@ import { POST_LIST } from './typeDefs';
  *
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: API.RuleListItem[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
-  try {
-    await removeRule({
-      key: selectedRows.map((row) => row.key),
-    });
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
+// const handleRemove = async (selectedRows: API.RuleListItem[]) => {
+//   const hide = message.loading('正在删除');
+//   if (!selectedRows) return true;
+//   try {
+//     await removeRule({
+//       key: selectedRows.map((row) => row.key),
+//     });
+//     hide();
+//     message.success('删除成功，即将刷新');
+//     return true;
+//   } catch (error) {
+//     hide();
+//     message.error('删除失败，请重试');
+//     return false;
+//   }
+// };
 
 const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  const [selectedRowsState, setSelectedRows] = useState([]);
 
   const [pageState, setPageState] = useState({
     current: 1,
@@ -86,7 +85,11 @@ const TableList: React.FC = () => {
     total: 0,
   });
 
-  const { data, loading } = useQuery<PostListResult, PostListVar>(POST_LIST, {
+  const {
+    data,
+    loading,
+    fetchMore: fetchListMore,
+  } = useQuery<PostListResult, PostListVar>(POST_LIST, {
     variables: {
       input: {
         current: pageState.current,
@@ -99,6 +102,21 @@ const TableList: React.FC = () => {
       });
     },
   });
+
+  const [deletePostById, { loading: isDeleting }] = useMutation<DeletePostResult, { id: string }>(
+    DELETE_ONE_POST,
+    {
+      onCompleted() {
+        message.success('删除成功');
+        fetchListMore({
+          variables: {
+            current: pageState.current,
+            pageSize: pageState.pageSize,
+          },
+        });
+      },
+    },
+  );
 
   /** 国际化配置 */
   const intl = useIntl();
@@ -263,9 +281,18 @@ const TableList: React.FC = () => {
             编辑
           </Link>
         </Button>,
-        <Button type="link" danger key="delete">
-          删除
-        </Button>,
+        <Popconfirm
+          key="deleteConfirm"
+          placement="top"
+          title={`确定将${record.title || '无标题'}删除吗`}
+          onConfirm={() => deletePostById({ variables: { id: record._id } })}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button type="link" danger key="delete" loading={isDeleting}>
+            删除
+          </Button>{' '}
+        </Popconfirm>,
       ],
     },
   ];
@@ -297,45 +324,7 @@ const TableList: React.FC = () => {
           </Button>,
         ]}
         columns={columns}
-        // rowSelection={{
-        //   onChange: (_, selectedRows) => {
-        //     setSelectedRows(selectedRows);
-        //   },
-        // }}
       />
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="已选择" />{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
-              &nbsp;&nbsp;
-              {/* <span>
-                <FormattedMessage
-                  id="pages.searchTable.totalServiceCalls"
-                  defaultMessage="服务调用次数总计"
-                />{' '}
-                {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)}{' '}
-                <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
-              </span> */}
-            </div>
-          }
-        >
-          <Button
-            onClick={async () => {
-              await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          >
-            <FormattedMessage id="pages.searchTable.batchDeletion" defaultMessage="批量删除" />
-          </Button>
-          <Button type="primary">
-            <FormattedMessage id="pages.searchTable.batchApproval" defaultMessage="批量审批" />
-          </Button>
-        </FooterToolbar>
-      )}
       {/* <ModalForm
         title={intl.formatMessage({
           id: 'pages.searchTable.createForm.newRule',

@@ -38,4 +38,12 @@ export class PostsResolver {
     }
     return this.postsService.draft(input)
   }
+
+  @Mutation(() => PostItemModel)
+  @UseGuards(GqlAuthGuard)
+  public async deletePostById(
+    @Args({ name: 'id', type: () => ID }) id: string,
+  ) {
+    return this.postsService.deleteOneById(id)
+  }
 }

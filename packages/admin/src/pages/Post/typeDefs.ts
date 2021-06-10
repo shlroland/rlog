@@ -52,6 +52,14 @@ export const POST_LIST = gql`
   ${POST_FRAGMENT}
 `;
 
+export const DELETE_ONE_POST = gql`
+  mutation DeletePostById($id: ID!) {
+    deletePostById(id: $id) {
+      _id
+    }
+  }
+`;
+
 export interface PostListProps {
   total: number;
   current: number;
@@ -65,4 +73,10 @@ export interface PostListResult {
 
 export interface PostListVar {
   input: { current: number; pageSize: number };
+}
+
+export interface DeletePostResult {
+  deletePostById: {
+    _id: string;
+  };
 }

@@ -1,7 +1,6 @@
 import { ConfigService } from '@nestjs/config'
 import * as path from 'path'
 import * as bcrypt from 'bcrypt'
-import { isProd } from './env'
 
 export const getEnvFilePath = () => {
   const nodeEnv = process.env.NODE_ENV
