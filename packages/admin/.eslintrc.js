@@ -6,4 +6,7 @@ module.exports = {
     REACT_APP_ENV: true,
     REACT_APP_GRAPHQL_URL: true,
   },
+  rules: {
+    'no-underscore-dangle': 'off',
+  },
 };

@@ -20,10 +20,7 @@ export class PostsResolver {
 
   @Query(() => PostItemModel)
   public async getPostById(@Args({ name: 'id', type: () => ID }) id: string) {
-    return {
-      id,
-      content: '12333',
-    }
+    return this.postsService.findPostById(id)
   }
 
   @Mutation(() => PostItemModel)

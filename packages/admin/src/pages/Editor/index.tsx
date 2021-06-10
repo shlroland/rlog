@@ -13,8 +13,9 @@ import SettingDrawer from './SettingDrawer';
 import { useCallback } from 'react';
 import { useState } from 'react';
 import './index.scss';
-import { useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import type { DraftInput, DraftResult, ReleaseInput, ReleaseResult } from './typeDefs';
+import { DETAIL } from './typeDefs';
 import { DRAFT as DRAFT_GQL, RELEASE } from './typeDefs';
 import moment from 'moment';
 import { TIME_FORMAT } from '@/utils/constant';
@@ -31,7 +32,6 @@ const ArticleEditor: FC = () => {
   const vditor = useRef<Vditor>();
   const draftTimer = useRef<number>(0);
 
-  // const [id, setId] = useState(extractPostId());
   const id = useRef(extractPostId());
 
   const [title, setTitle] = useState('');
@@ -60,6 +60,15 @@ const ArticleEditor: FC = () => {
       window.clearInterval(draftTimer.current);
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       handleDraftTimer();
+    },
+  });
+
+  const [getPost] = useLazyQuery<{ getPostById: PostItem }, { id: string }>(DETAIL, {
+    onCompleted({ getPostById }) {
+      const { title: ReTitle, content, ...rest } = getPostById;
+      setTitle(ReTitle);
+      vditor.current?.setValue(content);
+      drawerRef.current?.formRef?.setFieldsValue(rest);
     },
   });
 
@@ -136,6 +145,14 @@ const ArticleEditor: FC = () => {
         toolbar: [...toolbar(toggleFullScreen)],
         input: handleDraft,
       });
+
+      if (id.current) {
+        getPost({
+          variables: {
+            id: id.current as string,
+          },
+        });
+      }
     }
 
     return () => {
@@ -143,7 +160,8 @@ const ArticleEditor: FC = () => {
         vditor.current?.destroy();
       }
     };
-  }, [handleDraft, toggleFullScreen]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     handleDraftTimer();
@@ -151,6 +169,10 @@ const ArticleEditor: FC = () => {
       window.clearInterval(draftTimer.current);
     };
   }, [handleDraftTimer]);
+
+  // useEffect(() => {
+
+  // }, [getPost]);
 
   return (
     <div className="editor-page">
@@ -163,6 +185,7 @@ const ArticleEditor: FC = () => {
             <Input
               placeholder="请输入文章标题"
               bordered={false}
+              value={title}
               onChange={(event) => {
                 setTitle(event.target.value);
               }}

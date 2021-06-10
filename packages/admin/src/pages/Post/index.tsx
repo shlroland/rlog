@@ -8,7 +8,7 @@ import ProTable from '@ant-design/pro-table';
 import { removeRule } from '@/services/ant-design-pro/api';
 import { getRandomColor } from '@/utils/colors';
 import { useQuery } from '@apollo/client';
-import type { PostListResult, PostListVar } from './typeDefs';
+import type { PostItem, PostListResult, PostListVar } from './typeDefs';
 import { POST_LIST } from './typeDefs';
 
 /**
@@ -77,15 +77,7 @@ const handleRemove = async (selectedRows: API.RuleListItem[]) => {
 };
 
 const TableList: React.FC = () => {
-  /** 新建窗口的弹窗 */
-  // const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  /** 分布更新窗口的弹窗 */
-  const [, handleUpdateModalVisible] = useState<boolean>(false);
-
-  const [, setShowDetail] = useState<boolean>(false);
-
   const actionRef = useRef<ActionType>();
-  const [, setCurrentRow] = useState();
   const [selectedRowsState, setSelectedRows] = useState([]);
 
   const [pageState, setPageState] = useState({
@@ -111,21 +103,16 @@ const TableList: React.FC = () => {
   /** 国际化配置 */
   const intl = useIntl();
 
-  const columns: ProColumns[] = [
+  const columns: ProColumns<PostItem>[] = [
     {
       title: '标题',
       dataIndex: 'title',
       fixed: 'left',
       render: (dom, entity) => {
         return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
+          <Link to={`/editor/${entity._id}`} target="_blank">
             {dom}
-          </a>
+          </Link>
         );
       },
     },
@@ -269,19 +256,16 @@ const TableList: React.FC = () => {
       width: 200,
       dataIndex: 'option',
       valueType: 'option',
+      align: 'center',
       render: (_, record) => [
-        <a
-          key="config"
-          onClick={() => {
-            handleUpdateModalVisible(true);
-            setCurrentRow(record);
-          }}
-        >
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="配置" />
-        </a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
-          <FormattedMessage id="pages.searchTable.subscribeAlert" defaultMessage="订阅警报" />
-        </a>,
+        <Button type="link" key="edit">
+          <Link to={`/editor/${record._id}`} target="_blank">
+            编辑
+          </Link>
+        </Button>,
+        <Button type="link" danger key="delete">
+          删除
+        </Button>,
       ],
     },
   ];

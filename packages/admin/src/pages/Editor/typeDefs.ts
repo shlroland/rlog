@@ -1,5 +1,15 @@
 import { gql } from '@apollo/client';
 import type { PostItem } from '../Post/typeDefs';
+import { POST_FRAGMENT } from '../Post/typeDefs';
+
+export const DETAIL = gql`
+  query Detail($id: ID!) {
+    getPostById(id: $id) {
+      ...PostFragment
+    }
+  }
+  ${POST_FRAGMENT}
+`;
 
 export const RELEASE = gql`
   mutation Release($input: CreatePostInput!) {

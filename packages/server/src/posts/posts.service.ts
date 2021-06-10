@@ -50,6 +50,10 @@ export class PostsService {
     }
   }
 
+  public async findPostById(id: string) {
+    return this.postModel.findById(id)
+  }
+
   private async findByIdAndUpsert<T>(id: string, input: T) {
     return this.postModel.findByIdAndUpdate(id, input, {
       upsert: true,
