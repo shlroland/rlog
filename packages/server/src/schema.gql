@@ -48,6 +48,7 @@ type Query {
   getUserInfo(userId: String!): UserModel!
   getPosts(input: PaginationInput!): PaginationPostItem!
   getPostById(id: ID!): PostItemModel!
+  getCategories: [CategoryModel!]!
 }
 
 input LoginInput {
@@ -68,6 +69,7 @@ type Mutation {
   saveDraft(input: DraftPostInput!): PostItemModel!
   deletePostById(id: ID!): PostItemModel!
   createCategory(input: CreateCategoryInput!): CategoryModel!
+  deleteCategory(id: ID!): CategoryModel!
 }
 
 input RegisterInput {

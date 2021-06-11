@@ -70,6 +70,14 @@ export class PostsService {
     return this.categoryModel.create(input)
   }
 
+  public async findCategory() {
+    return await this.categoryModel.find({})
+  }
+
+  public async deleteCategory(id: string) {
+    return await this.categoryModel.findByIdAndDelete(id)
+  }
+
   private async findByIdAndUpsert<T>(id: string, input: T) {
     return this.postModel.findByIdAndUpdate(id, input, {
       upsert: true,

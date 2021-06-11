@@ -54,4 +54,17 @@ export class PostsResolver {
   public async createCategory(@Args('input') input: CreateCategoryInput) {
     return this.postsService.createCategory(input)
   }
+
+  @Mutation(() => CategoryModel)
+  @UseGuards(GqlAuthGuard)
+  public async deleteCategory(
+    @Args({ name: 'id', type: () => ID }) id: string,
+  ) {
+    return this.postsService.deleteCategory(id)
+  }
+
+  @Query(() => [CategoryModel])
+  public async getCategories() {
+    return this.postsService.findCategory()
+  }
 }
