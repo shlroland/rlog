@@ -11,71 +11,6 @@ import type { DeletePostResult, PostItem, PostListResult, PostListVar } from './
 import { DELETE_ONE_POST } from './typeDefs';
 import { POST_LIST } from './typeDefs';
 
-/**
- * 添加节点
- *
- * @param fields
- */
-// const handleAdd = async (fields: API.RuleListItem) => {
-//   const hide = message.loading('正在添加');
-//   try {
-//     await addRule({ ...fields });
-//     hide();
-//     message.success('添加成功');
-//     return true;
-//   } catch (error) {
-//     hide();
-//     message.error('添加失败请重试！');
-//     return false;
-//   }
-// };
-
-/**
- * 更新节点
- *
- * @param fields
- */
-// const handleUpdate = async (fields: FormValueType) => {
-//   const hide = message.loading('正在配置');
-//   try {
-//     await updateRule({
-//       name: fields.name,
-//       desc: fields.desc,
-//       key: fields.key,
-//     });
-//     hide();
-
-//     message.success('配置成功');
-//     return true;
-//   } catch (error) {
-//     hide();
-//     message.error('配置失败请重试！');
-//     return false;
-//   }
-// };
-
-/**
- * 删除节点
- *
- * @param selectedRows
- */
-// const handleRemove = async (selectedRows: API.RuleListItem[]) => {
-//   const hide = message.loading('正在删除');
-//   if (!selectedRows) return true;
-//   try {
-//     await removeRule({
-//       key: selectedRows.map((row) => row.key),
-//     });
-//     hide();
-//     message.success('删除成功，即将刷新');
-//     return true;
-//   } catch (error) {
-//     hide();
-//     message.error('删除失败，请重试');
-//     return false;
-//   }
-// };
-
 const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
@@ -329,6 +264,11 @@ const TableList: React.FC = () => {
         onSubmit={(params) => {
           refetch({
             input: { current: pageState.current, pageSize: pageState.pageSize, ...params },
+          });
+        }}
+        onReset={() => {
+          refetch({
+            input: { current: pageState.current, pageSize: pageState.pageSize },
           });
         }}
       />
