@@ -4,6 +4,7 @@ import { Model } from 'mongoose'
 import { CreatePostInput } from './dtos/create-post.input'
 import { DraftPostInput } from './dtos/draft-post.input'
 import { PaginationInput } from './dtos/pagination-post.input'
+import { Category } from './schemas/category.schema'
 import { Post } from './schemas/post.schema'
 
 @Injectable()
@@ -11,6 +12,8 @@ export class PostsService {
   constructor(
     @InjectModel(Post.name)
     private postModel: Model<Post>,
+    @InjectModel(Category.name)
+    private categoryModel: Model<Category>,
   ) {}
 
   private async getTotalCount(): Promise<number> {

@@ -46,4 +46,6 @@ export class PostsResolver {
   ) {
     return this.postsService.deleteOneById(id)
   }
+
+  // @Mutation
 }

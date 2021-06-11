@@ -51,4 +51,5 @@ export default {
   'menu.editor.koni': '拓扑编辑器',
   'menu.post': '博客管理',
   'menu.post.list': '所有博客',
+  'menu.post.category': '分类管理',
 };
