@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
+import { AuthenticationError, ForbiddenError } from 'apollo-server-express'
 import { Model } from 'mongoose'
+import { CreateCategoryInput } from './dtos/create-category.input'
 import { CreatePostInput } from './dtos/create-post.input'
 import { DraftPostInput } from './dtos/draft-post.input'
 import { PaginationInput } from './dtos/pagination-post.input'
@@ -15,10 +17,6 @@ export class PostsService {
     @InjectModel(Category.name)
     private categoryModel: Model<Category>,
   ) {}
-
-  private async getTotalCount(): Promise<number> {
-    return this.postModel.countDocuments()
-  }
 
   public async release(postInput: CreatePostInput) {
     const createdAt = new Date()
@@ -37,7 +35,6 @@ export class PostsService {
 
   public async findByPagination(input: PaginationInput) {
     const { current, pageSize, title, articleStatus } = input
-
     const params = {}
     title && Reflect.set(params, 'title', { $regex: title, $options: 'i' })
     articleStatus && Reflect.set(params, 'articleStatus', articleStatus)
@@ -63,6 +60,14 @@ export class PostsService {
 
   public async deleteOneById(id: string) {
     return this.postModel.findByIdAndDelete(id)
+  }
+
+  public async createCategory(input: CreateCategoryInput) {
+    const hadCategory = await this.categoryModel.findOne({ name: input.name })
+    if (hadCategory) {
+      throw new ForbiddenError('Category ' + input.name + ' already exists')
+    }
+    return this.categoryModel.create(input)
   }
 
   private async findByIdAndUpsert<T>(id: string, input: T) {

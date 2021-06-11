@@ -8,6 +8,8 @@ import { UseGuards } from '@nestjs/common'
 import { GqlAuthGuard } from 'src/utils/guard/gqlAuth.guard'
 import { PaginationInput } from './dtos/pagination-post.input'
 import { PaginationPostItem } from './models/pagination.model'
+import { CreateCategoryInput } from './dtos/create-category.input'
+import { CategoryModel } from './models/category.model'
 @Resolver()
 export class PostsResolver {
   constructor(private readonly postsService: PostsService) {}
@@ -47,5 +49,9 @@ export class PostsResolver {
     return this.postsService.deleteOneById(id)
   }
 
-  // @Mutation
+  @Mutation(() => CategoryModel)
+  @UseGuards(GqlAuthGuard)
+  public async createCategory(@Args('input') input: CreateCategoryInput) {
+    return this.postsService.createCategory(input)
+  }
 }

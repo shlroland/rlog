@@ -37,6 +37,12 @@ type PaginationPostItem {
   items: [PostItemModel!]!
 }
 
+type CategoryModel {
+  _id: ID!
+  name: String!
+  label: String!
+}
+
 type Query {
   login(input: LoginInput!): UserModel!
   getUserInfo(userId: String!): UserModel!
@@ -61,6 +67,7 @@ type Mutation {
   release(input: CreatePostInput!): PostItemModel!
   saveDraft(input: DraftPostInput!): PostItemModel!
   deletePostById(id: ID!): PostItemModel!
+  createCategory(input: CreateCategoryInput!): CategoryModel!
 }
 
 input RegisterInput {
@@ -93,4 +100,9 @@ input DraftPostInput {
   content: String
   html: String
   articleStatus: String
+}
+
+input CreateCategoryInput {
+  name: String!
+  label: String!
 }

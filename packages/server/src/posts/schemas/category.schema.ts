@@ -5,6 +5,9 @@ import { Document } from 'mongoose'
 export class Category extends Document {
   @Prop()
   name: string
+
+  @Prop()
+  label: string
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category)
