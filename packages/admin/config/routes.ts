@@ -51,10 +51,17 @@ const routes: IRoute[] = [
   },
   {
     name: 'post',
-    icon: 'icon-blog',
+    icon: 'form',
     path: '/post',
-    component: './Post',
+    routes: [
+      {
+        name: 'list',
+        path: '/post/list',
+        component: './Post',
+      },
+    ],
   },
+ 
   {
     path: '/editor',
     component: './Editor',

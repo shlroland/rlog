@@ -49,5 +49,6 @@ export default {
   'menu.editor.flow': '流程编辑器',
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
-  'menu.post': '文章管理',
+  'menu.post': '博客管理',
+  'menu.post.list': '所有博客',
 };
