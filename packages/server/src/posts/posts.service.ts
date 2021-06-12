@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { ForbiddenError } from 'apollo-server-express'
-import { Model, Types } from 'mongoose'
+import { Model } from 'mongoose'
 import { UpsertCategoryInput } from './dtos/category.input'
 import { CreatePostInput } from './dtos/create-post.input'
 import { DraftPostInput } from './dtos/draft-post.input'
 import { PaginationInput } from './dtos/pagination-post.input'
+import { UpsertTagInput } from './dtos/tag.input'
 import { Category } from './schemas/category.schema'
 import { Post } from './schemas/post.schema'
+import { Tag } from './schemas/tag.schema'
 
 @Injectable()
 export class PostsService {
@@ -16,6 +18,8 @@ export class PostsService {
     private postModel: Model<Post>,
     @InjectModel(Category.name)
     private categoryModel: Model<Category>,
+    @InjectModel(Tag.name)
+    private tagModel: Model<Tag>,
   ) {}
 
   public async release(postInput: CreatePostInput) {
@@ -77,21 +81,6 @@ export class PostsService {
       }
       return this.categoryModel.create(rest)
     }
-
-    // const hadCategory = await this.categoryModel.findOne({
-    //   $and: [{ name: input.name }, { input: input.label }],
-    // })
-    // if (hadCategory) {
-    //   throw new ForbiddenError('The Category already exists')
-    // }
-    // let { _id, ...rest } = input
-    // if (!_id) {
-    //   _id = Types.ObjectId().toString()
-    // }
-    // return this.categoryModel.findByIdAndUpdate(_id, rest, {
-    //   new: true,
-    //   upsert: true,
-    // })
   }
 
   public async findCategory() {
@@ -100,6 +89,31 @@ export class PostsService {
 
   public async deleteCategory(id: string) {
     return await this.categoryModel.findByIdAndDelete(id)
+  }
+
+  public async upsertTag(input: UpsertTagInput) {
+    const { _id, ...rest } = input
+    if (_id) {
+      return this.tagModel.findByIdAndUpdate(_id, rest, {
+        new: true,
+      })
+    } else {
+      const hadTag = await this.tagModel.findOne({
+        $or: [{ name: input.name }, { input: input.label }],
+      })
+      if (hadTag) {
+        throw new ForbiddenError('The Tag already exists')
+      }
+      return this.tagModel.create(rest)
+    }
+  }
+
+  public async findTag() {
+    return await this.tagModel.find({})
+  }
+
+  public async deleteTag(id: string) {
+    return await this.tagModel.findByIdAndDelete(id)
   }
 
   private async findByIdAndUpsert<T>(id: string, input: T) {

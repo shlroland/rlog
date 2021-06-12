@@ -43,12 +43,19 @@ type CategoryModel {
   label: String!
 }
 
+type TagModel {
+  _id: ID!
+  name: String!
+  label: String!
+}
+
 type Query {
   login(input: LoginInput!): UserModel!
   getUserInfo(userId: String!): UserModel!
   getPosts(input: PaginationInput!): PaginationPostItem!
   getPostById(id: ID!): PostItemModel!
   getCategories: [CategoryModel!]!
+  getTags: [TagModel!]!
 }
 
 input LoginInput {
@@ -70,6 +77,8 @@ type Mutation {
   deletePostById(id: ID!): PostItemModel!
   upsertCategory(input: UpsertCategoryInput!): CategoryModel!
   deleteCategory(id: ID!): CategoryModel!
+  upsertTag(input: UpsertTagInput!): TagModel!
+  deleteTag(id: ID!): TagModel!
 }
 
 input RegisterInput {
@@ -105,6 +114,12 @@ input DraftPostInput {
 }
 
 input UpsertCategoryInput {
+  _id: ID
+  name: String!
+  label: String!
+}
+
+input UpsertTagInput {
   _id: ID
   name: String!
   label: String!

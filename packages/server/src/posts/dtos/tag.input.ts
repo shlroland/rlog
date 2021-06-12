@@ -2,7 +2,7 @@ import { Field, ID, InputType } from '@nestjs/graphql'
 import { IsAlphanumeric, IsNotEmpty, IsString } from 'class-validator'
 
 @InputType()
-export class UpsertCategoryInput {
+export class UpsertTagInput {
   @Field(() => ID, { nullable: true })
   public readonly _id: string
 

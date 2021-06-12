@@ -10,6 +10,8 @@ import { PaginationInput } from './dtos/pagination-post.input'
 import { PaginationPostItem } from './models/pagination.model'
 import { UpsertCategoryInput } from './dtos/category.input'
 import { CategoryModel } from './models/category.model'
+import { UpsertTagInput } from './dtos/tag.input'
+import { TagModel } from './models/tag.model'
 @Resolver()
 export class PostsResolver {
   constructor(private readonly postsService: PostsService) {}
@@ -66,5 +68,22 @@ export class PostsResolver {
   @Query(() => [CategoryModel])
   public async getCategories() {
     return this.postsService.findCategory()
+  }
+
+  @Mutation(() => TagModel)
+  @UseGuards(GqlAuthGuard)
+  public async upsertTag(@Args('input') input: UpsertTagInput) {
+    return this.postsService.upsertTag(input)
+  }
+
+  @Mutation(() => TagModel)
+  @UseGuards(GqlAuthGuard)
+  public async deleteTag(@Args({ name: 'id', type: () => ID }) id: string) {
+    return this.postsService.deleteTag(id)
+  }
+
+  @Query(() => [TagModel])
+  public async getTags() {
+    return this.postsService.findTag()
   }
 }

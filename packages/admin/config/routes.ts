@@ -64,6 +64,11 @@ const routes: IRoute[] = [
         path: '/post/category',
         component: './Category',
       },
+      {
+        name: 'tag',
+        path: '/post/tag',
+        component: './Tag',
+      },
     ],
   },
 

@@ -52,4 +52,5 @@ export default {
   'menu.post': '博客管理',
   'menu.post.list': '所有博客',
   'menu.post.category': '分类管理',
+  'menu.post.tag': '便签管理',
 };
