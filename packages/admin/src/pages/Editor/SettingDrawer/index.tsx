@@ -1,3 +1,7 @@
+import type { ListCategoryResult } from '@/pages/Category/typeDefs';
+import { LIST_CATEGORY } from '@/pages/Category/typeDefs';
+import type { ListTagResult } from '@/pages/Tag/typeDefs';
+import { LIST_TAG } from '@/pages/Tag/typeDefs';
 import { SettingTwoTone } from '@ant-design/icons';
 import ProForm, {
   DrawerForm,
@@ -5,6 +9,7 @@ import ProForm, {
   ProFormSwitch,
   ProFormTextArea,
 } from '@ant-design/pro-form';
+import { useQuery } from '@apollo/client';
 import type { FormInstance } from 'antd';
 import { Button } from 'antd';
 import { useState, forwardRef, useImperativeHandle } from 'react';
@@ -40,6 +45,9 @@ export type FormRefMethods = {
 const SettingDrawer = forwardRef<FormRefMethods, Record<string, unknown>>((_props, ref) => {
   const formRef = useRef<FormRefType>();
   const [drawerVisit, setDrawerVisit] = useState(false);
+
+  const { data: categoryData } = useQuery<ListCategoryResult>(LIST_CATEGORY);
+  const { data: tagData } = useQuery<ListTagResult>(LIST_TAG);
 
   useImperativeHandle(ref, () => ({
     setDrawerVisit,
@@ -77,25 +85,21 @@ const SettingDrawer = forwardRef<FormRefMethods, Record<string, unknown>>((_prop
 
       <ProFormSelect
         width="lg"
-        options={[
-          {
-            value: 'chapter',
-            label: '盖章后生效',
-          },
-        ]}
         name="category"
         label="分类"
+        options={categoryData?.getCategories.map((category) => ({
+          label: category.name,
+          value: category._id,
+        }))}
         rules={[{ required: true, message: '请输入选择标签' }]}
-      />
+      ></ProFormSelect>
       <ProFormSelect
         width="lg"
         mode="multiple"
-        options={[
-          {
-            value: 'time',
-            label: '履行完终止',
-          },
-        ]}
+        options={tagData?.getTags.map((tag) => ({
+          label: tag.name,
+          value: tag._id,
+        }))}
         name="tags"
         label="标签"
         rules={[{ required: true, message: '请输入选择标签' }]}
