@@ -68,7 +68,7 @@ type Mutation {
   release(input: CreatePostInput!): PostItemModel!
   saveDraft(input: DraftPostInput!): PostItemModel!
   deletePostById(id: ID!): PostItemModel!
-  createCategory(input: CreateCategoryInput!): CategoryModel!
+  upsertCategory(input: UpsertCategoryInput!): CategoryModel!
   deleteCategory(id: ID!): CategoryModel!
 }
 
@@ -104,7 +104,8 @@ input DraftPostInput {
   articleStatus: String
 }
 
-input CreateCategoryInput {
+input UpsertCategoryInput {
+  _id: ID
   name: String!
   label: String!
 }

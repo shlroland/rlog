@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
-import { AuthenticationError, ForbiddenError } from 'apollo-server-express'
-import { Model } from 'mongoose'
-import { CreateCategoryInput } from './dtos/create-category.input'
+import { ForbiddenError } from 'apollo-server-express'
+import { Model, Types } from 'mongoose'
+import { UpsertCategoryInput } from './dtos/category.input'
 import { CreatePostInput } from './dtos/create-post.input'
 import { DraftPostInput } from './dtos/draft-post.input'
 import { PaginationInput } from './dtos/pagination-post.input'
@@ -62,12 +62,36 @@ export class PostsService {
     return this.postModel.findByIdAndDelete(id)
   }
 
-  public async createCategory(input: CreateCategoryInput) {
-    const hadCategory = await this.categoryModel.findOne({ name: input.name })
-    if (hadCategory) {
-      throw new ForbiddenError('Category ' + input.name + ' already exists')
+  public async upsertCategory(input: UpsertCategoryInput) {
+    const { _id, ...rest } = input
+    if (_id) {
+      return this.categoryModel.findByIdAndUpdate(_id, rest, {
+        new: true,
+      })
+    } else {
+      const hadCategory = await this.categoryModel.findOne({
+        $or: [{ name: input.name }, { input: input.label }],
+      })
+      if (hadCategory) {
+        throw new ForbiddenError('The Category already exists')
+      }
+      return this.categoryModel.create(rest)
     }
-    return this.categoryModel.create(input)
+
+    // const hadCategory = await this.categoryModel.findOne({
+    //   $and: [{ name: input.name }, { input: input.label }],
+    // })
+    // if (hadCategory) {
+    //   throw new ForbiddenError('The Category already exists')
+    // }
+    // let { _id, ...rest } = input
+    // if (!_id) {
+    //   _id = Types.ObjectId().toString()
+    // }
+    // return this.categoryModel.findByIdAndUpdate(_id, rest, {
+    //   new: true,
+    //   upsert: true,
+    // })
   }
 
   public async findCategory() {

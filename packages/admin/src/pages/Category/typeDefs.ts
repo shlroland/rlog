@@ -1,16 +1,16 @@
 import { gql } from '@apollo/client';
 
 export const CATEGORY_FRAGMENT = gql`
-  fragment CATEGORYFragment on CategoryModel {
+  fragment CategoryFragment on CategoryModel {
     _id
     name
     label
   }
 `;
 
-export const CREATE_CATEGORY = gql`
-  mutation CreateCategory($input: CreateCategoryInput!) {
-    createCategory(input: $input) {
+export const UPSERT_CATEGORY = gql`
+  mutation UpsertCategory($input: UpsertCategoryInput!) {
+    upsertCategory(input: $input) {
       _id
     }
   }
@@ -27,21 +27,28 @@ export const DELETE_CATEGORY = gql`
 export const LIST_CATEGORY = gql`
   query ListCategory {
     getCategories {
-      _id
-      name
+      ...CategoryFragment
     }
   }
+  ${CATEGORY_FRAGMENT}
 `;
 
-export interface CreateCategoryInput {
+export interface CategoryItem {
+  _id: string;
   name: string;
   label: string;
 }
 
-export interface CreateCategoryVar {
-  input: CreateCategoryInput;
+export interface UpsertCategoryInput {
+  _id?: string;
+  name: string;
+  label: string;
+}
+
+export interface UpsertCategoryVar {
+  input: UpsertCategoryInput;
 }
 
 export interface ListCategoryResult {
-  getCategories: [{ _id: string; name: string }];
+  getCategories: [{ _id: string; name: string; label: string }];
 }

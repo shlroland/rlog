@@ -6,17 +6,17 @@ import { useMutation, useQuery } from '@apollo/client';
 import type { FormInstance } from 'antd';
 import { Popconfirm, Space, Tag } from 'antd';
 import { useRef } from 'react';
-import type { CreateCategoryVar, ListCategoryResult } from './typeDefs';
+import type { CategoryItem, UpsertCategoryVar, ListCategoryResult } from './typeDefs';
 import { DELETE_CATEGORY } from './typeDefs';
 import { LIST_CATEGORY } from './typeDefs';
-import { CREATE_CATEGORY } from './typeDefs';
+import { UPSERT_CATEGORY } from './typeDefs';
 
 export default () => {
   const formRef = useRef<FormInstance>();
   const { data, refetch } = useQuery<ListCategoryResult>(LIST_CATEGORY, {
     fetchPolicy: 'network-only',
   });
-  const [createCategory] = useMutation<{ _id: string }, CreateCategoryVar>(CREATE_CATEGORY, {
+  const [upsertCategory] = useMutation<{ _id: string }, UpsertCategoryVar>(UPSERT_CATEGORY, {
     async onCompleted() {
       await refetch();
       formRef.current?.resetFields();
@@ -28,15 +28,21 @@ export default () => {
     },
   });
 
+  const handleChooseTag = (category: CategoryItem) => {
+    formRef.current?.setFields([{ name: '_id', value: category._id }]);
+    formRef.current?.setFieldsValue({ ...category });
+  };
+
   return (
     <ProCard split="vertical">
       <ProCard title="管理分类" colSpan="30%" headerBordered>
         <ProForm<{
+          _id: string;
           name: string;
           label: string;
         }>
           onFinish={async (params) => {
-            createCategory({
+            upsertCategory({
               variables: {
                 input: params,
               },
@@ -44,6 +50,7 @@ export default () => {
           }}
           formRef={formRef}
         >
+          <ProFormText name="_id" label="ID" placeholder="ID" hidden />
           <ProFormText name="name" label="名称" placeholder="分类名称" />
           <ProFormText name="label" label="代号" placeholder="代号用来标记路由" />
         </ProForm>
@@ -54,7 +61,10 @@ export default () => {
             data.getCategories.map((category) => {
               return (
                 <Tag color={getRandomColor(category.name)} key={category._id}>
-                  {`${category.name}  `}
+                  <span
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => handleChooseTag(category)}
+                  >{`${category.name}`}</span>
                   <Popconfirm
                     placement="top"
                     title={`确定删除${category.name}标签`}
