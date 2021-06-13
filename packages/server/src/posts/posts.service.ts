@@ -49,7 +49,6 @@ export class PostsService {
       .sort({ createdAt: -1 })
       .skip((current - 1) * pageSize)
       .limit(pageSize)
-    console.log(items)
     const total = items.length
 
     return {
