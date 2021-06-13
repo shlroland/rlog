@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Document } from 'mongoose'
+import { Document, Types } from 'mongoose'
 
 @Schema()
 export class Post extends Document {
@@ -12,10 +12,10 @@ export class Post extends Document {
   @Prop({ required: true })
   isCommentable: boolean
 
-  @Prop({ required: true })
+  @Prop({ type: Types.ObjectId, ref: 'Category', required: true })
   category: string
 
-  @Prop({ type: [String], required: true })
+  @Prop({ type: [Types.ObjectId], ref: 'Tag', required: true })
   tags: string[]
 
   @Prop({ required: true })

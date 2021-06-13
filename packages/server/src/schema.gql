@@ -10,13 +10,25 @@ type UserModel {
   authorization: String!
 }
 
+type CategoryModel {
+  _id: ID!
+  name: String!
+  label: String!
+}
+
+type TagModel {
+  _id: ID!
+  name: String!
+  label: String!
+}
+
 type PostItemModel {
   _id: ID!
   excerpt: String!
   isRecommended: Boolean!
   isCommentable: Boolean!
-  category: String!
-  tags: [String!]!
+  category: CategoryModel!
+  tags: [TagModel!]!
   title: String!
   content: String!
   html: String!
@@ -35,18 +47,6 @@ type PaginationPostItem {
   current: Int!
   pageSize: Int!
   items: [PostItemModel!]!
-}
-
-type CategoryModel {
-  _id: ID!
-  name: String!
-  label: String!
-}
-
-type TagModel {
-  _id: ID!
-  name: String!
-  label: String!
 }
 
 type Query {

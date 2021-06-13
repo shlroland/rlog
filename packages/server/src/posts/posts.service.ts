@@ -44,10 +44,12 @@ export class PostsService {
     articleStatus && Reflect.set(params, 'articleStatus', articleStatus)
     const items = await this.postModel
       .find(params)
+      .populate('category')
+      .populate('tags')
       .sort({ createdAt: -1 })
       .skip((current - 1) * pageSize)
       .limit(pageSize)
-
+    console.log(items)
     const total = items.length
 
     return {

@@ -89,22 +89,26 @@ const TableList: React.FC = () => {
       key: 'category',
       dataIndex: 'category',
       width: 100,
-      render: (category) =>
-        category ? <Tag color={getRandomColor(category as string)}>{category}</Tag> : null,
+      renderText: (category: { name: string }) =>
+        category ? <Tag color={getRandomColor(category.name)}>{category.name}</Tag> : null,
     },
     {
       title: '标签',
       key: 'tags',
       dataIndex: 'tags',
-      render() {
+      renderText(tags: { name: string; _id: string }[]) {
         return (
-          <div>
-            {/* {tags
+          <>
+            {tags
               ? tags.map((tag) => {
-                  return <Tag>{tag}</Tag>;
+                  return (
+                    <Tag key={tag._id} color={getRandomColor(tag.name)}>
+                      {tag.name}
+                    </Tag>
+                  );
                 })
-              : null} */}
-          </div>
+              : null}
+          </>
         );
       },
     },

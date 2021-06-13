@@ -1,4 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { CategoryModel } from './category.model'
+import { TagModel } from './tag.model'
 
 @ObjectType()
 export class PostItemModel {
@@ -14,11 +16,17 @@ export class PostItemModel {
   @Field()
   public readonly isCommentable: boolean
 
-  @Field()
-  public readonly category: string
+  @Field(() => CategoryModel)
+  public readonly category: {
+    _id: string
+    name: string
+  }
 
-  @Field(() => [String])
-  public readonly tags: string[]
+  @Field(() => [TagModel])
+  public readonly tags: {
+    _id: string
+    name: string
+  }[]
 
   @Field()
   public readonly title: string
