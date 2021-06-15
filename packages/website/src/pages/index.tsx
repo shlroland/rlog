@@ -1,15 +1,16 @@
 import LayoutContainer from '@/views/LayoutContainer/LayoutContainer'
-import ArticleList from '@/components/ArticleList/index'
+import ArticleCard from '@/components/ArticleCard/index'
 import ListBox from '@/components/ListBox'
 import client from '@/graphql'
 import { GetStaticProps } from 'next'
 import { gql } from '@apollo/client'
 
-export default function Home({ posts }) {
-  console.log(posts)
+export default function Home() {
   return (
     <LayoutContainer asideCom={ListBox()}>
-      <ArticleList />
+      <div className="flex flex-col flex-wrap w-full">
+        <ArticleCard />
+      </div>
     </LayoutContainer>
   )
 }

@@ -1,4 +1,3 @@
-import styles from './index.module.css'
 import Link from 'next/link'
 
 const ArticleCard = () => {
@@ -73,12 +72,4 @@ const ArticleCard = () => {
   )
 }
 
-const ArticleList = () => {
-  return (
-    <div className={styles.wrapper}>
-      <ArticleCard />
-    </div>
-  )
-}
-
-export default ArticleList
+export default ArticleCard
