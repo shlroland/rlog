@@ -1,46 +1,41 @@
 import LayoutContainer from '@/views/LayoutContainer/LayoutContainer'
-import ArticleCard from '@/components/ArticleCard/index'
 import ListBox from '@/components/ListBox'
-import client from '@/graphql'
+import ArticleList from '@/components/ArticleList'
 import { GetStaticProps } from 'next'
-import { gql } from '@apollo/client'
+import { addApolloState, initializeApollo } from '@/graphql'
+// import { useQuery } from '@apollo/client'
+import { POST_LIST } from './typeDefs'
+
+const PostListVars = {
+  input: {
+    current: 1,
+    pageSize: 10,
+  },
+}
 
 export default function Home() {
+  // const { data } = useQuery(POST_LIST, {
+  //   variables: PostListVars,
+  // })
+
+  // console.log(data)
+
   return (
     <LayoutContainer asideCom={ListBox()}>
-      <div className="flex flex-col flex-wrap w-full">
-        <ArticleCard />
-      </div>
+      <ArticleList />
     </LayoutContainer>
   )
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const { data } = await client.query({
-    query: gql`
-      query PostList($input: PaginationInput!) {
-        getPosts(input: $input) {
-          total
-          current
-          pageSize
-          items {
-            _id
-            title
-          }
-        }
-      }
-    `,
-    variables: {
-      input: {
-        current: 1,
-        pageSize: 10,
-      },
-    },
+  const apolloClient = initializeApollo()
+  await apolloClient.query({
+    query: POST_LIST,
+    variables: PostListVars,
   })
 
-  return {
-    props: {
-      posts: data.getPosts,
-    },
-  }
+  return addApolloState(apolloClient, {
+    props: {},
+    revalidate: 1,
+  })
 }

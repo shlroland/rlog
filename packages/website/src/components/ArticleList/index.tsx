@@ -72,4 +72,12 @@ const ArticleCard = () => {
   )
 }
 
-export default ArticleCard
+const ArticleList = () => {
+  return (
+    <div className="flex flex-col flex-wrap w-full">
+      <ArticleCard />
+    </div>
+  )
+}
+
+export default ArticleList
