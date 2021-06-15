@@ -4,9 +4,9 @@ import Link from 'next/link'
 const ArticleCard = () => {
   return (
     <Link href={`/post/[id]`} as={`/post/xxxxxx`}>
-      <article className="w-full bg-white rounded-lg shadow flex">
+      <article className="flex w-full bg-white rounded-lg shadow">
         <img
-          className="w-1/3 object-cover rounded-tl-lg rounded-bl-lg"
+          className="object-cover w-1/3 rounded-tl-lg rounded-bl-lg"
           src="https://wipi.oss-cn-shanghai.aliyuncs.com/2021-05-13/internet-emerge-econ_1200x675_hero_071317.jpeg"
           alt="xxx"
         />
