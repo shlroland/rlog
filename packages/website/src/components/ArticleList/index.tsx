@@ -1,8 +1,8 @@
-import { PostItem } from '@/pages/typeDefs'
+import { PostListItem } from '@/pages/typeDefs'
 import { FC } from 'react'
 import ArticleCard from './ArticleCard'
 interface ArticleListProp {
-  postList?: PostItem[]
+  postList?: PostListItem[]
   current?: number
   pageSize?: number
 }

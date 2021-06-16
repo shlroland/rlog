@@ -6,7 +6,7 @@ import { addApolloState, initializeApollo } from '@/gql'
 import { useQuery } from '@apollo/client'
 import { PostListResult, POST_LIST } from './typeDefs'
 
-const PostListVars = {
+export const PostListVars = {
   input: {
     current: 1,
     pageSize: 10,
@@ -17,8 +17,6 @@ export default function Home() {
   const { data } = useQuery<PostListResult>(POST_LIST, {
     variables: PostListVars,
   })
-
-  console.log(data)
 
   return (
     <LayoutContainer asideCom={ListBox()}>

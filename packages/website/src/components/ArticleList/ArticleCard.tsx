@@ -1,8 +1,8 @@
-import { PostItem } from '@/pages/typeDefs'
+import { PostListItem } from '@/pages/typeDefs'
 import Link from 'next/link'
 import { FC } from 'react'
 
-const ArticleCard: FC<PostItem> = ({ title, tags, excerpt }) => {
+const ArticleCard: FC<PostListItem> = ({ title, tags, excerpt, _id }) => {
   return (
     <article className="flex w-full mb-6 bg-white rounded-lg shadow">
       <img
@@ -12,7 +12,7 @@ const ArticleCard: FC<PostItem> = ({ title, tags, excerpt }) => {
       />
       <div className="w-full py-4 pl-12 md:pl-10 xs:pl-10">
         <h2 className="mb-2 text-2xl font-bold leading-7 transition cursor-pointer hover:text-teal-600">
-          <Link href={`/post/[id]`} as={`/post/xxxxxx`}>
+          <Link href={`/post/[id]`} as={`/post/${_id}`}>
             {title}
           </Link>
         </h2>

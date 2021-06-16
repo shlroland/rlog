@@ -5,8 +5,8 @@ export interface PostItem {
   excerpt: string;
   isRecommended: boolean;
   isCommentable: boolean;
-  category: { name: string };
-  tags: { name: string }[];
+  category: { name: string; _id: string };
+  tags: { name: string; _id: string }[];
   title: string;
   content: string;
   html: string;
@@ -28,6 +28,7 @@ export const POST_FRAGMENT = gql`
     isRecommended
     isCommentable
     category {
+      _id
       name
     }
     tags {

@@ -31,7 +31,7 @@ export interface PostTypeItem {
   name: string
 }
 
-export interface PostItem {
+export interface PostListItem {
   _id: string
   title: string
   excerpt: string
@@ -43,7 +43,7 @@ export interface PostListProps {
   total: number
   current: number
   pageSize: number
-  items: PostItem[]
+  items: PostListItem[]
 }
 
 export interface PostListResult {

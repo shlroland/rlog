@@ -50,7 +50,6 @@ export class PostsService {
       .skip((current - 1) * pageSize)
       .limit(pageSize)
     const total = items.length
-
     return {
       total,
       current,
@@ -60,7 +59,7 @@ export class PostsService {
   }
 
   public async findPostById(id: string) {
-    return this.postModel.findById(id)
+    return this.postModel.findById(id).populate('category').populate('tags')
   }
 
   public async deleteOneById(id: string) {

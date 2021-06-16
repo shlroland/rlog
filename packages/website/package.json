@@ -13,7 +13,6 @@
     "classnames": "^2.2.6",
     "deepmerge": "^4.2.2",
     "graphql": "^15.5.0",
-    "gray-matter": "^4.0.3",
     "highlight.js": "^10.7.2",
     "next": "^10.2.0",
     "react": "^17.0.2",
@@ -21,8 +20,6 @@
     "react-icons": "^4.2.0",
     "react-modal": "^3.13.1",
     "react-toastify": "^7.0.4",
-    "remark": "^13.0.0",
-    "remark-html": "^13.0.1",
     "sass": "^1.32.4"
   },
   "resolutions": {

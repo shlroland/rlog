@@ -97,8 +97,11 @@ const ArticleEditor: FC = () => {
       const { title: ReTitle, content, ...rest } = getPostById;
       titleRef.current?.setTitle(ReTitle);
       vditor.current?.setValue(content);
+      const formItems = { ...rest } as any;
+      formItems.category = formItems.category._id;
+      formItems.tags = formItems.tags.map((tag: { _id: string }) => tag._id);
       drawerRef.current?.formRef?.setFieldsValue(
-        omit(rest, ['__typename', 'updatedAt', 'createdAt']),
+        omit(formItems, ['__typename', 'updatedAt', 'createdAt']),
       );
     },
   });

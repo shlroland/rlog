@@ -139,6 +139,7 @@ module.exports = {
           css: {
             'img': {
               margin: 'auto',
+              display: 'inline',
             },
             'maxWidth': 'none',
             'color': theme('colors.gray.500'),
