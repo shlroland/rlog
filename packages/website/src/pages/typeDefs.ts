@@ -9,6 +9,7 @@ export const POST_LIST = gql`
       items {
         _id
         title
+        excerpt
         category {
           _id
           name
@@ -33,6 +34,18 @@ export interface PostTypeItem {
 export interface PostItem {
   _id: string
   title: string
+  excerpt: string
   category: PostTypeItem
   tags: PostTypeItem[]
+}
+
+export interface PostListProps {
+  total: number
+  current: number
+  pageSize: number
+  items: PostItem[]
+}
+
+export interface PostListResult {
+  getPosts: PostListProps
 }

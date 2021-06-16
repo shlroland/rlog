@@ -1,7 +1,7 @@
 import '@/styles/globals.css'
 import { AppProps } from 'next/app'
 import LayoutHeader from '@/views/LayoutHeader'
-import { useApollo } from '@/graphql'
+import { useApollo } from '@/gql'
 import { ApolloProvider } from '@apollo/client'
 
 function MyApp({ Component, pageProps }: AppProps) {
