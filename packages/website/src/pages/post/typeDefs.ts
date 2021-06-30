@@ -7,6 +7,11 @@ export const POST = gql`
       html
       title
       createdAt
+      tocs {
+        id
+        level
+        text
+      }
     }
   }
 `
@@ -16,6 +21,11 @@ export interface PostDetailItem {
   html: string
   title: string
   createdAt: string
+  tocs: {
+    id: string
+    level: string
+    text: string
+  }[]
 }
 
 export interface PostDetailResult {

@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, Types } from 'mongoose'
+import { TocModel } from '../models/toc.model'
 
 @Schema()
 export class Post extends Document {
@@ -35,6 +36,9 @@ export class Post extends Document {
 
   @Prop()
   updatedAt: Date
+
+  @Prop()
+  tocs: TocModel[]
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post)

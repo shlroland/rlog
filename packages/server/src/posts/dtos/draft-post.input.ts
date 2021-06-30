@@ -6,6 +6,7 @@ import {
   IsArray,
   IsEnum,
 } from 'class-validator'
+import { TocModel } from '../models/toc.model'
 import { ARTICLE_STATUS } from './create-post.input'
 
 @InputType()
@@ -52,4 +53,8 @@ export class DraftPostInput {
   @IsString()
   @IsEnum(ARTICLE_STATUS)
   public readonly articleStatus: string
+
+  @Field(() => [TocModel])
+  @IsArray()
+  public readonly tocs: TocModel[]
 }

@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { CategoryModel } from './category.model'
 import { TagModel } from './tag.model'
+import { TocModel } from './toc.model'
 
 @ObjectType()
 export class PostItemModel {
@@ -27,6 +28,9 @@ export class PostItemModel {
     _id: string
     name: string
   }[]
+
+  @Field(() => [TocModel])
+  public tocs: TocModel[]
 
   @Field()
   public readonly title: string

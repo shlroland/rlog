@@ -13,6 +13,11 @@ export interface PostItem {
   articleStatus: string;
   createdAt: Date;
   updatedAt: Date;
+  tocs: {
+    id: string;
+    level: string;
+    text: string;
+  }[];
 }
 
 export enum ARTICLE_STATUS {

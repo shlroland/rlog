@@ -130,6 +130,7 @@ const ArticleEditor: FC = () => {
           html,
           articleStatus: ARTICLE_STATUS.RELEASED,
           _id: id.current,
+          tocs: makeTocs(html!),
         };
         await release({
           variables: {
@@ -144,7 +145,6 @@ const ArticleEditor: FC = () => {
 
   const handleDraft = useCallback(async () => {
     const { results, content, html } = await generateParams(false);
-    makeTocs(html!);
     const params: Partial<PostItem> = {
       ...results,
       _id: id.current,
@@ -152,6 +152,7 @@ const ArticleEditor: FC = () => {
       content,
       html,
       articleStatus: ARTICLE_STATUS.DRAFT,
+      tocs: makeTocs(html!),
     };
     await draft({
       variables: {

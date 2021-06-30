@@ -47,5 +47,6 @@ export const makeTocs = (html: string) => {
       toc.push({ level: ret[1], id: ret[2], text: ret[3] });
     }
   } while (ret !== null);
+  console.log(toc);
   return toc;
 };

@@ -10,6 +10,12 @@ type UserModel {
   authorization: String!
 }
 
+type TocModel {
+  id: String!
+  level: String!
+  text: String!
+}
+
 type CategoryModel {
   _id: ID!
   name: String!
@@ -29,6 +35,7 @@ type PostItemModel {
   isCommentable: Boolean!
   category: CategoryModel!
   tags: [TagModel!]!
+  tocs: [TocModel!]!
   title: String!
   content: String!
   html: String!
@@ -47,6 +54,12 @@ type PaginationPostItem {
   current: Int!
   pageSize: Int!
   items: [PostItemModel!]!
+}
+
+input TocInput {
+  id: String!
+  level: String!
+  text: String!
 }
 
 type Query {
@@ -98,6 +111,7 @@ input CreatePostInput {
   content: String!
   html: String!
   articleStatus: String!
+  tocs: [TocInput!]!
 }
 
 input DraftPostInput {
@@ -111,6 +125,7 @@ input DraftPostInput {
   content: String
   html: String
   articleStatus: String
+  tocs: [TocInput!]!
 }
 
 input UpsertCategoryInput {

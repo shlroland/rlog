@@ -7,6 +7,7 @@ import {
   IsNotEmpty,
   IsString,
 } from 'class-validator'
+import { TocModel } from '../models/toc.model'
 
 export enum ARTICLE_STATUS {
   DRAFT = 'draft',
@@ -66,4 +67,8 @@ export class CreatePostInput {
   @IsEnum(ARTICLE_STATUS)
   @IsNotEmpty()
   public readonly articleStatus: string
+
+  @Field(() => [TocModel])
+  @IsArray()
+  public readonly tocs: TocModel[]
 }

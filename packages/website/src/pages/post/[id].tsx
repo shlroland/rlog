@@ -25,6 +25,8 @@ const Post: FC<PostProps> = ({ post }) => {
     })
   })
 
+  console.log(post)
+
   return (
     <LayoutContainer>
       <div className="w-full p-8 bg-white rounded-lg shadow">
@@ -55,6 +57,7 @@ export const getStaticProps: GetStaticProps<PostProps, { id: string }> = async (
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const apolloClient = initializeApollo()
+
   const { data } = await apolloClient.query<PostListResult>({
     query: POST_LIST,
     variables: PostListVars,
