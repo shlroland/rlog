@@ -7,7 +7,7 @@ import { initializeApollo } from '@/gql'
 import { PostListResult, POST_LIST } from '../typeDefs'
 import { PostListVars } from '..'
 import { POST, PostDetailItem, PostDetailResult } from './typeDefs'
-
+import dayjs from 'dayjs'
 interface PostProps {
   post: PostDetailItem
 }
@@ -28,6 +28,10 @@ const Post: FC<PostProps> = ({ post }) => {
   return (
     <LayoutContainer>
       <div className="w-full p-8 bg-white rounded-lg shadow">
+        <h1 className="my-6 text-5xl font-extrabold text-center">{post.title}</h1>
+        <p className="italic text-center">
+          发布于{dayjs(post.createdAt).format('YYYY-MM-DD HH:mm:ss')}
+        </p>
         <article ref={mdRef} className="prose " dangerouslySetInnerHTML={{ __html: post.html }} />
       </div>
     </LayoutContainer>
@@ -41,6 +45,7 @@ export const getStaticProps: GetStaticProps<PostProps, { id: string }> = async (
     query: POST,
     variables: { id },
   })
+
   return {
     props: {
       post: data.getPostById,

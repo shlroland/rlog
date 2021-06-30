@@ -172,7 +172,6 @@ module.exports = {
               color: theme('colors.teal.700'),
               fontWeight: theme('fontWeight.medium'),
               textDecoration: 'none',
-              boxShadow: theme('boxShadow.link'),
             },
             'a code': {
               color: 'inherit',

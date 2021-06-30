@@ -15,3 +15,5 @@ declare module '*.scss' {
 declare global {}
 
 declare type Nullable<T> = T | null
+
+declare module 'markdown-toc'

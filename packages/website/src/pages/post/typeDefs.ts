@@ -5,6 +5,8 @@ export const POST = gql`
     getPostById(id: $id) {
       _id
       html
+      title
+      createdAt
     }
   }
 `
@@ -12,6 +14,8 @@ export const POST = gql`
 export interface PostDetailItem {
   _id: string
   html: string
+  title: string
+  createdAt: string
 }
 
 export interface PostDetailResult {

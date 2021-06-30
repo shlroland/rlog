@@ -1,13 +1,13 @@
 import type { FC } from 'react';
 import { forwardRef } from 'react';
 import { useRef } from 'react';
-import { useFullSreenFn } from './useFullScreenFn';
+import { useFullSreenFn } from './hooks/useFullScreenFn';
 import Logo from '@/assets/images/logo2.svg';
 import { Button, Input, message, Space } from 'antd';
 import { useEffect } from 'react';
 import Vditor from 'vditor';
 import { createFromIconfontCN, SaveTwoTone } from '@ant-design/icons';
-import { extractPostId, ICONFONT_URL } from '@/utils/utils';
+import { extractPostId, ICONFONT_URL, makeTocs } from '@/utils/utils';
 import { toolbar } from './editorConfig';
 import type { FormRefMethods } from './SettingDrawer';
 import SettingDrawer from './SettingDrawer';
@@ -144,6 +144,7 @@ const ArticleEditor: FC = () => {
 
   const handleDraft = useCallback(async () => {
     const { results, content, html } = await generateParams(false);
+    makeTocs(html!);
     const params: Partial<PostItem> = {
       ...results,
       _id: id.current,
