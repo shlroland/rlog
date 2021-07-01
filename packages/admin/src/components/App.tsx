@@ -2,8 +2,8 @@ import type { FC } from 'react'
 import { createElement } from 'react'
 import type { RouteProps } from 'react-router-dom'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import Login from 'src/pages/Login'
 import type { RequireOne } from 'src/utils/genaric'
+import Login from 'src/pages/Login'
 import Layout from './Layout'
 
 function App() {
@@ -39,9 +39,10 @@ function App() {
 
   return (
     <Router>
-      <Switch />
-      <PrivateRoute path="/app" component={Layout} />
-      <PublicRoute path="/login" component={Login} />
+      <Switch>
+        <PrivateRoute path="/" component={Layout} />
+        <PublicRoute path="/login" component={Login} />
+      </Switch>
     </Router>
   )
 }

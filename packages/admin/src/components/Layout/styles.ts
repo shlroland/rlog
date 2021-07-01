@@ -2,6 +2,7 @@ import type { Theme } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
 export default makeStyles((theme: Theme) => {
+  console.log(theme)
   return {
     root: {
       display: 'flex',

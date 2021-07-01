@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { addWebpackAlias, override } = require('customize-cra')
-
 module.exports = override(
   addWebpackAlias({
     '@material-ui/styled-engine': '@material-ui/styled-engine-sc',
