@@ -14,6 +14,8 @@
     "server:debug": "lerna exec --scope server -- yarn start:debug",
     "dashboard:dev": "lerna exec --scope dashboard -- yarn dev",
     "dashboard:pre": "lerna exec --scope dashboard -- yarn start:pre",
+    "admin:dev": "lerna exec --scope admin -- yarn start",
+    "admin:pre": "lerna exec --scope admin -- yarn start:pre",
     "prepare": "husky install"
   },
   "dependencies": {
