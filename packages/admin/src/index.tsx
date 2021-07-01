@@ -4,17 +4,18 @@ import App from './components/App'
 import reportWebVitals from './reportWebVitals'
 
 import Themes from './themes'
-import { LayoutProvider } from './components/LayoutContext'
-import { ThemeProvider } from '@material-ui/styles'
-import { CssBaseline } from '@material-ui/core'
-
+import { LayoutProvider } from './context/LayoutContext'
+import { CssBaseline, ThemeProvider } from '@material-ui/core'
+import { StyledEngineProvider } from '@material-ui/core/styles'
 ReactDOM.render(
   <React.StrictMode>
     <LayoutProvider>
-      <ThemeProvider theme={Themes.default}>
-        <CssBaseline />
-        <App />
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={Themes.default}>
+          <CssBaseline />
+          <App />
+        </ThemeProvider>
+      </StyledEngineProvider>
     </LayoutProvider>
   </React.StrictMode>,
   document.getElementById('root'),

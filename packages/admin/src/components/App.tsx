@@ -1,19 +1,48 @@
+import type { FC } from 'react'
+import { createElement } from 'react'
+import type { RouteProps } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Login from 'src/pages/Login'
+import type { RequireOne } from 'src/utils/genaric'
+import Layout from './Layout'
+
 function App() {
+  const PrivateRoute: FC<RequireOne<RouteProps, 'component'>> = ({
+    component,
+    ...rest
+  }) => {
+    return <Route {...rest} render={() => createElement(component)} />
+  }
+
+  const PublicRoute: FC<RequireOne<RouteProps, 'component'>> = ({
+    component,
+    ...rest
+  }) => {
+    return (
+      <Route
+        {...rest}
+        render={
+          (props) =>
+            // isAuthenticated ? (
+            //   <Redirect
+            //     to={{
+            //       pathname: '/',
+            //     }}
+            //   />
+            // ) : (
+            createElement(component, props)
+          // )
+        }
+      />
+    )
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer">
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch />
+      <PrivateRoute path="/app" component={Layout} />
+      <PublicRoute path="/login" component={Login} />
+    </Router>
   )
 }
 
