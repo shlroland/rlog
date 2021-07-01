@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "build/dist",
     "module": "esnext",
     "target": "esnext",
     "lib": [
@@ -28,9 +27,7 @@
     "noEmit": true
   },
   "include": [
-    "src",
-    ".eslintrc.js",
-    ".prettierrc.js"
+    "src"
   ],
   "exclude": [
     "node_modules",
