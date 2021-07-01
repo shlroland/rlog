@@ -40,8 +40,8 @@ function App() {
   return (
     <Router>
       <Switch>
-        <PrivateRoute path="/" component={Layout} />
-        <PublicRoute path="/login" component={Login} />
+        <PrivateRoute path="/app" component={Layout} />
+        <PublicRoute path="/" component={Login} />
       </Switch>
     </Router>
   )
