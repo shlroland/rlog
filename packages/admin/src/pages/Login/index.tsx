@@ -48,19 +48,35 @@ const Login = () => {
               </Fade>
               <TextField
                 id="email"
+                value={loginValue}
+                onChange={(e) => setLoginValue(e.target.value)}
+                label="Email"
+                variant="standard"
+                placeholder="Email Adress"
                 InputProps={{
                   classes: {
                     underline: classes.textFieldUnderline,
                     input: classes.textField,
                   },
                 }}
-                value={loginValue}
-                onChange={(e) => setLoginValue(e.target.value)}
-                margin="normal"
-                placeholder="Email Adress"
-                type="email"
                 fullWidth
               />
+
+              {/* <TextField
+                id="standard-basic"
+                // id="email"
+                // InputProps={{
+                //   classes: {
+                //     // underline: classes.textFieldUnderline,
+                //     input: classes.textField,
+                //   },
+                // }}
+                // margin="normal"
+                placeholder="Email Adress"
+                variant="standard"
+                type="email"
+                fullWidth
+              /> */}
               <TextField
                 id="password"
                 InputProps={{
@@ -74,6 +90,8 @@ const Login = () => {
                 margin="normal"
                 placeholder="Password"
                 type="password"
+                label="Password"
+                variant="standard"
                 fullWidth
               />
               <div className={classes.formButtons}>
@@ -129,21 +147,25 @@ const Login = () => {
                 // onChange={(e) => setNameValue(e.target.value)}
                 margin="normal"
                 placeholder="Full Name"
+                label="Name"
+                variant="standard"
                 type="text"
                 fullWidth
               />
               <TextField
                 id="email"
-                InputProps={{
-                  classes: {
-                    // underline: classes.textFieldUnderline,
-                    input: classes.textField,
-                  },
-                }}
+                // InputProps={{
+                //   classes: {
+                //     // underline: classes.textFieldUnderline,
+                //     input: classes.textField,
+                //   },
+                // }}
                 value={loginValue}
                 onChange={(e) => setLoginValue(e.target.value)}
                 margin="normal"
                 placeholder="Email Adress"
+                label="Email"
+                variant="standard"
                 type="email"
                 fullWidth
               />
@@ -160,6 +182,8 @@ const Login = () => {
                 margin="normal"
                 placeholder="Password"
                 type="password"
+                label="Password"
+                variant="standard"
                 fullWidth
               />
               <div className={classes.creatingButtonContainer}>
@@ -190,11 +214,6 @@ const Login = () => {
                     Create your account
                   </Button>
                 )}
-              </div>
-              <div className={classes.formDividerContainer}>
-                <div className={classes.formDivider} />
-                <Typography className={classes.formDividerWord}>or</Typography>
-                <div className={classes.formDivider} />
               </div>
             </>
           )}
