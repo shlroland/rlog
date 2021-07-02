@@ -2,7 +2,8 @@
 import type { Theme, Palette } from '@material-ui/core'
 import type { Styles, WithStylesOptions, ThemeOfStyles } from '@material-ui/styles'
 import { withStyles } from '@material-ui/styles'
-import { createElement } from 'react'
+import type { FC } from 'react'
+// import { createElement, ReactNode } from 'react'
 
 function getColor(color: keyof Palette, theme: Theme, brigtness = 'main') {
   if (color && theme.palette[color] && theme.palette[color][brigtness]) {
@@ -56,18 +57,17 @@ function getFontSize(size: string, variant = '', theme: Theme) {
 
 const createStyled = <K extends Styles<any, any>>(
   styles: K,
-  options?: WithStylesOptions<ThemeOfStyles<Styles<any, any>>>,
+  options?: WithStylesOptions<ThemeOfStyles<K>>,
 ) => {
-  // const Styled = function (props: { children: () => JSX.Element,classes:  }) {
-  //   const { children, ...other } = props
-  //   return children(other)
-  // }
-
   const WrapStyle = withStyles(styles, options)
-  return WrapStyle((props) => {
-    // const { classes } = props
-    return createElement('div')
-  })
+  const fn: FC<{
+    classes: { [P in keyof K]: string }
+    children: (classes: { [P in keyof K]: string }) => JSX.Element
+  }> = (props) => {
+    const { classes, children } = props
+    return children(classes)
+  }
+  return WrapStyle(fn)
 }
 
 export { getColor, getFontWeight, getFontSize, createStyled }

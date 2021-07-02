@@ -9,8 +9,8 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
-import useStyles from './styles'
 import { useState } from 'react'
+import useStyles from './styles'
 
 const Login = () => {
   const classes = useStyles()

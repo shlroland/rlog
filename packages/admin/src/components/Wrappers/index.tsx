@@ -22,9 +22,9 @@ export const Badge = () => {
 
   return (
     <Styled>
-      {(sp) => {
-        console.log(sp)
-        return <span />
+      {(props) => {
+        console.log(props)
+        return <span>123123</span>
       }}
     </Styled>
   )

@@ -4,7 +4,7 @@ import type { RouteProps } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import type { RequireOne } from 'src/utils/genaric'
-import Login from 'src/pages/login'
+import Login from 'src/pages/Login'
 import Layout from './Layout'
 
 function App() {
