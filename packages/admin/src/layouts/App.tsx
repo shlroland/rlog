@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import { createElement } from 'react'
 import type { RouteProps } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import type { RequireOne } from 'src/utils/genaric'
 import Login from 'src/pages/Login'
@@ -40,8 +41,10 @@ function App() {
   return (
     <Router>
       <Switch>
-        <PrivateRoute path="/app" component={Layout} />
-        <PublicRoute path="/" component={Login} />
+        <Route exact path="/" render={() => <Redirect to="/app/dashboard" />} />
+        <Route exact path="/app" render={() => <Redirect to="/app/dashboard" />} />
+        <PrivateRoute path="/" component={Layout} />
+        <PublicRoute path="/app" component={Login} />
       </Switch>
     </Router>
   )
