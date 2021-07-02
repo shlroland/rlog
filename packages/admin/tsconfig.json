@@ -20,7 +20,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
-    "strict": true,
+    "strict": false,
     "esModuleInterop": true,
     "noFallthroughCasesInSwitch": true,
     "isolatedModules": true,
