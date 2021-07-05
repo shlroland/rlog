@@ -5,15 +5,15 @@ import { withStyles } from '@material-ui/styles'
 import type { FC } from 'react'
 // import { createElement, ReactNode } from 'react'
 
-function getColor(color: keyof Palette, theme: Theme, brigtness = 'main') {
-  if (color && theme.palette[color] && theme.palette[color][brigtness]) {
+function getColor(color?: keyof Palette, theme?: Theme, brigtness = 'main') {
+  if (color && theme?.palette[color] && theme.palette[color][brigtness]) {
     return theme.palette[color][brigtness] as string
   } else {
     return ''
   }
 }
 
-function getFontWeight(style: string) {
+function getFontWeight(style?: string) {
   switch (style) {
     case 'light':
       return 300
@@ -26,7 +26,7 @@ function getFontWeight(style: string) {
   }
 }
 
-function getFontSize(size: string, variant = '', theme: Theme) {
+function getFontSize(size?: string, variant = '', theme?: Theme) {
   let multiplier
 
   switch (size) {
@@ -48,9 +48,9 @@ function getFontSize(size: string, variant = '', theme: Theme) {
   }
 
   const defaultSize =
-    variant && theme.typography[variant]
+    variant && theme?.typography[variant]
       ? theme.typography[variant].fontSize
-      : theme.typography.fontSize + 'px'
+      : theme?.typography.fontSize + 'px'
 
   return `calc(${defaultSize} * ${multiplier})`
 }
@@ -62,10 +62,10 @@ const createStyled = <K extends Styles<any, any>>(
   const WrapStyle = withStyles(styles, options)
   const fn: FC<{
     classes: { [P in keyof K]: string }
-    children: (classes: { [P in keyof K]: string }) => JSX.Element
+    children: (props: { classes: { [P in keyof K]: string } }) => JSX.Element
   }> = (props) => {
     const { classes, children } = props
-    return children(classes)
+    return children({ classes })
   }
   return WrapStyle(fn)
 }

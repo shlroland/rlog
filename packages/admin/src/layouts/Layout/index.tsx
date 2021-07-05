@@ -6,8 +6,9 @@ import useStyles from './styles'
 import { GitHub as GitHubIcon } from '@material-ui/icons'
 import { Route, Switch } from 'react-router-dom'
 import Dashboard from 'src/pages/dashboard'
+import type { FC } from 'react'
 
-const Layout = () => {
+const Layout: FC = () => {
   const classes = useStyles()
   // const theme = useTheme()
   return (

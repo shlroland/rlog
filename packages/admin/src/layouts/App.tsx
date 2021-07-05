@@ -1,24 +1,18 @@
 import type { FC } from 'react'
 import { createElement } from 'react'
-import type { RouteProps } from 'react-router-dom'
+// import type { RouteProps } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import type { RequireOne } from 'src/utils/genaric'
 import Login from 'src/pages/Login'
 import Layout from './Layout'
+import type { RouteProps } from './types'
 
 function App() {
-  const PrivateRoute: FC<RequireOne<RouteProps, 'component'>> = ({
-    component,
-    ...rest
-  }) => {
-    return <Route {...rest} render={() => createElement(component)} />
+  const PrivateRoute: FC<RouteProps> = ({ component, ...rest }) => {
+    return <Route {...rest} render={(props) => createElement(component, props)} />
   }
 
-  const PublicRoute: FC<RequireOne<RouteProps, 'component'>> = ({
-    component,
-    ...rest
-  }) => {
+  const PublicRoute: FC<RouteProps> = ({ component, ...rest }) => {
     return (
       <Route
         {...rest}
