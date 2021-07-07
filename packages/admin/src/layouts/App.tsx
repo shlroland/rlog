@@ -3,7 +3,7 @@ import { createElement } from 'react'
 // import type { RouteProps } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import Login from 'src/pages/login'
+import Login from 'src/pages/Login'
 import Layout from './Layout'
 import type { RouteProps } from './types'
 
