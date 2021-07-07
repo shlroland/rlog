@@ -3,7 +3,7 @@ import { createElement } from 'react'
 // import type { RouteProps } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import Login from 'src/pages/Login'
+import Login from 'src/pages/login'
 import Layout from './Layout'
 import type { RouteProps } from './types'
 
@@ -36,7 +36,7 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/" render={() => <Redirect to="/app/dashboard" />} />
-        <Route exact path="/app" render={() => <Redirect to="/app/dashboard" />} />
+        <Route exact path="/app" render={() => <Redirect to="/app/tables" />} />
         <PrivateRoute path="/" component={Layout} />
         <PublicRoute path="/app" component={Login} />
       </Switch>

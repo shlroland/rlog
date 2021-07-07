@@ -1,3 +1,4 @@
+import type { FC } from 'react'
 import { Box, IconButton, Link } from '@material-ui/core'
 import classnames from 'classnames'
 import Header from '../Header'
@@ -6,7 +7,7 @@ import useStyles from './styles'
 import { GitHub as GitHubIcon } from '@material-ui/icons'
 import { Route, Switch } from 'react-router-dom'
 import Dashboard from 'src/pages/dashboard'
-import type { FC } from 'react'
+import Tables from 'src/pages/tables'
 
 const Layout: FC = () => {
   const classes = useStyles()
@@ -22,6 +23,7 @@ const Layout: FC = () => {
         <div className={classes.fakeToolbar} />
         <Switch>
           <Route path="/app/dashboard" component={Dashboard} />
+          <Route path="/app/tables" component={Tables} />
         </Switch>
         <Box
           mt={5}

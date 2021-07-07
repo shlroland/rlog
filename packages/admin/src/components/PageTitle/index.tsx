@@ -5,7 +5,7 @@ import useStyles from './styles'
 import { Typography } from '../Wrappers'
 import type { FC, ReactNode } from 'react'
 
-const PageTitle: FC<{ button: ReactNode; title: ReactNode }> = (props) => {
+const PageTitle: FC<{ button?: ReactNode; title: ReactNode }> = (props) => {
   const classes = useStyles()
 
   return (
