@@ -1,19 +1,15 @@
 import type { FC, Reducer } from 'react'
 import { createContext, useReducer, useContext } from 'react'
+import type { DispatchType, LayoutStateContextProp } from './types'
 
-type DispatchType = { type: string }
-
-const LayoutStateContext = createContext<{
-  isSidebarOpened: boolean
-}>({ isSidebarOpened: true })
+const LayoutStateContext = createContext<LayoutStateContextProp>({
+  isSidebarOpened: true,
+})
 const LayoutDispatchContext = createContext<(value: DispatchType) => void>(
   {} as (value: DispatchType) => void,
 )
 
-const layoutReducer: Reducer<{ isSidebarOpened: boolean }, DispatchType> = (
-  state,
-  action,
-) => {
+const layoutReducer: Reducer<LayoutStateContextProp, DispatchType> = (state, action) => {
   switch (action.type) {
     case 'TOGGLE_SIDEBAR':
       return { ...state, isSidebarOpened: !state.isSidebarOpened }
