@@ -20,7 +20,9 @@ import {
 } from '@material-ui/icons'
 import classNames from 'classnames'
 import { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useLayoutState } from 'src/context/LayoutContext'
+import { signOut, useUserDispatch } from 'src/context/UserContext'
 import useStyles from './styles'
 
 const notifications = [
@@ -81,6 +83,8 @@ const Header = () => {
   //global
   const layoutState = useLayoutState()
   // const layoutDispatch = useLayoutDispatch()
+  const userDispatch = useUserDispatch()
+  const history = useHistory()
   //local
   const [mailMenu, setMailMenu] = useState(null)
   const [isMailsUnread, setIsMailsUnread] = useState(true)
@@ -273,9 +277,8 @@ const Header = () => {
             <Typography
               className={classes.profileMenuLink}
               color="primary"
-              // onClick={() => signOut(userDispatch, props.history)}
-            >
-              Sign Out
+              onClick={() => signOut(userDispatch, history)}>
+              登出
             </Typography>
           </div>
         </Menu>
