@@ -5,6 +5,8 @@ import { useMutation } from '@apollo/client'
 import type { RegisterData } from '../typeDefs'
 import { REGISTER } from '../typeDefs'
 import { omit } from 'lodash-es'
+import SnackbarUtils from 'src/components/Toast'
+import type { FC } from 'react'
 
 export interface IRegisterForm {
   username: string
@@ -13,17 +15,12 @@ export interface IRegisterForm {
   confirmPassword: string
 }
 
-const RegisterForm = () => {
-  const classes = useStyles()
+export interface RegisterFormProp {
+  changeTab: () => void
+}
 
-  const [register, { loading }] = useMutation<RegisterData>(REGISTER, {
-    onCompleted(data) {
-      if (data.register.userId) {
-        // message.success('注册成功', 1)
-        // history.goBack()
-      }
-    },
-  })
+const RegisterForm: FC<RegisterFormProp> = ({ changeTab }) => {
+  const classes = useStyles()
 
   const { handleSubmit, control, getValues } = useForm<IRegisterForm>({
     defaultValues: {
@@ -31,6 +28,16 @@ const RegisterForm = () => {
       password: '',
       email: '',
       confirmPassword: '',
+    },
+  })
+
+  const [register, { loading }] = useMutation<RegisterData>(REGISTER, {
+    onCompleted(data) {
+      if (data?.register?.userId) {
+        SnackbarUtils.success('注册成功')
+        changeTab()
+        // history.goBack()
+      }
     },
   })
 
@@ -168,7 +175,7 @@ const RegisterForm = () => {
             color="primary"
             fullWidth
             className={classes.createAccountButton}>
-            Create your account
+            创建账号
           </Button>
         )}
       </div>

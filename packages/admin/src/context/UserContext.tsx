@@ -1,6 +1,8 @@
 import type { FC, Reducer } from 'react'
 import { useReducer, useContext, createContext } from 'react'
 import type { DispatchType, UserStateContextProp } from './types'
+import type { History } from 'history'
+import { deleteToken, getToken, saveToken } from 'src/utils/storage'
 
 const UserStateContext = createContext<UserStateContextProp>({
   isAuthenticated: false,
@@ -23,7 +25,7 @@ const userReducer: Reducer<UserStateContextProp, DispatchType> = (state, action)
 
 const UserProvider: FC = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, {
-    isAuthenticated: !!localStorage.getItem('id_token'),
+    isAuthenticated: !!getToken(),
   })
 
   return (
@@ -51,4 +53,24 @@ function useUserDispatch() {
   return context
 }
 
-export { UserProvider, useUserState, useUserDispatch }
+function loginUser(
+  dispatch: (value: DispatchType) => void,
+  token: string,
+  history: History,
+) {
+  if (!!token) {
+    saveToken(token)
+    dispatch({ type: 'LOGIN_SUCCESS' })
+    history.push('/app/dashboard')
+  } else {
+    dispatch({ type: 'LOGIN_FAILURE' })
+  }
+}
+
+function signOut(dispatch: (value: DispatchType) => void, history: History) {
+  deleteToken()
+  dispatch({ type: 'SIGN_OUT_SUCCESS' })
+  history.push('/login')
+}
+
+export { UserProvider, useUserState, useUserDispatch, loginUser, signOut }

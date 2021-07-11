@@ -5,6 +5,9 @@ import useStyles from '../styles'
 import type { LoginData } from '../typeDefs'
 import { LOGIN } from '../typeDefs'
 import SnackbarUtils from 'src/components/Toast'
+import { useHistory } from 'react-router-dom'
+import { saveUserId } from 'src/utils/storage'
+import { loginUser, useUserDispatch } from 'src/context/UserContext'
 
 export interface ILoginForm {
   username: string
@@ -13,7 +16,8 @@ export interface ILoginForm {
 
 const LoginForm = () => {
   const classes = useStyles()
-
+  const history = useHistory()
+  const userDispatch = useUserDispatch()
   const { handleSubmit, control, watch } = useForm<ILoginForm>({
     defaultValues: {
       username: '',
@@ -25,6 +29,11 @@ const LoginForm = () => {
     fetchPolicy: 'no-cache',
     onError() {
       SnackbarUtils.error('登录失败，请重试!')
+    },
+    onCompleted({ login }) {
+      const { authorization, userId } = login
+      saveUserId(userId)
+      loginUser(userDispatch, authorization, history)
     },
   })
 
