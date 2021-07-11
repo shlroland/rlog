@@ -11,9 +11,29 @@ import {
 } from '@material-ui/core'
 import { useState } from 'react'
 import useStyles from './styles'
+import { useForm, Controller } from 'react-hook-form'
+
+export interface ILoginForm {
+  username: string
+  password: string
+}
 
 const Login = () => {
   const classes = useStyles()
+
+  const { handleSubmit, control, watch } = useForm<ILoginForm>({
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  })
+
+  const username = watch('username')
+  const password = watch('password')
+
+  const onSubmit = (data: any) => {
+    console.log(data)
+  }
 
   const [isLoading] = useState(false)
   const [activeTabId, setActiveTabId] = useState(0)
@@ -40,66 +60,66 @@ const Login = () => {
             <Tab label="注册" classes={{ root: classes.tab }} />
           </Tabs>
           {activeTabId === 0 && (
-            <>
-              <Fade in={error}>
-                <Typography color="secondary" className={classes.errorMessage}>
-                  Something is wrong with your login or password :(
-                </Typography>
-              </Fade>
-              <TextField
-                id="email"
-                value={loginValue}
-                onChange={(e) => setLoginValue(e.target.value)}
-                label="Email"
-                variant="standard"
-                placeholder="Email Adress"
-                InputProps={{
-                  classes: {
-                    underline: classes.textFieldUnderline,
-                    input: classes.textField,
-                  },
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Controller
+                name="username"
+                control={control}
+                rules={{
+                  required: '请输入用户名!',
                 }}
-                fullWidth
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                  <TextField
+                    id="username"
+                    label="用户名"
+                    variant="standard"
+                    fullWidth
+                    required
+                    InputProps={{
+                      classes: {
+                        underline: classes.textFieldUnderline,
+                        input: classes.textField,
+                      },
+                    }}
+                    value={value}
+                    onChange={onChange}
+                    error={!!error}
+                    helperText={error ? error.message : null}
+                  />
+                )}
+              />
+              <Controller
+                name="password"
+                control={control}
+                rules={{ required: '请输入密码!' }}
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                  <TextField
+                    id="password"
+                    InputProps={{
+                      classes: {
+                        underline: classes.textFieldUnderline,
+                        input: classes.textField,
+                      },
+                    }}
+                    onChange={onChange}
+                    value={value}
+                    margin="normal"
+                    placeholder="请输入密码"
+                    type="password"
+                    label="密码"
+                    variant="standard"
+                    fullWidth
+                    error={!!error}
+                    helperText={error ? error.message : null}
+                  />
+                )}
               />
 
-              {/* <TextField
-                id="standard-basic"
-                // id="email"
-                // InputProps={{
-                //   classes: {
-                //     // underline: classes.textFieldUnderline,
-                //     input: classes.textField,
-                //   },
-                // }}
-                // margin="normal"
-                placeholder="Email Adress"
-                variant="standard"
-                type="email"
-                fullWidth
-              /> */}
-              <TextField
-                id="password"
-                InputProps={{
-                  classes: {
-                    underline: classes.textFieldUnderline,
-                    input: classes.textField,
-                  },
-                }}
-                value={passwordValue}
-                onChange={(e) => setPasswordValue(e.target.value)}
-                margin="normal"
-                placeholder="Password"
-                type="password"
-                label="Password"
-                variant="standard"
-                fullWidth
-              />
               <div className={classes.formButtons}>
                 {isLoading ? (
                   <CircularProgress size={26} className={classes.loginLoader} />
                 ) : (
                   <Button
-                    disabled={loginValue.length === 0 || passwordValue.length === 0}
+                    disabled={username.length === 0 || password.length === 0}
                     // onClick={() =>
                     //   loginUser(
                     //     userDispatch,
@@ -113,14 +133,14 @@ const Login = () => {
                     variant="contained"
                     color="primary"
                     size="large">
-                    Login
+                    登录
                   </Button>
                 )}
                 <Button color="primary" size="large" className={classes.forgetButton}>
                   Forget Password
                 </Button>
               </div>
-            </>
+            </form>
           )}
           {activeTabId === 1 && (
             <>
@@ -161,7 +181,7 @@ const Login = () => {
                 //   },
                 // }}
                 value={loginValue}
-                onChange={(e) => setLoginValue(e.target.value)}
+                onChange={e => setLoginValue(e.target.value)}
                 margin="normal"
                 placeholder="Email Adress"
                 label="Email"
@@ -178,7 +198,7 @@ const Login = () => {
                   },
                 }}
                 value={passwordValue}
-                onChange={(e) => setPasswordValue(e.target.value)}
+                onChange={e => setPasswordValue(e.target.value)}
                 margin="normal"
                 placeholder="Password"
                 type="password"
