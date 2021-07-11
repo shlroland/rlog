@@ -16,6 +16,7 @@ import {
 import { ApolloProvider } from '@apollo/client'
 import client from './gql'
 import { UserProvider } from './context/UserContext'
+import { SnackbarUtilsConfigurator } from './components/Toast'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -28,6 +29,7 @@ ReactDOM.render(
                 maxSnack={SNACKBAR_MAX_NUM}
                 anchorOrigin={SNACKBAR_ANCHOR_ORIGIN}
                 autoHideDuration={SNACKBAR_AUTO_HIDE_DURATION}>
+                <SnackbarUtilsConfigurator />
                 <CssBaseline />
                 <App />
               </SnackbarProvider>
