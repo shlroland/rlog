@@ -98,16 +98,6 @@ const LoginForm = () => {
         ) : (
           <Button
             disabled={username.length === 0 || password.length === 0}
-            // onClick={() =>
-            //   loginUser(
-            //     userDispatch,
-            //     loginValue,
-            //     passwordValue,
-            //     props.history,
-            //     setIsLoading,
-            //     setError,
-            //   )
-            // }
             type="submit"
             variant="contained"
             color="primary"
