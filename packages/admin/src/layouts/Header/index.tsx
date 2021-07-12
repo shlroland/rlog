@@ -19,13 +19,20 @@ import {
   ArrowBack as ArrowBackIcon,
 } from '@material-ui/icons'
 import classNames from 'classnames'
+import type { MouseEvent } from 'react'
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useLayoutState } from 'src/context/LayoutContext'
+import {
+  toggleSidebar,
+  useLayoutDispatch,
+  useLayoutState,
+} from 'src/context/LayoutContext'
 import { signOut, useUserDispatch } from 'src/context/UserContext'
+import type { NotificationProp } from 'src/components/Notification'
+import Notification from 'src/components/Notification'
 import useStyles from './styles'
 
-const notifications = [
+const notifications: NotificationProp[] = [
   { id: 0, color: 'warning', message: 'Check out this awesome ticket' },
   {
     id: 1,
@@ -78,17 +85,19 @@ const messages = [
   },
 ]
 
+type notificationsMenuType = (EventTarget & HTMLElement) | null
+
 const Header = () => {
   const classes = useStyles()
   //global
   const layoutState = useLayoutState()
-  // const layoutDispatch = useLayoutDispatch()
+  const layoutDispatch = useLayoutDispatch()
   const userDispatch = useUserDispatch()
   const history = useHistory()
   //local
   const [mailMenu, setMailMenu] = useState(null)
   const [isMailsUnread, setIsMailsUnread] = useState(true)
-  const [notificationsMenu, setNotificationsMenu] = useState(null)
+  const [notificationsMenu, setNotificationsMenu] = useState<notificationsMenuType>(null)
   const [isNotificationsUnread, setIsNotificationsUnread] = useState(true)
   const [profileMenu, setProfileMenu] = useState(null)
   const [isSearchOpen, setSearchOpen] = useState(false)
@@ -97,7 +106,7 @@ const Header = () => {
       <Toolbar className={classes.toolbar}>
         <IconButton
           color="inherit"
-          // onClick={() => toggleSidebar(layoutDispatch)}
+          onClick={() => toggleSidebar(layoutDispatch)}
           className={classNames(
             classes.headerMenuButtonSandwich,
             classes.headerMenuButtonCollapse,
@@ -143,8 +152,8 @@ const Header = () => {
           color="inherit"
           aria-haspopup="true"
           aria-controls="mail-menu"
-          onClick={(e) => {
-            // setNotificationsMenu(e.currentTarget)
+          onClick={(e: MouseEvent<HTMLElement>) => {
+            setNotificationsMenu(e.currentTarget)
             setIsNotificationsUnread(false)
           }}
           className={classes.headerMenuButton}>
@@ -232,14 +241,14 @@ const Header = () => {
           onClose={() => setNotificationsMenu(null)}
           className={classes.headerMenu}
           disableAutoFocusItem>
-          {/* {notifications.map((notification) => (
+          {notifications.map((notification) => (
             <MenuItem
               key={notification.id}
               onClick={() => setNotificationsMenu(null)}
               className={classes.headerMenuItem}>
               <Notification {...notification} typographyVariant="inherit" />
             </MenuItem>
-          ))} */}
+          ))}
         </Menu>
         <Menu
           id="profile-menu"
