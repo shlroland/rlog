@@ -82,7 +82,7 @@ export default makeStyles((theme: Theme) => ({
     flexDirection: 'column',
   },
   headerMenu: {
-    marginTop: theme.spacing(7),
+    marginTop: theme.spacing(4),
   },
   headerMenuList: {
     display: 'flex',
