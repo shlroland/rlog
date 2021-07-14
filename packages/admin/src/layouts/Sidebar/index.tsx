@@ -25,6 +25,7 @@ import { useLocation } from 'react-router-dom'
 
 const structure = [
   { id: 0, label: 'Dashboard', link: '/app/dashboard', icon: <HomeIcon /> },
+  { id: 10, label: '文章管理', link: '/app/posts', icon: <TypographyIcon /> },
   {
     id: 1,
     label: 'Typography',
