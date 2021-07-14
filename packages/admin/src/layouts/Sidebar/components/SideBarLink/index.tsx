@@ -104,10 +104,9 @@ const SidebarLink: FC<SiderBarLinkProp> = ({
   console.log(children)
   if (!children) {
     return (
-      <ListItem
-        // button={true}
-        // component={link && Link}
-        // to={link}
+      <ListItemButton
+        component={Link}
+        to={link || ''}
         className={classes.link}
         classes={{
           root: classnames({
@@ -115,8 +114,7 @@ const SidebarLink: FC<SiderBarLinkProp> = ({
             [classes.linkNested]: nested,
           }),
         }}
-        // disableRipple
-      >
+        disableRipple>
         <ListItemIcon
           className={classnames(classes.linkIcon, {
             [classes.linkIconActive]: isLinkActive,
@@ -132,36 +130,33 @@ const SidebarLink: FC<SiderBarLinkProp> = ({
           }}
           primary={label}
         />
-      </ListItem>
+      </ListItemButton>
     )
   }
 
   return (
     <>
-      <ListItem
-        // component={link && Link}
-        onClick={toggleCollapse}
+      <ListItemButton
         className={classes.link}
-        // to={link}
-      >
-        <Link to={link || ''}>
-          <ListItemIcon
-            className={classnames(classes.linkIcon, {
-              [classes.linkIconActive]: isLinkActive,
-            })}>
-            {icon ? icon : <InboxIcon />}
-          </ListItemIcon>
-          <ListItemText
-            classes={{
-              primary: classnames(classes.linkText, {
-                [classes.linkTextActive]: isLinkActive,
-                [classes.linkTextHidden]: !isSidebarOpened,
-              }),
-            }}
-            primary={label}
-          />
-        </Link>
-      </ListItem>
+        component={Link}
+        onClick={toggleCollapse}
+        to={link || ''}>
+        <ListItemIcon
+          className={classnames(classes.linkIcon, {
+            [classes.linkIconActive]: isLinkActive,
+          })}>
+          {icon ? icon : <InboxIcon />}
+        </ListItemIcon>
+        <ListItemText
+          classes={{
+            primary: classnames(classes.linkText, {
+              [classes.linkTextActive]: isLinkActive,
+              [classes.linkTextHidden]: !isSidebarOpened,
+            }),
+          }}
+          primary={label}
+        />
+      </ListItemButton>
       {children && (
         <Collapse
           in={isOpen && isSidebarOpened}
