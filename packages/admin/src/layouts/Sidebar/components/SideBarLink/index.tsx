@@ -12,11 +12,13 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  ListItemButton,
   Typography,
 } from '@material-ui/core'
 import classnames from 'classnames'
 import { Inbox as InboxIcon } from '@material-ui/icons'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
+import type { Location } from 'history'
 
 interface SiderBarLinkProp {
   link?: string
@@ -24,8 +26,9 @@ interface SiderBarLinkProp {
   label?: string
   children?: { label: string; link: string }[]
   isSidebarOpened?: boolean
-  nested?: string
+  nested?: boolean
   type?: string
+  location: Location
 }
 
 const SidebarLink: FC<SiderBarLinkProp> = ({
@@ -98,7 +101,7 @@ const SidebarLink: FC<SiderBarLinkProp> = ({
       </ListItem>
     )
   }
-
+  console.log(children)
   if (!children) {
     return (
       <ListItem
@@ -136,28 +139,28 @@ const SidebarLink: FC<SiderBarLinkProp> = ({
   return (
     <>
       <ListItem
-        // button
         // component={link && Link}
         onClick={toggleCollapse}
         className={classes.link}
         // to={link}
-        // disableRipple
       >
-        <ListItemIcon
-          className={classnames(classes.linkIcon, {
-            [classes.linkIconActive]: isLinkActive,
-          })}>
-          {icon ? icon : <InboxIcon />}
-        </ListItemIcon>
-        <ListItemText
-          classes={{
-            primary: classnames(classes.linkText, {
-              [classes.linkTextActive]: isLinkActive,
-              [classes.linkTextHidden]: !isSidebarOpened,
-            }),
-          }}
-          primary={label}
-        />
+        <Link to={link || ''}>
+          <ListItemIcon
+            className={classnames(classes.linkIcon, {
+              [classes.linkIconActive]: isLinkActive,
+            })}>
+            {icon ? icon : <InboxIcon />}
+          </ListItemIcon>
+          <ListItemText
+            classes={{
+              primary: classnames(classes.linkText, {
+                [classes.linkTextActive]: isLinkActive,
+                [classes.linkTextHidden]: !isSidebarOpened,
+              }),
+            }}
+            primary={label}
+          />
+        </Link>
       </ListItem>
       {children && (
         <Collapse
@@ -169,10 +172,9 @@ const SidebarLink: FC<SiderBarLinkProp> = ({
             {children.map((childrenLink) => (
               <SidebarLink
                 key={childrenLink && childrenLink.link}
-                // location={location}
+                location={location}
                 isSidebarOpened={isSidebarOpened}
-                // classes={classes}
-                // nested
+                nested
                 {...childrenLink}
               />
             ))}

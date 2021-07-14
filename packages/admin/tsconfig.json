@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "allowJs": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
@@ -24,7 +24,7 @@
     "esModuleInterop": true,
     "noFallthroughCasesInSwitch": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
   },
   "include": [
     "src"

@@ -12,11 +12,16 @@ import {
 } from '@material-ui/icons'
 import classNames from 'classnames'
 import { useState } from 'react'
-import { useLayoutState } from 'src/context/LayoutContext'
+import {
+  toggleSidebar,
+  useLayoutDispatch,
+  useLayoutState,
+} from 'src/context/LayoutContext'
 import useStyles from './styles'
 import useHeaderStyles from '../Header/styles'
 import Dot from './components/Dot'
 import SidebarLink from './components/SideBarLink'
+import { useLocation } from 'react-router-dom'
 
 const structure = [
   { id: 0, label: 'Dashboard', link: '/app/dashboard', icon: <HomeIcon /> },
@@ -80,10 +85,10 @@ const SideBar = () => {
   const classes = useStyles()
   const headerClasses = useHeaderStyles()
   //   const theme = useTheme()
-
+  const location = useLocation()
   // global
   const { isSidebarOpened } = useLayoutState()
-  //   const layoutDispatch = useLayoutDispatch()
+  const layoutDispatch = useLayoutDispatch()
 
   // local
   const [isPermanent] = useState(true)
@@ -104,9 +109,7 @@ const SideBar = () => {
       open={isSidebarOpened}>
       <div className={classes.toolbar} />
       <div className={classes.mobileBackButton}>
-        <IconButton
-        // onClick={() => toggleSidebar(layoutDispatch)}
-        >
+        <IconButton onClick={() => toggleSidebar(layoutDispatch)}>
           <ArrowBackIcon
             classes={{
               root: classNames(
@@ -121,7 +124,7 @@ const SideBar = () => {
         {structure.map((link) => (
           <SidebarLink
             key={link.id}
-            // location={location}
+            location={location}
             isSidebarOpened={isSidebarOpened}
             {...link}
           />
