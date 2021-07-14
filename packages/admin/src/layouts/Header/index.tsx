@@ -85,7 +85,7 @@ const messages = [
   },
 ]
 
-type notificationsMenuType = (EventTarget & HTMLElement) | null
+type NotificationsMenuType = (EventTarget & HTMLElement) | null
 
 const Header = () => {
   const classes = useStyles()
@@ -95,11 +95,11 @@ const Header = () => {
   const userDispatch = useUserDispatch()
   const history = useHistory()
   //local
-  const [mailMenu, setMailMenu] = useState(null)
+  const [mailMenu, setMailMenu] = useState<NotificationsMenuType>(null)
   const [isMailsUnread, setIsMailsUnread] = useState(true)
-  const [notificationsMenu, setNotificationsMenu] = useState<notificationsMenuType>(null)
+  const [notificationsMenu, setNotificationsMenu] = useState<NotificationsMenuType>(null)
   const [isNotificationsUnread, setIsNotificationsUnread] = useState(true)
-  const [profileMenu, setProfileMenu] = useState(null)
+  const [profileMenu, setProfileMenu] = useState<NotificationsMenuType>(null)
   const [isSearchOpen, setSearchOpen] = useState(false)
   return (
     <AppBar position="fixed" className={classes.appBar}>
@@ -167,8 +167,8 @@ const Header = () => {
           color="inherit"
           aria-haspopup="true"
           aria-controls="mail-menu"
-          onClick={(e) => {
-            // setMailMenu(e.currentTarget)
+          onClick={(e: MouseEvent<HTMLElement>) => {
+            setMailMenu(e.currentTarget)
             setIsMailsUnread(false)
           }}
           className={classes.headerMenuButton}>
@@ -181,8 +181,7 @@ const Header = () => {
           color="inherit"
           className={classes.headerMenuButton}
           aria-controls="profile-menu"
-          // onClick={(e) => setProfileMenu(e.currentTarget)}
-        >
+          onClick={(e: MouseEvent<HTMLElement>) => setProfileMenu(e.currentTarget)}>
           <AccountIcon classes={{ root: classes.headerIcon }} />
         </IconButton>
         <Menu
