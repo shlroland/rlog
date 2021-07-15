@@ -1,5 +1,9 @@
+import { useQuery } from '@apollo/client'
 import type { GridColDef } from '@material-ui/data-grid'
 import { DataGrid } from '@material-ui/data-grid'
+import { useState } from 'react'
+import type { PostItem, PostListResult, PostListVar } from './typeDefs'
+import { POST_LIST } from './typeDefs'
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 120 },
@@ -48,12 +52,34 @@ const rows = [
 ]
 
 const DataGridDemo = () => {
+  const [pageState, setPageState] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  })
+
+  const { data, loading, refetch } = useQuery<PostListResult, PostListVar>(POST_LIST, {
+    variables: {
+      input: {
+        current: pageState.current,
+        pageSize: pageState.pageSize,
+      },
+    },
+    onCompleted({ getPosts: { current, pageSize, total } }) {
+      setPageState((preState) => {
+        return { ...preState, current, pageSize, total }
+      })
+    },
+  })
   return (
     <div style={{ height: 400, width: '100%', backgroundColor: '#fff' }}>
       <DataGrid
-        rows={rows}
+        loading={loading}
+        rows={data?.getPosts.items ?? []}
         columns={columns}
-        pageSize={5}
+        page={pageState.current}
+        pageSize={pageState.pageSize}
+        getRowId={(row) => row._id}
         checkboxSelection
         disableSelectionOnClick
       />
