@@ -20,4 +20,13 @@ export default makeStyles(() => ({
     margin: '20px auto',
     textAlign: 'left',
   },
+  titleInput: {
+    '&:after': {
+      display: 'none',
+    },
+    '&:before': {
+      display: 'none',
+    },
+    width: '100%',
+  },
 }))
