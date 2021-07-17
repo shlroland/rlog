@@ -29,4 +29,11 @@ export default makeStyles(() => ({
     },
     width: '100%',
   },
+  settingDrawer: {
+    width: '500px',
+    padding: '32px',
+  },
+  settingFormGroup: {
+    display: 'flex',
+  },
 }))

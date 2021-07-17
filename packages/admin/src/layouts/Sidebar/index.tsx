@@ -1,4 +1,4 @@
-import { Drawer, IconButton, List } from '@material-ui/core'
+import { Drawer, IconButton, List, useTheme } from '@material-ui/core'
 import {
   Home as HomeIcon,
   NotificationsNone as NotificationsIcon,
@@ -11,7 +11,7 @@ import {
   ArrowBack as ArrowBackIcon,
 } from '@material-ui/icons'
 import classNames from 'classnames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   toggleSidebar,
   useLayoutDispatch,
@@ -84,6 +84,7 @@ const structure = [
 
 const SideBar = () => {
   const classes = useStyles()
+  const theme = useTheme()
   const headerClasses = useHeaderStyles()
   //   const theme = useTheme()
   const location = useLocation()
@@ -92,7 +93,15 @@ const SideBar = () => {
   const layoutDispatch = useLayoutDispatch()
 
   // local
-  const [isPermanent] = useState(true)
+  const [isPermanent, setPermanent] = useState(true)
+
+  useEffect(function () {
+    window.addEventListener('resize', handleWindowWidthChange)
+    handleWindowWidthChange()
+    return function cleanup() {
+      window.removeEventListener('resize', handleWindowWidthChange)
+    }
+  })
 
   return (
     <Drawer
@@ -133,6 +142,18 @@ const SideBar = () => {
       </List>
     </Drawer>
   )
+
+  function handleWindowWidthChange() {
+    const windowWidth = window.innerWidth
+    const breakpointWidth = theme.breakpoints.values.md
+    const isSmallScreen = windowWidth < breakpointWidth
+
+    if (isSmallScreen && isPermanent) {
+      setPermanent(false)
+    } else if (!isSmallScreen && !isPermanent) {
+      setPermanent(true)
+    }
+  }
 }
 
 export default SideBar

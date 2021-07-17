@@ -1,12 +1,5 @@
 import { Box, AppBar, Toolbar, Container, Button, Input } from '@material-ui/core'
-import {
-  useRef,
-  useEffect,
-  useImperativeHandle,
-  forwardRef,
-  useState,
-  useCallback,
-} from 'react'
+import { useRef, useEffect, useImperativeHandle, forwardRef, useState } from 'react'
 import Vditor from 'vditor'
 import { toolbar } from './editorConfig'
 import { useFullSreenFn } from './hooks/useFullScreenFn'
@@ -18,9 +11,11 @@ import SnackbarUtils from 'src/components/Toast'
 import { useMutation } from '@apollo/client'
 import type { ReleaseResult, ReleaseInput, DraftInput, DraftResult } from './typeDefs'
 import { RELEASE, DRAFT as DRAFT_GQL } from './typeDefs'
+import SettingDrawer from './SettingDrawer'
 import dayjs from 'dayjs'
 import { TIME_FORMAT } from 'src/utils/constant'
-
+import SaveIcon from '@material-ui/icons/Save'
+import PublishIcon from '@material-ui/icons/Publish'
 interface TitleComMethods {
   getTitle: () => string
   setTitle: (title: string) => void
@@ -142,8 +137,13 @@ const ArticleEditor = () => {
               <TitleCom />
             </Box>
             <Box>
-              <Button color="inherit">保存草稿</Button>
-              <Button color="inherit">发布</Button>
+              <Button color="inherit" startIcon={<SaveIcon />}>
+                保存草稿
+              </Button>
+              <SettingDrawer />
+              <Button color="inherit" startIcon={<PublishIcon />}>
+                发布
+              </Button>
             </Box>
           </Toolbar>
         </AppBar>
