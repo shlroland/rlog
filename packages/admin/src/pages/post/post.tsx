@@ -1,12 +1,13 @@
 import { useQuery } from '@apollo/client'
-import { Button, Chip } from '@material-ui/core'
+import { Button, Chip, IconButton } from '@material-ui/core'
 import type { GridColDef, GridCellParams } from '@material-ui/data-grid'
 import { DataGrid } from '@material-ui/data-grid'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import type { PostItem, PostListResult, PostListVar } from './typeDefs'
 import { POST_LIST } from './typeDefs'
-
+import RefreshIcon from '@material-ui/icons/Refresh'
+import useStyles from './styles'
 interface CategoryTagType {
   name: string
 }
@@ -113,6 +114,8 @@ const columns: GridColDef[] = [
 ]
 
 const DataGridDemo = () => {
+  const classes = useStyles()
+
   const [pageState, setPageState] = useState({
     current: 1,
     pageSize: 10,
@@ -133,15 +136,27 @@ const DataGridDemo = () => {
     },
   })
   return (
-    <div style={{ height: 400, width: '100%', backgroundColor: '#fff' }}>
+    <div className={classes.conatiner}>
       <DataGrid
         loading={loading}
         rows={data?.getPosts.items ?? []}
         columns={columns}
+        components={{
+          Toolbar: function Toolbar() {
+            return (
+              <div className={classes.toolbar}>
+                <IconButton aria-label="refresh" onClick={() => refetch()}>
+                  <RefreshIcon />
+                </IconButton>
+              </div>
+            )
+          },
+        }}
         page={pageState.current}
         pageSize={pageState.pageSize}
+        rowCount={pageState.total}
         getRowId={(row) => row._id}
-        checkboxSelection
+        autoHeight
         disableSelectionOnClick
       />
     </div>
