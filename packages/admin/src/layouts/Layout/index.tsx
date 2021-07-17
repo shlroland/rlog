@@ -5,10 +5,7 @@ import Header from '../Header'
 import Sidebar from '../Sidebar'
 import useStyles from './styles'
 import { GitHub as GitHubIcon } from '@material-ui/icons'
-import { Route, Switch } from 'react-router-dom'
-import Dashboard from 'src/pages/dashboard'
-import Tables from 'src/pages/tables'
-import Posts from 'src/pages/post/post'
+import routes from 'src/routes'
 
 const Layout: FC = () => {
   const classes = useStyles()
@@ -22,11 +19,7 @@ const Layout: FC = () => {
           // [classes.contentShift]: layoutState.isSidebarOpened,
         })}>
         <div className={classes.fakeToolbar} />
-        <Switch>
-          <Route path="/app/dashboard" component={Dashboard} />
-          <Route path="/app/tables" component={Tables} />
-          <Route path="/app/posts" component={Posts} />
-        </Switch>
+        {routes()}
         <Box
           mt={5}
           width={'100%'}

@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 import { createElement } from 'react'
-// import type { RouteProps } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { useUserState } from 'src/context/UserContext'
+import ArticleEditor from 'src/pages/editor'
 import Login from 'src/pages/login'
 import Layout from './Layout'
 import type { RouteProps } from './types'
@@ -59,6 +59,7 @@ function App() {
         <Route exact path="/app" render={() => <Redirect to="/app/dashboard" />} />
         <PrivateRoute path="/app" component={Layout} />
         <PublicRoute path="/login" component={Login} />
+        <Route exact path="/editor/:id" component={ArticleEditor} />
       </Switch>
     </Router>
   )

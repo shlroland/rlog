@@ -4,10 +4,12 @@ import type { GridColDef, GridCellParams } from '@material-ui/data-grid'
 import { DataGrid } from '@material-ui/data-grid'
 import dayjs from 'dayjs'
 import { useState } from 'react'
-import type { PostItem, PostListResult, PostListVar } from './typeDefs'
+import type { PostListResult, PostListVar } from './typeDefs'
 import { POST_LIST } from './typeDefs'
 import RefreshIcon from '@material-ui/icons/Refresh'
 import useStyles from './styles'
+import { Link, useHistory } from 'react-router-dom'
+import type { History as RHistory } from 'history'
 interface CategoryTagType {
   name: string
 }
@@ -57,7 +59,7 @@ const renderTags = ({ value }: GridCellParams) => {
   )
 }
 
-const columns: GridColDef[] = [
+const columns: (history: RHistory) => GridColDef[] = () => [
   { headerName: '标题', field: 'title', flex: 2 },
   {
     field: 'articleStatus',
@@ -100,10 +102,17 @@ const columns: GridColDef[] = [
     align: 'center',
     flex: 1,
     sortable: false,
-    renderCell: function Option() {
+    renderCell: function Option(value) {
+      console.log(value.row._id)
       return (
         <>
-          <Button variant="text">编辑</Button>
+          <Button
+            variant="text"
+            component={Link}
+            to={`/editor/${value.row._id}`}
+            target="_blank">
+            编辑
+          </Button>
           <Button variant="text" color="error">
             删除
           </Button>
@@ -115,7 +124,7 @@ const columns: GridColDef[] = [
 
 const DataGridDemo = () => {
   const classes = useStyles()
-
+  const history = useHistory()
   const [pageState, setPageState] = useState({
     current: 1,
     pageSize: 10,
@@ -140,7 +149,7 @@ const DataGridDemo = () => {
       <DataGrid
         loading={loading}
         rows={data?.getPosts.items ?? []}
-        columns={columns}
+        columns={columns(history)}
         components={{
           Toolbar: function Toolbar() {
             return (
