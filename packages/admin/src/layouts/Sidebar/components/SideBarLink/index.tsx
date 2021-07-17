@@ -3,7 +3,7 @@ import useStyles from './styles'
 
 // components
 import Dot from '../Dot'
-import type { FC, ReactNode } from 'react'
+import type { MouseEventHandler, FC, ReactNode } from 'react'
 import { useState } from 'react'
 import {
   Collapse,
@@ -46,7 +46,7 @@ const SidebarLink: FC<SiderBarLinkProp> = ({
   // local
   const [isOpen, setIsOpen] = useState(false)
 
-  function toggleCollapse(e: any) {
+  const toggleCollapse: MouseEventHandler<HTMLAnchorElement> = (e) => {
     if (isSidebarOpened) {
       e.preventDefault()
       setIsOpen(!isOpen)

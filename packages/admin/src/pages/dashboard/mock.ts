@@ -189,7 +189,7 @@ export function getRandomData(
   const array = new Array(length).fill(undefined)
   let lastValue: number
 
-  return array.map((item, index) => {
+  return array.map(() => {
     let randomValue = Math.floor(Math.random() * multiplier + 1)
 
     while (
